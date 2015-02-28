@@ -1,0 +1,52 @@
+From 23c6b75f32bbbd845d1a7b41150be71fbe5dff85 Mon Sep 17 00:00:00 2001
+From: Anssi Hannula <anssi@xbmc.org>
+Date: Wed, 11 Sep 2013 21:58:00 +0300
+Subject: [PATCH] Fix handling of filenames with spaces in wrapper shell script
+
+FIXME/TODO
+
+This is currently done by dropping the option handling unneeded in
+Mageia, since handling this properly would be a lot of work:
+http://www.seanius.net/blog/2009/03/saving-and-restoring-positional-params-redux/
+diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in
+--- xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in	2014-11-16 18:31:29.000000000 +0200
++++ xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in	2014-11-21 19:55:37.029212008 +0200
+@@ -29,20 +29,6 @@ CRASHLOG_DIR=${CRASHLOG_DIR:-$HOME}
+ USERDATA_DIR="${HOME}/.${bin_name}"
+ 
+ 
+-# Check for some options used by this script
+-while [ "$#" -gt "0" ]
+-do
+-    case "$1" in
+-        --setlibdir)
+-            LIBDIR="$2"
+-            shift; shift
+-            ;;
+-        *)
+-            shift
+-            ;;
+-    esac
+-done
+-
+ migrate_home()
+ {
+   [ "$(basename $0)" = "xbmc" ] && echo "WARNING: running ${bin_name} as "xbmc" is deprecated and will be removed in later versions, please switch to using the ${bin_name} binary"
+@@ -136,7 +122,7 @@ print_crash_report()
+ }
+ 
+ migrate_home
+-python @datadir@/${bin_name}/FEH.py $SAVED_ARGS
++python @datadir@/${bin_name}/FEH.py "$@"
+ RET=$?
+ if [ $RET -ne 0 ]; then
+   exit $RET
+@@ -154,7 +140,7 @@ LOOP=1
+ while [ $(( $LOOP )) = "1" ]
+ do
+   LOOP=0
+-  "$LIBDIR/${bin_name}/${bin_name}.bin" $SAVED_ARGS
++  "$LIBDIR/${bin_name}/${bin_name}.bin" "$@"
+   RET=$?
+   if [ $(( $RET == 65 )) = "1" ]
+   then # User requested to restart app
