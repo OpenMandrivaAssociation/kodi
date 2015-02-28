@@ -362,15 +362,11 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename} -a 1
 %apply_patches
 
-find . -name "Makefile*" -o -name "*.m4" -o -name "configure*" -o -name "missing" -o -name "bootstrap*" |xargs sed -i -e 's,configure.in,configure.ac,g'
-cp configure.in configure.ac
-
 # otherwise backups end up in binary rpms
 find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
 
 # remove prebuilt libraries
-find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -delete
-
+find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' -o -iname '*.jar' \) -print -delete
 
 # win32 only
 rm -rf system/players/dvdplayer/etc/fonts
