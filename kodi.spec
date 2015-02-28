@@ -359,7 +359,7 @@ This package contains the xbmc-send eventclient.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -qn %{name}-%{version}-%{codename} -a 1
+%setup -qn %{version}-%{codename} -a 1
 %apply_patches
 
 find . -name "Makefile*" -o -name "*.m4" -o -name "configure*" -o -name "missing" -o -name "bootstrap*" |xargs sed -i -e 's,configure.in,configure.ac,g'
