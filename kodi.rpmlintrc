@@ -1,0 +1,2 @@
+addFilter("E: devel-file-in-non-devel-package")
+addFilter("E: explicit-lib-dependency")
