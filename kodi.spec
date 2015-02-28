@@ -378,7 +378,7 @@ rm -rf system/players/dvdplayer/etc/fonts
 %build
 export GIT_REV="tarball"
 
-JAVA=%{java} CLASSPATH=$(build-classpath commons-lang) ./bootstrap
+#JAVA=%{java} CLASSPATH=$(build-classpath commons-lang) ./bootstrap
 
 pushd pvr-addons
 ./bootstrap
