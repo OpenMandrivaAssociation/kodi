@@ -124,6 +124,9 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	cmake
 BuildRequires:	gperf
 BuildRequires:	zip
+# pvr-addons
+BuildRequires:  jsoncpp-devel
+BuildRequires:  cryptopp-devel
 %ifarch %{ix86}
 BuildRequires:	nasm
 %endif
@@ -132,6 +135,8 @@ Requires:	lsb-release
 BuildRequires:	doxygen
 BuildRequires:	java
 BuildRequires:	swig
+BuildRequires:  groovy
+BuildRequires:  apache-commons-lang
 
 # dlopened (existence check required by rpm5 as it doesn't use stderr):
 %define dlopenreq() %([ -e %{_libdir}/lib%{1}.so ] && rpm -qf --qf '%%{name}' $(readlink -f %{_libdir}/lib%{1}.so) 2>/dev/null || echo %{name})
