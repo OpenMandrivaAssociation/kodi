@@ -371,8 +371,6 @@ find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
 # remove prebuilt libraries
 find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -delete
 
-# GPLv2 only
-rm -r lib/cmyth/Win32/include/mysql
 
 # win32 only
 rm -rf system/players/dvdplayer/etc/fonts
