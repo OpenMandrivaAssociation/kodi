@@ -41,7 +41,7 @@ Patch3:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
 
 #Other
 #Patch4:		xbmc-13.0-external-ffmpeg.patch
-Patch5:		xbmc-13.0-no-win32.patch
+#Patch5:		xbmc-13.0-no-win32.patch
 # Display Music Videos in "Artist - Name" format instead of just "Name"
 #Patch6:		xbmc-13.0-upnp-musicvideos-artist.patch
 # Fix bug with UPnP playback for Playlists
