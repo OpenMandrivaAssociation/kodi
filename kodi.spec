@@ -126,7 +126,7 @@ BuildRequires:	gperf
 BuildRequires:	zip
 # pvr-addons
 BuildRequires:  jsoncpp-devel
-BuildRequires:  cryptopp-devel
+BuildRequires:  pkgconfig(cryptopp)
 %ifarch %{ix86}
 BuildRequires:	nasm
 %endif
