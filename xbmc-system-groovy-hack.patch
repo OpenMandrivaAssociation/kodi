@@ -11,13 +11,12 @@
        doc = docspec.compounddef[0].detaileddescription[0]
      else // it's a method of some sort ... or it better be
      {
-@@ -109,7 +111,8 @@
-           ((it.name() == 'memberdef' && (it.@kind == 'function' || it.@kind == 'variable') && it.@id.startsWith(doxygenId)) &&
-            (it.name != null && it.name.text().trim() == methodOrClass.@sym_name))
-       }
--
-+*/
-+      doc = null
+@@ -111,6 +112,8 @@
+ 
        doc = memberdef != null ? memberdef.detaileddescription[0] : null
      }
++*/
++    doc = null
  
+     if (doc != null)
+     { 
