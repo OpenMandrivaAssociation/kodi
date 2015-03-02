@@ -29,7 +29,7 @@ Patch0:      pvr-addons-enable-all.patch
 Patch1:      no-xbmc-symbolic-link.patch
 # https://bugs.mageia.org/show_bug.cgi?id=2331
 # TODO: needs changes for upstreaming
-Patch2:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
+#Patch2:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
 
 # Use system groovy                                                                                                                   
 Patch3:         xbmc-system-groovy.patch                                                                                              
@@ -370,7 +370,6 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename}
 %patch0
 %patch1
-%patch2
 %patch3
 %patch4
 
