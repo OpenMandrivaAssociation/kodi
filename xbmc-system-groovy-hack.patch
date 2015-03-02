@@ -1,21 +1,23 @@
---- xbmc-Frodo_rc3/tools/codegenerator/Helper.groovy	2013-01-03 05:29:19.000000000 +0200
-+++ xbmc-Frodo_rc3/tools/codegenerator/Helper.groovy.new	2013-01-09 15:35:38.788236593 +0200
-@@ -101,7 +101,8 @@
+--- a/tools/codegenerator/Helper.groovy	2013-01-03 05:29:19.000000000 +0200
++++ b/tools/codegenerator/Helper.groovy.new	2013-01-09 15:35:38.788236593 +0200
+@@ -100,7 +100,9 @@
      }
  
      Node docspec = (new XmlParser().parse(doxygenXmlFile))
 -    if (methodOrClass.name() == 'class')
-+/* hack to make it build
++
++    /* hack to make it build
 +     if (methodOrClass.name() == 'class')
        doc = docspec.compounddef[0].detaileddescription[0]
      else // it's a method of some sort ... or it better be
      {
-@@ -112,6 +113,8 @@
- 
+@@ -109,7 +111,8 @@
+           ((it.name() == 'memberdef' && (it.@kind == 'function' || it.@kind == 'variable') && it.@id.startsWith(doxygenId)) &&
+            (it.name != null && it.name.text().trim() == methodOrClass.@sym_name))
+       }
+-
++*/
++      doc = null
        doc = memberdef != null ? memberdef.detaileddescription[0] : null
      }
-+*/
-+    doc = null
  
-     if (doc != null)
-     { 

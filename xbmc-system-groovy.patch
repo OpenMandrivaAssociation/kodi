@@ -2,7 +2,7 @@ diff --git a/codegenerator.mk b/codegenerator.mk
 index 6689777..52e7f7a 100644
 --- a/codegenerator.mk
 +++ b/codegenerator.mk
-@@ -33,10 +33,10 @@ vpath %.i $(INTERFACES_DIR)/swig
+@@ -41,10 +41,10 @@
  
  $(GENDIR)/%.cpp: $(GENDIR)/%.xml $(JAVA) $(SWIG) $(DOXY_XML_PATH)
  	# Work around potential groovy bug reported at: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=733234
@@ -17,3 +17,4 @@ index 6689777..52e7f7a 100644
  	rm $<
  
  $(GENDIR)/%.xml: %.i $(SWIG) $(JAVA) $(GENERATE_DEPS)
+
