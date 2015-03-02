@@ -139,7 +139,7 @@ BuildRequires:	swig
 BuildRequires:  byacc
 BuildRequires:  yasm
 BuildRequires:	gettext
-#BuildRequires:	java
+BuildRequires:	java
 #BuildRequires:  groovy
 
 # dlopened (existence check required by rpm5 as it doesn't use stderr):
