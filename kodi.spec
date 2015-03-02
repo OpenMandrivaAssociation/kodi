@@ -120,6 +120,7 @@ BuildRequires:	pkgconfig(xrandr)
 BuildRequires:	pkgconfig(xt)
 BuildRequires:	pkgconfig(xtst)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(libcap)
 BuildRequires:	cmake
 BuildRequires:	gperf
 BuildRequires:	zip
@@ -407,10 +408,10 @@ rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
-%define _disable_ld_no_undefined 1
+#%define _disable_ld_no_undefined 1
 
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
-export ac_cv_prog_HAVE_GIT="no"
+#export ac_cv_prog_HAVE_GIT="no"
 
 export PYTHON_VERSION=2
 %configure \
