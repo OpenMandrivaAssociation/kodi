@@ -443,8 +443,8 @@ export PYTHON_VERSION=2
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
 
-%make
-%make -C tools/EventClients wiimote
+make -j8
+make -j8 -C tools/EventClients wiimote
 
 %install
 %makeinstall_std
