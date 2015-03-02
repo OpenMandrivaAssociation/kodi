@@ -132,6 +132,7 @@ BuildRequires:	swig
 BuildRequires:  byacc
 BuildRequires:  yasm
 BuildRequires:	gettext
+BuildRequires:	java
 
 # dlopened (existence check required by rpm5 as it doesn't use stderr):
 %define dlopenreq() %([ -e %{_libdir}/lib%{1}.so ] && rpm -qf --qf '%%{name}' $(readlink -f %{_libdir}/lib%{1}.so) 2>/dev/null || echo %{name})
