@@ -32,7 +32,7 @@ Patch1:      no-xbmc-symbolic-link.patch
 #Patch2:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
 
 # Use system groovy                                                                                                                   
-Patch3:         xbmc-system-groovy.patch                                                                                              
+#Patch3:         xbmc-system-groovy.patch                                                                                              
                                                                                                                                       
 # Disable a non-critical documentation part of code generator which does not                                                          
 # seem to work with system groovy                                                                                                     
@@ -371,7 +371,7 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename}
 %patch0
 %patch1
-%patch3 -p1
+#%patch3 -p1
 %patch4 -p1
 
 tar -xf %{SOURCE1}
