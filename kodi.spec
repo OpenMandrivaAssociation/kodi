@@ -23,7 +23,6 @@ Source0:	http://mirrors.xbmc.org/releases/source/%{version}-%{codename}.tar.gz
 Source1:     	https://github.com/opdenkamp/xbmc-pvr-addons/archive/%{pvr_addons_archive_name}.tar.gz
 Source2:     	https://github.com/xbmc/FFmpeg/archive/%{ffmpeg_archive_name}.tar.gz
 Source3:	kodi.rpmlintrc
-BuildRoot:   %{_tmppath}/%{name}-%{version}-build
 
 # PATCH-FIX-OPENSUSE -- enable all pvr addons
 Patch0:      pvr-addons-enable-all.patch
@@ -408,7 +407,9 @@ done
 
 chmod +x bootstrap
 ./bootstrap
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ./bootstrap             
+
+cp -f configure.ac configure.in
+
 %build
 
 # due to xbmc modules that use symbols from xbmc binary
