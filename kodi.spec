@@ -377,11 +377,10 @@ pushd pvr-addons
 ./bootstrap
 popd
 
-#cp %{SOURCE2} tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz
 # Remove build time references so build-compare can do its work
-FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
-FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
-FAKE_BUILDDATETIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes)
+FAKE_BUILDDATE=$(LC_ALL=C date -u -r $RPM_SOURCE_DIR/%{name}.changes '+%%b %%e %%Y')
+FAKE_BUILDTIME=$(LC_ALL=C date -u -r $RPM_SOURCE_DIR/%{name}.changes '+%%H:%%M:%%S')
+FAKE_BUILDDATETIME=$(LC_ALL=C date -u -r $RPM_SOURCE_DIR/%{name}.changes)
 
 # remove it in ffmpeg archive and repackage it
 tar xpfz %{SOURCE2} -C tools/depends/target/ffmpeg/
