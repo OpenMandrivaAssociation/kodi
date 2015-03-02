@@ -29,22 +29,22 @@ Patch0:      pvr-addons-enable-all.patch
 Patch1:      no-xbmc-symbolic-link.patch
 # https://bugs.mageia.org/show_bug.cgi?id=2331
 # TODO: needs changes for upstreaming
-Patch3:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
+Patch2:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
 
 # Use system groovy                                                                                                                   
-Patch4:         xbmc-system-groovy.patch                                                                                              
+Patch3:         xbmc-system-groovy.patch                                                                                              
                                                                                                                                       
 # Disable a non-critical documentation part of code generator which does not                                                          
 # seem to work with system groovy                                                                                                     
-Patch5:         xbmc-system-groovy-hack.patch  
+Patch4:         xbmc-system-groovy-hack.patch  
 
 #Other
-#Patch4:		xbmc-13.0-external-ffmpeg.patch
-#Patch5:		xbmc-13.0-no-win32.patch
+#Patch5:		xbmc-13.0-external-ffmpeg.patch
+#Patch6:		xbmc-13.0-no-win32.patch
 # Display Music Videos in "Artist - Name" format instead of just "Name"
-#Patch6:		xbmc-13.0-upnp-musicvideos-artist.patch
+#Patch7:		xbmc-13.0-upnp-musicvideos-artist.patch
 # Fix bug with UPnP playback for Playlists
-#Patch7:		xbmc-13.0-upnp-playlists.patch
+#Patch8:		xbmc-13.0-upnp-playlists.patch
 
 BuildRequires:	afpclient-devel
 BuildRequires:	avahi-common-devel
@@ -370,6 +370,9 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename}
 %patch0
 %patch1
+%patch2
+%patch3
+%patch4
 
 # otherwise backups end up in binary rpms
 find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
