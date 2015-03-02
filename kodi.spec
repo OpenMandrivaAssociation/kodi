@@ -57,7 +57,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	lzo-devel
 BuildRequires:	mysql-devel
-BuildRequires:	pkgconfig(python3)
+BuildRequires:	pkgconfig(python2)
 BuildRequires:	rtmp-devel
 BuildRequires:	ssh-devel
 BuildRequires:	tiff-devel
