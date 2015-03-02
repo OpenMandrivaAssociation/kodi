@@ -373,15 +373,6 @@ This package contains the xbmc-send eventclient.
 %patch3 -p1
 %patch4 -p1
 
-# otherwise backups end up in binary rpms
-find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
-
-# remove prebuilt libraries
-find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' -o -iname '*.jar' \) -print -delete
-
-# win32 only
-rm -rf system/players/dvdplayer/etc/fonts
-
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
