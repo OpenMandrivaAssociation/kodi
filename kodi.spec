@@ -371,7 +371,6 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename}
 %patch0
 %patch1
-#%patch3 -p1
 %patch4 -p1
 
 tar -xf %{SOURCE1}
