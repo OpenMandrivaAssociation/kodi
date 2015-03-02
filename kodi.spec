@@ -141,7 +141,7 @@ BuildRequires:  byacc
 BuildRequires:  yasm
 BuildRequires:	gettext
 BuildRequires:	java
-BuildRequires:  groovy
+#BuildRequires:  groovy
 
 # dlopened (existence check required by rpm5 as it doesn't use stderr):
 %define dlopenreq() %([ -e %{_libdir}/lib%{1}.so ] && rpm -qf --qf '%%{name}' $(readlink -f %{_libdir}/lib%{1}.so) 2>/dev/null || echo %{name})
@@ -385,24 +385,28 @@ popd
 #FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
 #FAKE_BUILDDATETIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes)
 
+FAKE_BUILDDATE='Feb  7 2015'
+FAKE_BUILDTIME=18:19:09
+FAKE_BUILDDATETIME='Sat Feb  7 18:19:09 UTC 2015'
+
 # remove it in ffmpeg archive and repackage it
 tar xpfz %{SOURCE2} -C tools/depends/target/ffmpeg/
-#for file in tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/ffprobe.c tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/cmdutils.c; do
-#    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
-#done
+for file in tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/ffprobe.c tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/cmdutils.c; do
+    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
+done
 tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
 rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 # remove the remaining occurencies in the source tree
-#for file in lib/timidity/timidity/speex_a.c xbmc/Application.cpp xbmc/GUIInfoManager.cpp ; do
-#    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
-#done
-#for file in xbmc/interfaces/python/PythonSwig.cpp.template ; do
-#    sed -i -e "/PyModule_AddStringConstant.*__date__/ s/\${new Date()\.toString()}/$FAKE_BUILDDATETIME/"  $file
-#done
+for file in lib/timidity/timidity/speex_a.c xbmc/Application.cpp xbmc/GUIInfoManager.cpp ; do
+    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
+done
+for file in xbmc/interfaces/python/PythonSwig.cpp.template ; do
+    sed -i -e "/PyModule_AddStringConstant.*__date__/ s/\${new Date()\.toString()}/$FAKE_BUILDDATETIME/"  $file
+done
 
-#chmod +x bootstrap
-#./bootstrap
+chmod +x bootstrap
+./bootstrap
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ./bootstrap             
 %build
 
