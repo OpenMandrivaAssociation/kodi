@@ -412,6 +412,7 @@ rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 export ac_cv_prog_HAVE_GIT="no"
 
+export PYTHON_VERSION=2
 %configure \
 	--enable-airplay \
 	--enable-vdpau \
