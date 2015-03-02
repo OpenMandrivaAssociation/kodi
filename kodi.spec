@@ -360,7 +360,8 @@ This package contains the xbmc-send eventclient.
 
 %prep
 %setup -q -n xbmc-%{version}-%{codename}
-%apply_patches
+%patch0
+%patch1
 
 # otherwise backups end up in binary rpms
 find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
