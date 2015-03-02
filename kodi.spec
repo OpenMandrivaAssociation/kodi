@@ -359,7 +359,7 @@ This package contains the xbmc-send eventclient.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q -n xbmc-%{version}-%{codename} -a 1
+%setup -q -n xbmc-%{version}-%{codename}
 %apply_patches
 
 # otherwise backups end up in binary rpms
