@@ -1,0 +1,10 @@
+--- configure.in.orig	2014-09-14 23:59:09.835398839 +0300
++++ configure.in	2014-09-14 23:59:51.065883387 +0300
+@@ -2781,6 +2781,7 @@
+     --host=$host_alias \
+     --build=$build_alias \
+     --target=$target_alias \
++    --enable-addons-with-dependencies \
+     CC="$CC" \
+     CXX="$CXX" \
+     CFLAGS="$CFLAGS" \

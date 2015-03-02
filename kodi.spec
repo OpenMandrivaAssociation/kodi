@@ -1,3 +1,7 @@
+%define _libtag_ver %(version="`rpm -q --qf '%{VERSION}' libtag-devel`"; echo "$version")
+%define _kodi_addons_dir %{_datadir}/kodi/addons
+%define ffmpeg_archive_name 2.4.6-Helix
+%define pvr_addons_archive_name Helix_rc3
 %define build_cec 1
 %define codename Helix
 
@@ -16,25 +20,13 @@ License:	GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 Group:		Video
 Url:		http://kodi.tv/
 Source0:	http://mirrors.xbmc.org/releases/source/%{version}-%{codename}.tar.gz
-# (cg) From https://github.com/opdenkamp/xbmc-pvr-addons
-# git archive --prefix=pvr-addons/ origin/master | xz
-Source1:	xbmc-pvr-addons-28f0e74864791cb9bb123559acb3d82e995b2b80.tar.xz
+Source1:     	https://github.com/opdenkamp/xbmc-pvr-addons/archive/%{pvr_addons_archive_name}.tar.gz
+Source2:     	https://github.com/xbmc/FFmpeg/archive/%{ffmpeg_archive_name}.tar.gz
+Source3:	kodi.rpmlintrc
 
-Source2:	kodi.rpmlintrc
-
-# Use system groovy
-Patch0:		xbmc-system-groovy.patch
-
-# Disable a non-critical documentation part of code generator which does not
-# seem to work with system groovy
-Patch1:		xbmc-system-groovy-hack.patch
-
-# Hack to workaround upgrading from our old hack... see patch header for more
-# details and an upstreaming plan.
-# (cg) Could be reinstated but minimum versions mean this is likely not needed
-# and the logic should really be done holistically for all dbs...
-#Patch213:	0001-hack-workaround-for-old-incompatible-PVR-addon-datab.patch
-
+# PATCH-FIX-OPENSUSE -- enable all pvr addons
+Patch0:      pvr-addons-enable-all.patch
+Patch1:      no-xbmc-symbolic-link.patch
 # https://bugs.mageia.org/show_bug.cgi?id=2331
 # TODO: needs changes for upstreaming
 Patch3:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
@@ -124,6 +116,9 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	cmake
 BuildRequires:	gperf
 BuildRequires:	zip
+# needed to delete the fixed rpath introduced by smbclient
+BuildRequires:  chrpath
+
 # pvr-addons
 BuildRequires:  jsoncpp-devel
 BuildRequires:  pkgconfig(cryptopp)
@@ -134,9 +129,9 @@ Requires:	lsb-release
 # for codegenrator
 BuildRequires:	doxygen
 BuildRequires:	swig
-BuildRequires:  groovy
-BuildRequires:  apache-commons-lang
+BuildRequires:  byacc
 BuildRequires:  yasm
+BuildRequires:	gettext
 
 # dlopened (existence check required by rpm5 as it doesn't use stderr):
 %define dlopenreq() %([ -e %{_libdir}/lib%{1}.so ] && rpm -qf --qf '%%{name}' $(readlink -f %{_libdir}/lib%{1}.so) 2>/dev/null || echo %{name})
@@ -376,14 +371,38 @@ find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' -o -iname '*.j
 # win32 only
 rm -rf system/players/dvdplayer/etc/fonts
 
-%build
-export GIT_REV="tarball"
-
-JAVA=%{java} CLASSPATH=$(build-classpath commons-lang) ./bootstrap
-
+tar -xf %{SOURCE1}
+mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
 ./bootstrap
 popd
+
+#cp %{SOURCE2} tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz
+# Remove build time references so build-compare can do its work
+FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
+FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
+FAKE_BUILDDATETIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes)
+
+# remove it in ffmpeg archive and repackage it
+tar xpfz %{SOURCE2} -C tools/depends/target/ffmpeg/
+for file in tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/ffprobe.c tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/cmdutils.c; do
+    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
+done
+tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
+rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
+
+# remove the remaining occurencies in the source tree
+for file in lib/timidity/timidity/speex_a.c xbmc/Application.cpp xbmc/GUIInfoManager.cpp ; do
+    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
+done
+for file in xbmc/interfaces/python/PythonSwig.cpp.template ; do
+    sed -i -e "/PyModule_AddStringConstant.*__date__/ s/\${new Date()\.toString()}/$FAKE_BUILDDATETIME/"  $file
+done
+
+chmod +x bootstrap
+./bootstrap
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ./bootstrap             
+%build
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
@@ -392,25 +411,25 @@ popd
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 export ac_cv_prog_HAVE_GIT="no"
 
-%configure2_5x \
+%configure \
+	--enable-airplay \
+	--enable-vdpau \
+	--enable-vaapi \
+	--enable-rtmp \
+	--enable-libbluray \
 	--disable-debug \
-	--disable-ccache \
-%ifarch %{arm}
-	--enable-neon	\
+	--enable-shared \
+	--enable-optimizations \
+	--disable-static \
+%if %{build_cec}
+	--enable-libcec \
 %endif
-	--enable-external-libraries \
-	--disable-non-free \
-	--disable-dvdcss \
+%ifarch %{arm}
+	--enable-tegra --disable-neon \
+%endif
 	--enable-goom \
 	--enable-pulse \
 	--with-lirc-device=/var/run/lirc/lircd
-
-# (cg) We cannot enable MythTV support easily via a passthrough configure from above
-#      so re-run configure here and explicitly pass the --enable-addons-with-dependencies option
-pushd pvr-addons
-%configure2_5x \
-    --enable-addons-with-dependencies
-popd
 
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
@@ -421,6 +440,36 @@ popd
 %install
 %makeinstall_std
 %makeinstall_std -C tools/EventClients
+
+#remove the doc files from unversioned /usr/share/doc/kodi, they should be in versioned docdir
+rm -r %{buildroot}/%{_datadir}/doc/
+
+# copy manpages
+install -m 644 -D docs/manpages/kodi-standalone.1 %{buildroot}%{_mandir}/man1/kodi-standalone.1
+install -m 644 -D docs/manpages/kodi.bin.1 %{buildroot}%{_mandir}/man1/kodi.1
+
+# remove win32 source files
+rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.addon/dlfcn-win32.cpp
+rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.addon/dlfcn-win32.h
+rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.addon/dlfcn-win32.cpp
+rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.addon/dlfcn-win32.h
+
+# remove duplicate header files
+rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.addon/libXBMC_addon.h
+rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.addon/libXBMC_addon.h
+rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.codec/libXBMC_codec.h
+rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.codec/libXBMC_codec.h
+rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.gui/libXBMC_gui.h
+rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.gui/libXBMC_gui.h
+rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.pvr/libXBMC_pvr.h
+rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.pvr/libXBMC_pvr.h
+
+# delete fixed rpath from smbclient.pc - this fixes
+# http://trac.kodi.tv/ticket/15497 and
+# http://bugzilla.opensuse.org/show_bug.cgi?id=902421
+
+chrpath %{buildroot}%{_libdir}/kodi/kodi.bin >/dev/null 2>&1 && \
+chrpath -d %{buildroot}%{_libdir}/kodi/kodi.bin
 
 # unused
 rm %{buildroot}%{_datadir}/xsessions/{xbmc,kodi}.desktop
