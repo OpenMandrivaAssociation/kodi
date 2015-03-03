@@ -50,7 +50,9 @@ BuildRequires:	afpclient-devel
 BuildRequires:	avahi-common-devel
 BuildRequires:	boost-devel
 BuildRequires:	bzip2-devel
+%ifarch %{ix86} x86_64
 BuildRequires:	crystalhd-devel
+%endif
 BuildRequires:	cwiid-devel
 BuildRequires:	ffmpeg-devel
 BuildRequires:	gettext-devel
@@ -408,7 +410,8 @@ done
 chmod +x bootstrap
 ./bootstrap
 
-cp -f configure.ac configure.in
+cp -fp configure.ac configure.in
+rm -f configure.ac
 
 %build
 
@@ -443,8 +446,8 @@ export PYTHON_VERSION=2
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
 
-make -j8
-make -j8 -C tools/EventClients wiimote
+%make
+%make -C tools/EventClients wiimote
 
 %install
 %makeinstall_std
