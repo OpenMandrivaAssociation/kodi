@@ -385,10 +385,9 @@ This package contains the xbmc-send eventclient.
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
+%patch6 -p1
 ./bootstrap
 popd
-
-%patch6 -p1
 
 # Remove build time references so build-compare can do its work
 #FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
