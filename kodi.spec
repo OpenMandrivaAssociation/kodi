@@ -429,9 +429,9 @@ rm -f configure.ac
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 #export ac_cv_prog_HAVE_GIT="no"
 
-%global optflags %{optflags} -I/usr/include/jsoncpp
 export PYTHON_VERSION=2
-%configure \
+
+CPPLAGS=-I/usr/include/jsoncpp %configure \
 	--enable-airplay \
 	--enable-vdpau \
 	--enable-vaapi \
@@ -453,7 +453,7 @@ export PYTHON_VERSION=2
 
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
-
+ 
 %make
 %make -C tools/EventClients wiimote
 
