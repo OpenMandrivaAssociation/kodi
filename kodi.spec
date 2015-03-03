@@ -429,6 +429,7 @@ rm -f configure.ac
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 #export ac_cv_prog_HAVE_GIT="no"
 
+export CPPFLAGS=-I/usr/include/jsoncpp
 export PYTHON_VERSION=2
 %configure \
 	--enable-airplay \

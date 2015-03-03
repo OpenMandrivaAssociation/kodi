@@ -18,12 +18,3 @@
    sDst.assign(L"");
  }
  
-@@ -2046,7 +2046,7 @@
-   // shorthand conversion from PCTSTR to string resource ID
-   #define SSRES(pctstr)  LOWORD(reinterpret_cast<unsigned long>(pctstr))
- 
--  bool TryLoad(const void* pT)
-+//  bool TryLoad(const void* pT)
-   {
-     bool bLoaded = false;
- 
