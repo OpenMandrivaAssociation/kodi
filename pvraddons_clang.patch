@@ -1,5 +1,5 @@
---- lib/platform/util/StdString.h	2014-12-02 15:34:03.000000000 +0100
-+++ lib/platform/util/StdString.h.new	2015-03-03 09:34:18.606095328 +0100
+--- pvr-addons/lib/platform/util/StdString.h	2014-12-02 15:34:03.000000000 +0100
++++ pvr-addons/lib/platform/util/StdString.h.new	2015-03-03 09:34:18.606095328 +0100
 @@ -1360,7 +1360,7 @@
  inline void ssasn(std::string& sDst, const int nNull)
  {
