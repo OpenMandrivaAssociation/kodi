@@ -38,6 +38,9 @@ Patch1:      no-xbmc-symbolic-link.patch
 # seem to work with system groovy                                                                                                     
 Patch4:         xbmc-system-groovy-hack.patch  
 
+#Clang patch
+Patch5:		kodi_goom_clang-patch
+
 #Other
 #Patch5:		xbmc-13.0-external-ffmpeg.patch
 #Patch6:		xbmc-13.0-no-win32.patch
@@ -375,6 +378,7 @@ This package contains the xbmc-send eventclient.
 %patch0
 %patch1
 %patch4 -p1
+%patch5 -p1
 
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
