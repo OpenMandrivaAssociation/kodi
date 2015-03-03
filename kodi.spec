@@ -39,7 +39,7 @@ Patch1:      no-xbmc-symbolic-link.patch
 Patch4:         xbmc-system-groovy-hack.patch  
 
 #Clang patch
-Patch5:		kodi_goom_clang-patch
+Patch5:		kodi_goom_clang.patch
 
 #Other
 #Patch5:		xbmc-13.0-external-ffmpeg.patch
