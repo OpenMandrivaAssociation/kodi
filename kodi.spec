@@ -443,6 +443,7 @@ export PYTHON_VERSION=2
 	--enable-shared \
 	--enable-optimizations \
 	--disable-static \
+    --with-ffmpeg \
 %if %{build_cec}
 	--enable-libcec \
 %endif
