@@ -422,7 +422,7 @@ rm -f configure.ac
 
 %build
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
-%global optflags %{optflags} -Qunused-arguments
+#global optflags %{optflags} -Qunused-arguments
 
 # fix src/FilmonAPI.cpp:29:10: fatal error: 'jsoncpp/json/json.h' file not found
 export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
