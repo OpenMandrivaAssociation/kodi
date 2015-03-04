@@ -454,7 +454,7 @@ CPPLAGS=-I/usr/include/jsoncpp %configure \
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
  
-%make
+CPPLAGS=-I/usr/include/jsoncpp %make
 %make -C tools/EventClients wiimote
 
 %install
