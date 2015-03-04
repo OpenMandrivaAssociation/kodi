@@ -422,10 +422,7 @@ rm -f configure.ac
 
 %build
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
-#global optflags %{optflags} -Qunused-arguments
-
-# fix src/FilmonAPI.cpp:29:10: fatal error: 'jsoncpp/json/json.h' file not found
-export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
+%global optflags %{optflags} -Qunused-arguments
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
@@ -458,7 +455,10 @@ export PYTHON_VERSION=2
 
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
- 
+
+# fix src/FilmonAPI.cpp:29:10: fatal error: 'jsoncpp/json/json.h' file not found
+export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
+
 %make
 %make -C tools/EventClients wiimote
 
