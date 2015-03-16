@@ -380,7 +380,6 @@ This package contains the xbmc-send eventclient.
 %patch0
 %patch1
 
-
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
@@ -414,6 +413,9 @@ done
 
 chmod +x bootstrap
 ./bootstrap
+
+find . -name "Makefile*" -o -name "*.m4" -o -name "configure*" -o -name "missing" -o -name "bootstrap*" |xargs sed -i -e 's,configure.in,configure.ac,g'
+cp configure.in configure.ac
 
 #cp -fp configure.ac configure.in
 #rm -f configure.ac
