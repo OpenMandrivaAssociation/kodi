@@ -36,11 +36,11 @@ Patch1:      no-xbmc-symbolic-link.patch
                                                                                                                                       
 # Disable a non-critical documentation part of code generator which does not                                                          
 # seem to work with system groovy                                                                                                     
-Patch4:         xbmc-system-groovy-hack.patch  
+#Patch4:         xbmc-system-groovy-hack.patch  
 
 #Clang patch
-Patch5:		kodi_goom_clang.patch
-Patch6:		pvraddons_clang.patch
+#Patch5:		kodi_goom_clang.patch
+#Patch6:		pvraddons_clang.patch
 
 #Other
 #Patch5:		xbmc-13.0-external-ffmpeg.patch
@@ -379,14 +379,14 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename}
 %patch0
 %patch1
-%patch4 -p1
-%patch5 -p1
+#%patch4 -p1
+#%patch5 -p1
 
 
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
-%patch6 -p1
+#%patch6 -p1
 ./bootstrap
 popd
 
@@ -423,7 +423,7 @@ rm -f configure.ac
 
 %build
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
-%global optflags %{optflags} -Qunused-arguments
+#%global optflags %{optflags} -Qunused-arguments
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
