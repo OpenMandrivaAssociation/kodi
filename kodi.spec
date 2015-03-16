@@ -64,7 +64,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	lzo-devel
 BuildRequires:	mysql-devel
-BuildRequires:	pkgconfig(python2)
+BuildRequires:	python-devel
 BuildRequires:	rtmp-devel
 BuildRequires:	ssh-devel
 BuildRequires:	tiff-devel
@@ -127,7 +127,7 @@ BuildRequires:	pkgconfig(xrandr)
 BuildRequires:	pkgconfig(xt)
 BuildRequires:	pkgconfig(xtst)
 BuildRequires:	pkgconfig(zlib)
-BuildRequires:	pkgconfig(libcap)
+BuildRequires:	cap-devel
 BuildRequires:	cmake
 BuildRequires:	gperf
 BuildRequires:	zip
@@ -430,9 +430,9 @@ rm -f configure.ac
 #%define _disable_ld_no_undefined 1
 
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
-#export ac_cv_prog_HAVE_GIT="no"
+export ac_cv_prog_HAVE_GIT="no"
 
-export PYTHON_VERSION=2
+#export PYTHON_VERSION=2
 
 %configure \
 	--enable-airplay \
