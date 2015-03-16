@@ -424,7 +424,7 @@ chmod +x bootstrap
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
-#%define _disable_ld_no_undefined 1
+%define _disable_ld_no_undefined 1
 
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 export ac_cv_prog_HAVE_GIT="no"
@@ -456,7 +456,7 @@ export ac_cv_prog_HAVE_GIT="no"
 # dvdcss is handled via dlopen when disabled
 
 # fix src/FilmonAPI.cpp:29:10: fatal error: 'jsoncpp/json/json.h' file not found
-export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
+#export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
 
 %make
 %make -C tools/EventClients wiimote
