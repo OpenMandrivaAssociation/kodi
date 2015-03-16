@@ -379,14 +379,11 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename}
 %patch0
 %patch1
-#%patch4 -p1
-#%patch5 -p1
 
 
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
-#%patch6 -p1
 ./bootstrap
 popd
 
@@ -418,8 +415,8 @@ done
 chmod +x bootstrap
 ./bootstrap
 
-cp -fp configure.ac configure.in
-rm -f configure.ac
+#cp -fp configure.ac configure.in
+#rm -f configure.ac
 
 %build
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
