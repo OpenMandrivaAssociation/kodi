@@ -57,8 +57,8 @@ BuildRequires:	bzip2-devel
 BuildRequires:	crystalhd-devel
 %endif
 BuildRequires:	cwiid-devel
-BuildRequires:	ffmpeg-devel
-BuildRequires:	ffmpeg-static-devel
+#BuildRequires:	ffmpeg-devel
+#BuildRequires:	ffmpeg-static-devel
 BuildRequires:	gettext-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	lzo-devel
@@ -134,7 +134,7 @@ BuildRequires:	zip
 BuildRequires:  chrpath
 
 # pvr-addons
-BuildRequires:  jsoncpp-devel
+#BuildRequires:  jsoncpp-devel
 BuildRequires:  pkgconfig(cryptopp)
 %ifarch %{ix86}
 BuildRequires:	nasm
@@ -442,7 +442,7 @@ export PYTHON_VERSION=2
 	--enable-shared \
 	--enable-optimizations \
 	--disable-static \
-    --with-ffmpeg \
+#    --with-ffmpeg \
 %if %{build_cec}
 	--enable-libcec \
 %endif
@@ -457,7 +457,7 @@ export PYTHON_VERSION=2
 # dvdcss is handled via dlopen when disabled
 
 # fix src/FilmonAPI.cpp:29:10: fatal error: 'jsoncpp/json/json.h' file not found
-export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
+#export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
 
 %make
 %make -C tools/EventClients wiimote
