@@ -57,8 +57,8 @@ BuildRequires:	bzip2-devel
 BuildRequires:	crystalhd-devel
 %endif
 BuildRequires:	cwiid-devel
-#BuildRequires:	ffmpeg-devel
-#BuildRequires:	ffmpeg-static-devel
+BuildRequires:	ffmpeg-devel
+BuildRequires:	ffmpeg-static-devel
 BuildRequires:	gettext-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	lzo-devel
