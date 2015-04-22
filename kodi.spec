@@ -1,4 +1,3 @@
-%define _libtag_ver %(version="`rpm -q --qf '%{VERSION}' libtag-devel`"; echo "$version")
 %define _kodi_addons_dir %{_datadir}/kodi/addons
 %define ffmpeg_archive_name 2.4.6-Helix
 %define pvr_addons_archive_name Helix_rc3
@@ -7,7 +6,7 @@
 
 Summary:	XBMC Media Center - media player and home entertainment system
 Name:		kodi
-Version:	14.1
+Version:	14.2
 Release:	1
 # nosefart audio plugin and RSXS-0.9 based screensavers are GPLv2 only
 # several eventclients are GPLv3+ (in subpackages)
@@ -36,7 +35,7 @@ Patch1:      no-xbmc-symbolic-link.patch
                                                                                                                                       
 # Disable a non-critical documentation part of code generator which does not                                                          
 # seem to work with system groovy                                                                                                     
-Patch4:         xbmc-system-groovy-hack.patch  
+#Patch4:         xbmc-system-groovy-hack.patch  
 
 #Clang patch
 Patch5:		kodi_goom_clang.patch
@@ -379,7 +378,6 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename}
 %patch0
 %patch1
-%patch4 -p1
 %patch5 -p1
 
 
