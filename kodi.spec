@@ -434,10 +434,6 @@ export CXX=g++
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 export ac_cv_prog_HAVE_GIT="no"
 
-
-export CFLAGS="${optflags} --enable-cross-compile"
-export CXXFLAGS="${optflags} --enable-cross-compile"
-
 ln -s %{_bindir}/python2 python
 export PATH=`pwd`:$PATH
 
