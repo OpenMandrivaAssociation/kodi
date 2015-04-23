@@ -50,6 +50,7 @@ Patch6:		pvraddons_clang.patch
 # Fix bug with UPnP playback for Playlists
 #Patch8:		xbmc-13.0-upnp-playlists.patch
 
+BuildRequires:  gcc gcc-c++
 BuildRequires:	afpclient-devel
 BuildRequires:	avahi-common-devel
 BuildRequires:	boost-devel
@@ -433,6 +434,9 @@ export CXX=g++
 
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 export ac_cv_prog_HAVE_GIT="no"
+
+export CFLAGS="${optflags} --enable-cross-compile"
+export CXXFLAGS="${optflags} --enable-cross-compile"
 
 ln -s %{_bindir}/python2 python
 export PATH=`pwd`:$PATH
