@@ -422,8 +422,8 @@ cp -fp configure.ac configure.in
 rm -f configure.ac
 
 %build
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
 #%global optflags %{optflags} -Qunused-arguments
