@@ -3,6 +3,7 @@
 %define pvr_addons_archive_name Helix_rc3
 %define build_cec 1
 %define codename Helix
+%define Werror_cflags %nil
 
 Summary:	XBMC Media Center - media player and home entertainment system
 Name:		kodi
@@ -420,15 +421,25 @@ cp -fp configure.ac configure.in
 rm -f configure.ac
 
 %build
+export CC=gcc
+export CXX=g++
+
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
-%global optflags %{optflags} -Qunused-arguments
+#%global optflags %{optflags} -Qunused-arguments
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
-#%define _disable_ld_no_undefined 1
+%define _disable_ld_no_undefined 1
 
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
-#export ac_cv_prog_HAVE_GIT="no"
+export ac_cv_prog_HAVE_GIT="no"
+
+
+export CFLAGS="${optflags} --enable-cross-compile"
+export CXXFLAGS="${optflags} --enable-cross-compile"
+
+ln -s %{_bindir}/python2 python
+export PATH=`pwd`:$PATH
 
 export PYTHON_VERSION=2
 
