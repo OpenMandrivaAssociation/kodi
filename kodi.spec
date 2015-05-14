@@ -41,6 +41,10 @@ Patch1:      no-xbmc-symbolic-link.patch
 Patch5:		kodi_goom_clang.patch
 Patch6:		pvraddons_clang.patch
 
+Patch7:		xbmc-14.2-jsoncpp.patch
+Patch8:		xbmc-14.2-cerr.patch
+Patch9:		kodi-14.0-dvddemux-ffmpeg.patch
+
 #Other
 #Patch5:		xbmc-13.0-external-ffmpeg.patch
 #Patch6:		xbmc-13.0-no-win32.patch
@@ -134,7 +138,7 @@ BuildRequires:	zip
 BuildRequires:  chrpath
 
 # pvr-addons
-#BuildRequires:  jsoncpp-devel
+BuildRequires:  jsoncpp-devel
 BuildRequires:  pkgconfig(cryptopp)
 %ifarch %{ix86}
 BuildRequires:	nasm
@@ -380,13 +384,16 @@ This package contains the xbmc-send eventclient.
 %patch1
 %patch5 -p1
 
-
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
 %patch6 -p1
 ./bootstrap
 popd
+
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
 
 # Remove build time references so build-compare can do its work
 #FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
@@ -433,9 +440,6 @@ rm -f configure.ac
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 #export ac_cv_prog_HAVE_GIT="no"
 
-export CFLAGS="$CFLAGS --enable-cross-compile"
-export CXXFLAGS="$CXXFLAGS --enable-cross-compile"
-
 ln -s %{_bindir}/python2 python
 export PATH=`pwd`:$PATH
 
@@ -465,9 +469,6 @@ export PYTHON_VERSION=2
 
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
-
-# fix src/FilmonAPI.cpp:29:10: fatal error: 'jsoncpp/json/json.h' file not found
-#export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
 
 %make
 %make -C tools/EventClients wiimote
