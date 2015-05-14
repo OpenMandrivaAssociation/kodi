@@ -3,6 +3,7 @@
 %define pvr_addons_archive_name Helix_rc3
 %define build_cec 1
 %define codename Helix
+%define Werror_cflags %{nil}
 
 Summary:	XBMC Media Center - media player and home entertainment system
 Name:		kodi
@@ -138,7 +139,10 @@ BuildRequires:	zip
 BuildRequires:  chrpath
 
 # pvr-addons
+%if %mdvver >= 201500
 BuildRequires:  jsoncpp-devel
+%endif
+
 BuildRequires:  pkgconfig(cryptopp)
 %ifarch %{ix86}
 BuildRequires:	nasm
@@ -205,7 +209,6 @@ ideal solution for your home theater.
 
 
 %files
-%doc %{_docdir}/%{name}
 %{_sysconfdir}/X11/wmsession.d/15Kodi
 %{_bindir}/%{name}
 %{_bindir}/%{name}-standalone
@@ -257,6 +260,7 @@ ideal solution for your home theater.
 %{_datadir}/%{name}/userdata
 %{_datadir}/applications/%{name}.desktop
 %{_iconsdir}/hicolor/*/apps/%{name}.png
+%{_mandir}/man1/kodi*.1*
 
 #----------------------------------------------------------------------------
 
@@ -431,11 +435,13 @@ rm -f configure.ac
 #export CXX=g++
 
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
+%if %mdvver >= 201500
 #%global optflags %{optflags} -Qunused-arguments
+%endif
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
-#%define _disable_ld_no_undefined 1
+%define _disable_ld_no_undefined 1
 
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 #export ac_cv_prog_HAVE_GIT="no"
@@ -453,10 +459,11 @@ export PYTHON_VERSION=2
 	--enable-rtmp \
 	--enable-libbluray \
 	--disable-debug \
+	--disable-dvdcss \
 	--enable-shared \
 	--enable-optimizations \
 	--disable-static \
-    --with-ffmpeg \
+    --with-ffmpeg=shared \
 %if %{build_cec}
 	--enable-libcec \
 %endif
@@ -525,9 +532,9 @@ find %{buildroot}%{_datadir}/%{name}/addons/skin.*/media -name '*.png' -delete
 
 # remove compat directory symlinks (RPM cannot handle dir=>symlink transition so
 # more complex handling would be needed for these)
-rm %{buildroot}%{_datadir}/xbmc
-rm %{buildroot}%{_libdir}/xbmc
-rm %{buildroot}%{_includedir}/xbmc
+rm -f %{buildroot}%{_datadir}/xbmc
+rm -f %{buildroot}%{_libdir}/xbmc
+rm -f %{buildroot}%{_includedir}/xbmc
 
 ( # for IFS and +x
 # Check for issues in ELF binaries
