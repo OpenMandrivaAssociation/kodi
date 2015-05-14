@@ -1,13 +1,13 @@
-%define _libtag_ver %(version="`rpm -q --qf '%{VERSION}' libtag-devel`"; echo "$version")
 %define _kodi_addons_dir %{_datadir}/kodi/addons
 %define ffmpeg_archive_name 2.4.6-Helix
 %define pvr_addons_archive_name Helix_rc3
 %define build_cec 1
 %define codename Helix
+%define Werror_cflags %{nil}
 
 Summary:	XBMC Media Center - media player and home entertainment system
 Name:		kodi
-Version:	14.1
+Version:	14.2
 Release:	1
 # nosefart audio plugin and RSXS-0.9 based screensavers are GPLv2 only
 # several eventclients are GPLv3+ (in subpackages)
@@ -39,8 +39,12 @@ Patch1:      no-xbmc-symbolic-link.patch
 #Patch4:         xbmc-system-groovy-hack.patch  
 
 #Clang patch
-#Patch5:		kodi_goom_clang.patch
-#Patch6:		pvraddons_clang.patch
+Patch5:		kodi_goom_clang.patch
+Patch6:		pvraddons_clang.patch
+
+Patch7:		xbmc-14.2-jsoncpp.patch
+Patch8:		xbmc-14.2-cerr.patch
+Patch9:		kodi-14.0-dvddemux-ffmpeg.patch
 
 #Other
 #Patch5:		xbmc-13.0-external-ffmpeg.patch
@@ -135,7 +139,10 @@ BuildRequires:	zip
 BuildRequires:  chrpath
 
 # pvr-addons
+%if %mdvver >= 201500
 BuildRequires:  jsoncpp-devel
+%endif
+
 BuildRequires:  pkgconfig(cryptopp)
 %ifarch %{ix86}
 BuildRequires:	nasm
@@ -202,7 +209,6 @@ ideal solution for your home theater.
 
 
 %files
-%doc %{_docdir}/%{name}
 %{_sysconfdir}/X11/wmsession.d/15Kodi
 %{_bindir}/%{name}
 %{_bindir}/%{name}-standalone
@@ -254,6 +260,7 @@ ideal solution for your home theater.
 %{_datadir}/%{name}/userdata
 %{_datadir}/applications/%{name}.desktop
 %{_iconsdir}/hicolor/*/apps/%{name}.png
+%{_mandir}/man1/kodi*.1*
 
 #----------------------------------------------------------------------------
 
@@ -379,12 +386,18 @@ This package contains the xbmc-send eventclient.
 %setup -q -n xbmc-%{version}-%{codename}
 %patch0
 %patch1
+%patch5 -p1
 
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
+%patch6 -p1
 ./bootstrap
 popd
+
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
 
 # Remove build time references so build-compare can do its work
 #FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
@@ -421,8 +434,13 @@ cp configure.in configure.ac
 #rm -f configure.ac
 
 %build
+#export CC=gcc
+#export CXX=g++
+
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
+%if %mdvver >= 201500
 #%global optflags %{optflags} -Qunused-arguments
+%endif
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
@@ -431,7 +449,11 @@ cp configure.in configure.ac
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
 export ac_cv_prog_HAVE_GIT="no"
 
-#export PYTHON_VERSION=2
+ln -s %{_bindir}/python2 python
+export PATH=`pwd`:$PATH
+
+
+export PYTHON_VERSION=2
 
 %configure \
 	--enable-airplay \
@@ -440,10 +462,11 @@ export ac_cv_prog_HAVE_GIT="no"
 	--enable-rtmp \
 	--enable-libbluray \
 	--disable-debug \
+	--disable-dvdcss \
 	--enable-shared \
 	--enable-optimizations \
 	--disable-static \
-    --with-ffmpeg \
+    --with-ffmpeg=shared \
 %if %{build_cec}
 	--enable-libcec \
 %endif
@@ -456,9 +479,6 @@ export ac_cv_prog_HAVE_GIT="no"
 
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
-
-# fix src/FilmonAPI.cpp:29:10: fatal error: 'jsoncpp/json/json.h' file not found
-#export CXXFLAGS="$CXXFLAGS -I/usr/include/jsoncpp"
 
 %make
 %make -C tools/EventClients wiimote
@@ -515,9 +535,9 @@ find %{buildroot}%{_datadir}/%{name}/addons/skin.*/media -name '*.png' -delete
 
 # remove compat directory symlinks (RPM cannot handle dir=>symlink transition so
 # more complex handling would be needed for these)
-rm %{buildroot}%{_datadir}/xbmc
-rm %{buildroot}%{_libdir}/xbmc
-rm %{buildroot}%{_includedir}/xbmc
+rm -f %{buildroot}%{_datadir}/xbmc
+rm -f %{buildroot}%{_libdir}/xbmc
+rm -f %{buildroot}%{_includedir}/xbmc
 
 ( # for IFS and +x
 # Check for issues in ELF binaries

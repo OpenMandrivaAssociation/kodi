@@ -1,0 +1,10 @@
+--- a/pvr-addons/addons/pvr.filmon/src/FilmonAPI.cpp.orig       2015-05-14 21:35:46.564834564 +0100
++++ b/pvr-addons/addons/pvr.filmon/src/FilmonAPI.cpp    2015-05-14 21:35:54.043835161 +0100
+@@ -24,6 +24,7 @@
+ #include <string>
+ #include <cstdio>
+ #include <sstream>
++#include <iostream>
+ 
+ #include <curl/curl.h>
+ #include <json/json.h>
