@@ -427,11 +427,8 @@ done
 chmod +x bootstrap
 ./bootstrap
 
-find . -name "Makefile*" -o -name "*.m4" -o -name "configure*" -o -name "missing" -o -name "bootstrap*" |xargs sed -i -e 's,configure.in,configure.ac,g'
-cp configure.in configure.ac
-
-#cp -fp configure.ac configure.in
-#rm -f configure.ac
+cp -fp configure.ac configure.in
+rm -f configure.ac
 
 %build
 #export CC=gcc
@@ -447,7 +444,7 @@ cp configure.in configure.ac
 %define _disable_ld_no_undefined 1
 
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
-export ac_cv_prog_HAVE_GIT="no"
+#export ac_cv_prog_HAVE_GIT="no"
 
 ln -s %{_bindir}/python2 python
 export PATH=`pwd`:$PATH
