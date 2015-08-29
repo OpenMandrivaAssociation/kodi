@@ -79,6 +79,7 @@ BuildRequires:	pkgconfig(libcec) >= 2:1:0
 %else
 BuildConflicts:	pkgconfig(libcec)
 %endif
+BuildRequires:	curl
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libmicrohttpd)
 BuildRequires:	pkgconfig(libmms)
