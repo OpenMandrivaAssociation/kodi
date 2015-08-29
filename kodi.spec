@@ -25,8 +25,8 @@ Source2:     	https://github.com/xbmc/FFmpeg/archive/%{ffmpeg_archive_name}.tar.
 Source3:	kodi.rpmlintrc
 
 # PATCH-FIX-OPENSUSE -- enable all pvr addons
-Patch0:      pvr-addons-enable-all.patch
-Patch1:      no-xbmc-symbolic-link.patch
+#Patch0:      pvr-addons-enable-all.patch
+#Patch1:      no-xbmc-symbolic-link.patch
 # https://bugs.mageia.org/show_bug.cgi?id=2331
 # TODO: needs changes for upstreaming
 #Patch2:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
@@ -39,12 +39,12 @@ Patch1:      no-xbmc-symbolic-link.patch
 #Patch4:         xbmc-system-groovy-hack.patch  
 
 #Clang patch
-Patch5:		kodi_goom_clang.patch
-Patch6:		pvraddons_clang.patch
+#Patch5:		kodi_goom_clang.patch
+#Patch6:		pvraddons_clang.patch
 
-Patch7:		xbmc-14.2-jsoncpp.patch
-Patch8:		xbmc-14.2-cerr.patch
-Patch9:		kodi-14.0-dvddemux-ffmpeg.patch
+#Patch7:		xbmc-14.2-jsoncpp.patch
+#Patch8:		xbmc-14.2-cerr.patch
+#Patch9:		kodi-14.0-dvddemux-ffmpeg.patch
 
 #Other
 #Patch5:		xbmc-13.0-external-ffmpeg.patch
@@ -384,45 +384,45 @@ This package contains the xbmc-send eventclient.
 
 %prep
 %setup -q -n xbmc-%{version}-%{codename}
-%patch0
-%patch1
-%patch5 -p1
+#%patch0
+#%patch1
+#%patch5 -p1
 
 tar -xf %{SOURCE1}
 mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
 pushd pvr-addons
-%patch6 -p1
+#%patch6 -p1
 ./bootstrap
 popd
 
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
+#%patch7 -p1
+#%patch8 -p1
+#%patch9 -p1
 
 # Remove build time references so build-compare can do its work
 #FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
 #FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
 #FAKE_BUILDDATETIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes)
 
-FAKE_BUILDDATE='Feb  7 2015'
-FAKE_BUILDTIME=18:19:09
-FAKE_BUILDDATETIME='Sat Feb  7 18:19:09 UTC 2015'
+#FAKE_BUILDDATE='Feb  7 2015'
+#FAKE_BUILDTIME=18:19:09
+#FAKE_BUILDDATETIME='Sat Feb  7 18:19:09 UTC 2015'
 
 # remove it in ffmpeg archive and repackage it
-tar xpfz %{SOURCE2} -C tools/depends/target/ffmpeg/
-for file in tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/ffprobe.c tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/cmdutils.c; do
-    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
-done
-tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
-rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
+#tar xpfz %{SOURCE2} -C tools/depends/target/ffmpeg/
+#for file in tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/ffprobe.c tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/cmdutils.c; do
+#    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
+#done
+#tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
+#rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 # remove the remaining occurencies in the source tree
-for file in lib/timidity/timidity/speex_a.c xbmc/Application.cpp xbmc/GUIInfoManager.cpp ; do
-    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
-done
-for file in xbmc/interfaces/python/PythonSwig.cpp.template ; do
-    sed -i -e "/PyModule_AddStringConstant.*__date__/ s/\${new Date()\.toString()}/$FAKE_BUILDDATETIME/"  $file
-done
+#for file in lib/timidity/timidity/speex_a.c xbmc/Application.cpp xbmc/GUIInfoManager.cpp ; do
+#    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
+#done
+#for file in xbmc/interfaces/python/PythonSwig.cpp.template ; do
+#    sed -i -e "/PyModule_AddStringConstant.*__date__/ s/\${new Date()\.toString()}/$FAKE_BUILDDATETIME/"  $file
+#done
 
 chmod +x bootstrap
 ./bootstrap
@@ -435,9 +435,9 @@ rm -f configure.ac
 #export CXX=g++
 
 # fix clang: error: unknown argument: '-mno-ms-bitfields'
-%if %mdvver >= 201500
+#%if %mdvver >= 201500
 #%global optflags %{optflags} -Qunused-arguments
-%endif
+#%endif
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
