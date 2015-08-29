@@ -465,6 +465,10 @@ popd
 chmod +x bootstrap
 ./bootstrap
 
+ln -s %{_bindir}/python2 python
+export PATH=`pwd`:$PATH
+export PYTHON_VERSION=2
+
 %configure \
     --with-ffmpeg=shared \
     --enable-airplay \
