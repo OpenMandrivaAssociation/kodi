@@ -432,11 +432,11 @@ Obsoletes:	xbmc-eventclient-xbmc-send
 %patch7 -p1
 
 # Remove build time references so build-compare can do its work
-FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
-FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
-for file in xbmc/GUIInfoManager.cpp xbmc/Application.cpp; do
-  sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
-done
+#FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
+#FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
+#for file in xbmc/GUIInfoManager.cpp xbmc/Application.cpp; do
+#  sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
+#done
 
 # Fix the final version string showing as "exported"
 # instead of the SVN revision number.
@@ -507,11 +507,11 @@ pushd project/cmake/addons
 %make
 
 # Remove build time references so build-compare can do its work
-FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
-FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
-for file in audiodecoder.timidity/lib/timidity/timidity/speex_a.c; do
-    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
-done
+#FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
+#FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
+#for file in audiodecoder.timidity/lib/timidity/timidity/speex_a.c; do
+#    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
+#done
 
 popd
 
