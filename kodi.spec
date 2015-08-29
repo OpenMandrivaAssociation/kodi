@@ -115,6 +115,7 @@ BuildRequires:	pkgconfig(xt)
 BuildRequires:	pkgconfig(xtst)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libcap)
+BuildRequires:	ungif-devel
 BuildRequires:	cmake
 BuildRequires:	gperf
 BuildRequires:	zip
