@@ -421,7 +421,7 @@ Obsoletes:	eventclient-xbmc-send
 Obsoletes:	xbmc-eventclient-xbmc-send
 
 %prep
-%setup -q -n xbmc-%{version}-%{kodi_version}
+%setup -q -n xbmc-%{version}-%{codename}
 %patch1
 %patch3
 %patch4
