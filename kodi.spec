@@ -1,7 +1,7 @@
 %define _kodi_addons_dir %{_datadir}/kodi/addons
 %define ffmpeg_archive_name 2.4.6-Helix
 %define pvr_addons_archive_name Helix_rc3
-%define build_cec 1
+%define build_cec 0
 %define codename Isengard
 %define Werror_cflags %{nil}
 
@@ -115,6 +115,7 @@ BuildRequires:	pkgconfig(xt)
 BuildRequires:	pkgconfig(xtst)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libcap)
+BuildRequires:	pkgconfig(libusb-1.0)
 BuildRequires:	ungif-devel
 BuildRequires:	cmake
 BuildRequires:	gperf
@@ -471,14 +472,16 @@ export PATH=`pwd`:$PATH
 export PYTHON_VERSION=2
 
 %configure \
-    --with-ffmpeg=shared \
+    --with-ffmpeg=force \
     --enable-airplay \
     --enable-alsa \
     --enable-avahi \
     --enable-fishbmc \
     --enable-libbluray \
     --enable-libcap \
+%if %{build_cec}
     --enable-libcec \
+%endif
     --enable-libusb \
     --enable-mid \
     --enable-mysql \
