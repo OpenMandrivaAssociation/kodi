@@ -2,12 +2,12 @@
 %define ffmpeg_archive_name 2.4.6-Helix
 %define pvr_addons_archive_name Helix_rc3
 %define build_cec 1
-%define codename Helix
+%define codename Isengard
 %define Werror_cflags %{nil}
 
 Summary:	XBMC Media Center - media player and home entertainment system
 Name:		kodi
-Version:	14.2
+Version:	15.1
 Release:	1
 # nosefart audio plugin and RSXS-0.9 based screensavers are GPLv2 only
 # several eventclients are GPLv3+ (in subpackages)
