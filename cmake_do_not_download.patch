@@ -1,0 +1,122 @@
+Index: project/cmake/scripts/common/handle-depends.cmake
+===================================================================
+--- project/cmake/scripts/common/handle-depends.cmake.orig
++++ project/cmake/scripts/common/handle-depends.cmake
+@@ -124,12 +124,12 @@ function(add_addon_depends addon searchp
+         endif()
+ 
+         # check if there's a deps.txt containing dependencies on other libraries
+-        if(EXISTS ${dir}/deps.txt)
+-          file(STRINGS ${dir}/deps.txt deps)
+-          message(STATUS "${id} depends: ${deps}")
+-        else()
+-          set(deps)
+-        endif()
++        #if(EXISTS ${dir}/deps.txt)
++        #  file(STRINGS ${dir}/deps.txt deps)
++        #  message(STATUS "${id} depends: ${deps}")
++        #else()
++        #  set(deps)
++        #endif()
+ 
+         if(CROSS_AUTOCONF AND AUTOCONF_FILES)
+           foreach(afile ${AUTOCONF_FILES})
+@@ -152,17 +152,18 @@ function(add_addon_depends addon searchp
+                                   "${INSTALL_COMMAND}")
+ 
+         # if there's an url defined we need to pass that to externalproject_add()
++	set(url "")
+         if(DEFINED url AND NOT "${url}" STREQUAL "")
+           # check if there's a third parameter in the file
+-          if(deflength GREATER 2)
+-            # the third parameter is considered as a revision of a git repository
+-            list(GET def 2 revision)
+-
+-            externalproject_add(${id}
+-                                GIT_REPOSITORY ${url}
+-                                GIT_TAG ${revision}
+-                                "${EXTERNALPROJECT_SETUP}")
+-          else()
++        #  if(deflength GREATER 2)
++        #    # the third parameter is considered as a revision of a git repository
++        #    list(GET def 2 revision)
++	#
++        #    externalproject_add(${id}
++        #                        GIT_REPOSITORY ${url}
++        #                        GIT_TAG ${revision}
++        #                        "${EXTERNALPROJECT_SETUP}")
++        #  else()
+             set(CONFIGURE_COMMAND "")
+             if(NOT WIN32)
+               # manually specify the configure command to be able to pass in the custom PKG_CONFIG_PATH
+@@ -177,22 +178,25 @@ function(add_addon_depends addon searchp
+                                     -DCMAKE_EXE_LINKER_FLAGS=-L${OUTPUT_DIR}/lib
+                                     -DCMAKE_INCLUDE_PATH=${OUTPUT_DIR}/include)
+             endif()
+-
++	    message(STATUS "DOWNLOAD_DIR = ${BUILD_DIR}/download")
++	    message(STATUS "CONFIGURE_COMMAND = ${CONFIGURE_COMMAND}")
+             externalproject_add(${id}
+                                 URL ${url}
+                                 DOWNLOAD_DIR ${BUILD_DIR}/download
+                                 CONFIGURE_COMMAND ${CONFIGURE_COMMAND}
+                                 "${EXTERNALPROJECT_SETUP}")
+-          endif()
++        #  endif()
+         else()
++	  message(STATUS " SOURCE_DIR = ${dir}")
++	  message(STATUS " SETUP = ${EXTERNALPROJECT_SETUP}")
+           externalproject_add(${id}
+                               SOURCE_DIR ${dir}
+                               "${EXTERNALPROJECT_SETUP}")
+         endif()
+ 
+-        if(deps)
+-          add_dependencies(${id} ${deps})
+-        endif()
++        #if(deps)
++        #  add_dependencies(${id} ${deps})
++        #endif()
+       endif()
+ 
+       # if the dependency is available for the target platform add it to the list of the addon's dependencies
+Index: project/cmake/addons/CMakeLists.txt
+===================================================================
+--- project/cmake/addons/CMakeLists.txt.orig
++++ project/cmake/addons/CMakeLists.txt
+@@ -123,12 +123,12 @@ include(${APP_ROOT}/project/cmake/script
+ 
+ # check install permissions
+ set(ADDON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
+-check_install_permissions(${CMAKE_INSTALL_PREFIX} can_write)
+-if(NOT ${can_write} AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+-  set(NEED_SUDO TRUE)
+-  set(ADDON_INSTALL_DIR ${CMAKE_BINARY_DIR}/.install)
+-  message(STATUS "NEED_SUDO: ${NEED_SUDO}")
+-endif()
++#check_install_permissions(${CMAKE_INSTALL_PREFIX} can_write)
++#if(NOT ${can_write} AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
++#  set(NEED_SUDO TRUE)
++#  set(ADDON_INSTALL_DIR ${CMAKE_BINARY_DIR}/.install)
++#  message(STATUS "NEED_SUDO: ${NEED_SUDO}")
++#endif()
+ 
+ ### prepare the build environment for the binary addons
+ # copy the prepare-env.cmake script to the depends path so that we can include it
+@@ -221,11 +221,11 @@ foreach(addon ${addons})
+             endif()
+ 
+             # download the addon
+-            file(DOWNLOAD "${url}" "${BUILD_DIR}/download/${archive_name}.tar.gz" STATUS dlstatus LOG dllog SHOW_PROGRESS)
+-            list(GET dlstatus 0 retcode)
+-            if(NOT ${retcode} EQUAL 0)
+-              message(FATAL_ERROR "ERROR downloading ${url} - status: ${dlstatus} log: ${dllog}")
+-            endif()
++            #file(DOWNLOAD "${url}" "${BUILD_DIR}/download/${archive_name}.tar.gz" STATUS dlstatus LOG dllog SHOW_PROGRESS)
++            #list(GET dlstatus 0 retcode)
++            #if(NOT ${retcode} EQUAL 0)
++            #  message(FATAL_ERROR "ERROR downloading ${url} - status: ${dlstatus} log: ${dllog}")
++            #endif()
+           endif()
+ 
+           # remove any previously extracted version of the addon
