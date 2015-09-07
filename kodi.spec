@@ -378,6 +378,7 @@ Obsoletes:	xbmc-eventclient-xbmc-send
 %ifarch x86_64
 %patch5
 %endif
+%patch7 -p1
 
 # Remove build time references so build-compare can do its work
 #FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
@@ -415,6 +416,9 @@ tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C too
 rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 %build
+export CC=gcc
+export CXX=g++
+
 chmod +x bootstrap
 ./bootstrap
 
