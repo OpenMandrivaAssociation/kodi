@@ -1,5 +1,5 @@
 %define _kodi_addons_dir %{_datadir}/kodi/addons
-%define ffmpeg_archive_name 2.4.6-Helix
+%define ffmpeg_archive_name 2.6.4-Isengard
 %define pvr_addons_archive_name Helix_rc3
 %define build_cec 0
 %define codename Isengard
@@ -26,6 +26,7 @@ Source1:	kodi.rpmlintrc
 #   sh ../download_pvr.sh
 Source2:        pvr-addons.tar.bz2
 Source3:        kodi-platform-054a42f66.tar.gz
+Source4:	ffmpeg-%{ffmpeg_archive_name}.tar.gz
 Patch1:         no-xbmc-symbolic-link.patch
 # Raspberry Pi (armv6): omxplayer 3D support is only available for non X11 KODI
 #Patch2:        disable_omxplayer_3d_support.patch
@@ -35,7 +36,9 @@ Patch5:		cmake_build64.patch
 Patch6:         kodi-texturepacker.patch
 # PATCH-FIX-UPSTREAM: fix build with gcc5 (Tumbleweed)
 Patch7:         kodi-15.0-gcc5.patch
+#Patch8:		ffmpeg_autobuild_fix.patch
 
+BuildRequires:	curl
 BuildRequires:	afpclient-devel
 BuildRequires:	avahi-common-devel
 BuildRequires:	boost-devel
@@ -79,7 +82,6 @@ BuildRequires:	pkgconfig(libcec) >= 2:1:0
 %else
 BuildConflicts:	pkgconfig(libcec)
 %endif
-BuildRequires:	curl
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libmicrohttpd)
 BuildRequires:	pkgconfig(libmms)
@@ -123,6 +125,7 @@ BuildRequires:	gperf
 BuildRequires:	zip
 # needed to delete the fixed rpath introduced by smbclient
 BuildRequires:  chrpath
+BuildRequires:	git
 
 # pvr-addons
 %if %mdvver >= 201500
@@ -192,61 +195,6 @@ for your HTPC. Supporting an almost endless range of remote controls,
 and combined with its beautiful interface and powerful skinning
 engine, Kodi feels very natural to use from the couch and is the
 ideal solution for your home theater.
-
-
-%files
-%{_sysconfdir}/X11/wmsession.d/15Kodi
-%{_bindir}/%{name}
-%{_bindir}/%{name}-standalone
-# compat
-%{_bindir}/xbmc
-%{_bindir}/xbmc-standalone
-%dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/addons
-%dir %{_libdir}/%{name}/system
-%dir %{_libdir}/%{name}/system/players
-%dir %{_libdir}/%{name}/system/players/dvdplayer
-%dir %{_libdir}/%{name}/system/players/paplayer
-%{_libdir}/%{name}/%{name}.bin
-%{_libdir}/%{name}/%{name}-xrandr
-%dir %{_libdir}/%{name}/addons/*
-%{_libdir}/%{name}/addons/*/*.so
-%{_libdir}/%{name}/addons/*/*.vis
-%{_libdir}/%{name}/addons/*/*.xbs
-%{_libdir}/%{name}/addons/*/*.pvr
-%{_libdir}/%{name}/system/ImageLib-*-linux.so
-%{_libdir}/%{name}/system/hdhomerun-*-linux.so
-%{_libdir}/%{name}/system/libcmyth-*-linux.so
-%{_libdir}/%{name}/system/libcpluff-*-linux.so
-%{_libdir}/%{name}/system/libexif-*-linux.so
-%ifarch %ix86 x86_64
-%{_libdir}/%{name}/system/libsse4-*-linux.so
-%endif
-%{_libdir}/%{name}/system/players/dvdplayer/libdvdnav-*-linux.so
-%if %with internal_ffmpeg
-%{_libdir}/%{name}/system/players/dvdplayer/av*-linux.so
-%{_libdir}/%{name}/system/players/dvdplayer/postproc-*-linux.so
-%{_libdir}/%{name}/system/players/dvdplayer/swscale-*-linux.so
-%endif
-%{_libdir}/%{name}/system/players/paplayer/libsidplay2-*-linux.so
-%{_libdir}/%{name}/system/players/paplayer/nosefart-*-linux.so
-%{_libdir}/%{name}/system/players/paplayer/stsoundlibrary-*-linux.so
-%{_libdir}/%{name}/system/players/paplayer/timidity-*-linux.so
-%{_libdir}/%{name}/system/players/paplayer/vgmstream-*-linux.so
-%ifarch %ix86
-%{_libdir}/%{name}/system/players/paplayer/SNESAPU-*-linux.so
-%endif
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/addons
-%{_datadir}/%{name}/FEH.py*
-%{_datadir}/%{name}/language
-%{_datadir}/%{name}/media
-%{_datadir}/%{name}/sounds
-%{_datadir}/%{name}/system
-%{_datadir}/%{name}/userdata
-%{_datadir}/applications/%{name}.desktop
-%{_iconsdir}/hicolor/*/apps/%{name}.png
-%{_mandir}/man1/kodi*.1*
 
 #----------------------------------------------------------------------------
 
@@ -426,13 +374,10 @@ Obsoletes:	xbmc-eventclient-xbmc-send
 %prep
 %setup -q -n xbmc-%{version}-%{codename}
 %patch1
-%patch3
-%patch4
 %ifarch x86_64
+%patch4
 %patch5
 %endif
-%patch6
-%patch7 -p1
 
 # Remove build time references so build-compare can do its work
 #FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
@@ -463,45 +408,25 @@ rm -rf addons/audiodecoder.sidplay
 popd
 ###
 
+#add ffmpeg source
+
+tar xpfz %{SOURCE4} -C tools/depends/target/ffmpeg/
+tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
+rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 %build
 chmod +x bootstrap
 ./bootstrap
 
-ln -s %{_bindir}/python2 python
-export PATH=`pwd`:$PATH
+#ln -s %{_bindir}/python2 python
+#export PATH=`pwd`:$PATH
 export PYTHON_VERSION=2
+
+export LDFLAGS="-Wl,--no-as-needed -ldl"
 
 %configure \
     --with-ffmpeg=force \
-    --enable-airplay \
-    --enable-alsa \
-    --enable-avahi \
-    --enable-fishbmc \
-    --enable-libbluray \
-    --enable-libcap \
-%if %{build_cec}
-    --enable-libcec \
-%endif
-    --enable-libusb \
-    --enable-mid \
-    --enable-mysql \
-    --enable-nfs \
-    --enable-projectm \
-    --enable-pulse \
-    --enable-rsxs \
-    --enable-rtmp \
-    --enable-samba \
-    --enable-shared \
-    --enable-ssh \
-    --enable-texturepacker \
-    --enable-upnp \
-    --enable-webserver \
-    --enable-goom \
-    --enable-vaapi \
-    --enable-vdpau \
-    --enable-gl \
-    --disable-gles \
+    --enable-pulse 
 
 %make
 
