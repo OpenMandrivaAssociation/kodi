@@ -374,8 +374,8 @@ Obsoletes:	xbmc-eventclient-xbmc-send
 %prep
 %setup -q -n xbmc-%{version}-%{codename}
 %patch1
-%ifarch x86_64
 %patch4
+%ifarch x86_64
 %patch5
 %endif
 
@@ -401,10 +401,10 @@ mkdir -p build/download
 tar xvf %{SOURCE2} -C build/download
 tar zxvf %{SOURCE3} --strip-components=1 -C depends/common/kodi-platform
 # remove kodi-platform dependencies, because they are alreay installed
-rm -f  depends/common/kodi-platform/deps.txt
-rm -rf depends/common/tinyxml depends/common/platform
+#rm -f  depends/common/kodi-platform/deps.txt
+#rm -rf depends/common/tinyxml depends/common/platform
 # We do not provide sidplay2 library on any SUSE distribution
-rm -rf addons/audiodecoder.sidplay
+#rm -rf addons/audiodecoder.sidplay
 popd
 ###
 
