@@ -26,7 +26,7 @@ Source1:	kodi.rpmlintrc
 #   sh ../download_pvr.sh
 Source2:        pvr-addons.tar.bz2
 Source3:        kodi-platform-054a42f66.tar.gz
-Source4:	ffmpeg-%{ffmpeg_archive_name}.tar.gz
+#Source4:	ffmpeg-%{ffmpeg_archive_name}.tar.gz
 Patch1:         no-xbmc-symbolic-link.patch
 # Raspberry Pi (armv6): omxplayer 3D support is only available for non X11 KODI
 #Patch2:        disable_omxplayer_3d_support.patch
@@ -69,6 +69,7 @@ BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fontconfig)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(fribidi)
+BuildRequires:	pkgconfig(ftgl) 
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glew)
 BuildRequires:	pkgconfig(glu)
@@ -121,6 +122,7 @@ BuildRequires:	pkgconfig(libcap)
 BuildRequires:	pkgconfig(libusb-1.0)
 BuildRequires:	ungif-devel
 BuildRequires:	cmake
+BuildRequires:	ccache
 BuildRequires:	gperf
 BuildRequires:	zip
 # needed to delete the fixed rpath introduced by smbclient
@@ -402,8 +404,8 @@ mkdir -p build/download
 tar xvf %{SOURCE2} -C build/download
 tar zxvf %{SOURCE3} --strip-components=1 -C depends/common/kodi-platform
 # remove kodi-platform dependencies, because they are alreay installed
-#rm -f  depends/common/kodi-platform/deps.txt
-#rm -rf depends/common/tinyxml depends/common/platform
+rm -f  depends/common/kodi-platform/deps.txt
+rm -rf depends/common/tinyxml depends/common/platform
 # We do not provide sidplay2 library on any SUSE distribution
 #rm -rf addons/audiodecoder.sidplay
 popd
@@ -411,9 +413,9 @@ popd
 
 #add ffmpeg source
 
-tar xpfz %{SOURCE4} -C tools/depends/target/ffmpeg/
-tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
-rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
+#tar xpfz %{SOURCE4} -C tools/depends/target/ffmpeg/
+#tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
+#rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 %build
 export CC=gcc
