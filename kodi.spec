@@ -433,7 +433,7 @@ export PYTHON_VERSION=2
 
 export LDFLAGS="-Wl,--no-as-needed -ldl"
 
-%configure \
+%configure2_5x \
     --with-ffmpeg=force \
     --enable-pulse 
 
