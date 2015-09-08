@@ -422,8 +422,8 @@ popd
 #rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 %build
-#export CC=gcc
-#export CXX=g++
+export CC=gcc
+export CXX=g++
 
 chmod +x bootstrap
 ./bootstrap
@@ -457,7 +457,7 @@ pushd project/cmake/addons
 #    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
 #done
 
-popd
+#popd
 
 %install
 %make_install 
