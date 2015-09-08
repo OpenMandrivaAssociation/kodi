@@ -432,7 +432,7 @@ chmod +x bootstrap
 #export PATH=`pwd`:$PATH
 export PYTHON_VERSION=2
 
-#export LDFLAGS="-Wl,--no-as-needed -ldl"
+export LDFLAGS="-Wl,--no-as-needed -ldl"
 
 %configure \
     --with-ffmpeg=force \
