@@ -25,7 +25,7 @@ Source1:	kodi.rpmlintrc
 #   cd xbmc-VERSION
 #   sh ../download_pvr.sh
 Source2:        pvr-addons.tar.bz2
-Source3:        kodi-platform-054a42f66.tar.gz
+#Source3:        kodi-platform-054a42f66.tar.gz
 #Source4:	ffmpeg-%{ffmpeg_archive_name}.tar.gz
 Patch1:         no-xbmc-symbolic-link.patch
 # Raspberry Pi (armv6): omxplayer 3D support is only available for non X11 KODI
@@ -49,6 +49,7 @@ BuildRequires:	crystalhd-devel
 BuildRequires:	cwiid-devel
 BuildRequires:	ffmpeg-devel
 BuildRequires:	ffmpeg-static-devel
+BuildRequires:	faac-devel
 BuildRequires:	gettext-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	lzo-devel
@@ -59,10 +60,13 @@ BuildRequires:	ssh-devel
 BuildRequires:	tiff-devel
 BuildRequires:	tinyxml-devel
 BuildRequires:	yajl-devel
+BuildRequires:	readline-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(avahi-client)
 BuildRequires:	pkgconfig(bluez)
 BuildRequires:	pkgconfig(dbus-1)
+BuildRequires:	pkgconfig(libdca)
+BuildRequires:	pkgconfig(dvdread)
 BuildRequires:	pkgconfig(enca)
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(flac)
@@ -97,6 +101,7 @@ BuildRequires:	pkgconfig(libshairport)
 BuildRequires:	pkgconfig(libva)
 BuildRequires:	pkgconfig(libxslt)
 BuildRequires:	pkgconfig(mad)
+BuildRequires:	pkgconfig(libmpg123)
 BuildRequires:	pkgconfig(ogg)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(gpg-error)
@@ -128,6 +133,7 @@ BuildRequires:	zip
 # needed to delete the fixed rpath introduced by smbclient
 BuildRequires:  chrpath
 BuildRequires:	git
+BuildRequires:	flex
 
 # pvr-addons
 %if %mdvver >= 201500
@@ -135,9 +141,7 @@ BuildRequires:  jsoncpp-devel
 %endif
 
 BuildRequires:  pkgconfig(cryptopp)
-%ifarch %{ix86}
 BuildRequires:	nasm
-%endif
 Requires:	lsb-release
 # for codegenrator
 BuildRequires:	doxygen
@@ -376,10 +380,12 @@ Obsoletes:	xbmc-eventclient-xbmc-send
 %prep
 %setup -q -n xbmc-%{version}-%{codename}
 %patch1
+%patch3
 %patch4
 %ifarch x86_64
 %patch5
 %endif
+%patch6
 %patch7 -p1
 
 # Remove build time references so build-compare can do its work
@@ -402,10 +408,10 @@ sed -i \
 pushd project/cmake/addons
 mkdir -p build/download
 tar xvf %{SOURCE2} -C build/download
-tar zxvf %{SOURCE3} --strip-components=1 -C depends/common/kodi-platform
+#tar zxvf %{SOURCE3} --strip-components=1 -C depends/common/kodi-platform
 # remove kodi-platform dependencies, because they are alreay installed
-rm -f  depends/common/kodi-platform/deps.txt
-rm -rf depends/common/tinyxml depends/common/platform
+#rm -f  depends/common/kodi-platform/deps.txt
+#rm -rf depends/common/tinyxml depends/common/platform
 # We do not provide sidplay2 library on any SUSE distribution
 #rm -rf addons/audiodecoder.sidplay
 popd
@@ -418,8 +424,8 @@ popd
 #rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 %build
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 
 chmod +x bootstrap
 ./bootstrap
@@ -428,7 +434,7 @@ chmod +x bootstrap
 #export PATH=`pwd`:$PATH
 export PYTHON_VERSION=2
 
-export LDFLAGS="-Wl,--no-as-needed -ldl"
+#export LDFLAGS="-Wl,--no-as-needed -ldl"
 
 %configure \
     --with-ffmpeg=force \
