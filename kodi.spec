@@ -27,7 +27,7 @@ Source1:	kodi.rpmlintrc
 Source2:        pvr-addons.tar.bz2
 #Source3:        kodi-platform-054a42f66.tar.gz
 #Source4:	ffmpeg-%{ffmpeg_archive_name}.tar.gz
-Patch1:         no-xbmc-symbolic-link.patch
+#Patch1:         no-xbmc-symbolic-link.patch
 # Raspberry Pi (armv6): omxplayer 3D support is only available for non X11 KODI
 #Patch2:        disable_omxplayer_3d_support.patch
 Patch3:         cmake_no_deps.patch
@@ -377,7 +377,6 @@ Obsoletes:	xbmc-eventclient-xbmc-send
 
 %prep
 %setup -q -n xbmc-%{version}-%{codename}
-%patch1
 %patch3
 %patch4
 %ifarch x86_64
