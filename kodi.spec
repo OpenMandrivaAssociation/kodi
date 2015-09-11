@@ -53,7 +53,6 @@ BuildRequires:	gettext-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	lzo-devel
 BuildRequires:	mysql-devel
-BuildRequires:	pkgconfig(python2)
 BuildRequires:	rtmp-devel
 BuildRequires:	ssh-devel
 BuildRequires:	tiff-devel
@@ -102,6 +101,8 @@ BuildRequires:	pkgconfig(mad)
 BuildRequires:	pkgconfig(libmpg123)
 BuildRequires:	pkgconfig(ogg)
 BuildRequires:	pkgconfig(openssl)
+BuildRequires:  pkgconfig(platform)
+BuildRequires:	pkgconfig(python2)
 BuildRequires:	pkgconfig(gpg-error)
 BuildRequires:	pkgconfig(samplerate)
 BuildRequires:	pkgconfig(sdl)
@@ -406,11 +407,13 @@ pushd project/cmake/addons
 mkdir -p build/download
 tar xvf %{SOURCE2} -C build/download
 #tar zxvf %{SOURCE3} --strip-components=1 -C depends/common/kodi-platform
+
 # remove kodi-platform dependencies, because they are alreay installed
-#rm -f  depends/common/kodi-platform/deps.txt
-#rm -rf depends/common/tinyxml depends/common/platform
+rm -f  depends/common/kodi-platform/deps.txt
+rm -rf depends/common/tinyxml depends/common/platform/
+
 # We do not provide sidplay2 library on any SUSE distribution
-#rm -rf addons/audiodecoder.sidplay
+rm -rf addons/audiodecoder.sidplay
 popd
 ###
 
@@ -421,8 +424,6 @@ popd
 #rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 %build
-export CC=gcc
-export CXX=g++
 
 chmod +x bootstrap
 ./bootstrap
@@ -442,7 +443,7 @@ export LDFLAGS="-Wl,--no-as-needed -ldl"
 pushd project/cmake/addons
 %cmake \
     -DBUILD_DIR=build \
-    -DBUILD_SHARED_LIBS=1 \
+    -DBUILD_SHARED_LIBS=0 \
     -DNEED_SUDO=FALSE \
     -DAPP_LIB_DIR=%{buildroot}%{_libdir}/kodi/ \
     -DCMAKE_INSTALL_LIBDIR=%{buildroot}%{_libdir}/kodi/ \
