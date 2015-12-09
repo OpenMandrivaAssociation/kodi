@@ -6,7 +6,7 @@ Subject: [PATCH] Fix handling of filenames with spaces in wrapper shell script
 FIXME/TODO
 
 This is currently done by dropping the option handling unneeded in
-Mageia, since handling this properly would be a lot of work:
+, since handling this properly would be a lot of work:
 http://www.seanius.net/blog/2009/03/saving-and-restoring-positional-params-redux/
 diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in
 --- xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in	2014-11-16 18:31:29.000000000 +0200
@@ -32,15 +32,6 @@ diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' xbmc-14.0b3-Helix/tools/Li
  migrate_home()
  {
    [ "$(basename $0)" = "xbmc" ] && echo "WARNING: running ${bin_name} as "xbmc" is deprecated and will be removed in later versions, please switch to using the ${bin_name} binary"
-@@ -136,7 +122,7 @@ print_crash_report()
- }
- 
- migrate_home
--python @datadir@/${bin_name}/FEH.py $SAVED_ARGS
-+python @datadir@/${bin_name}/FEH.py "$@"
- RET=$?
- if [ $RET -ne 0 ]; then
-   exit $RET
 @@ -154,7 +140,7 @@ LOOP=1
  while [ $(( $LOOP )) = "1" ]
  do
