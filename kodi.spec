@@ -186,7 +186,7 @@ rm -rf system/players/dvdplayer/etc/fonts
 export GIT_REV="tarball"
 export PYTHON_VERSION=2
 
-./bootstrap
+#./bootstrap
 
 %define _disable_ld_no_undefined 1
 
