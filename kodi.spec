@@ -41,7 +41,7 @@ BuildRequires:	pkgconfig(bluez)
 BuildRequires:	pkgconfig(libbluray)
 BuildRequires:	pkgconfig(libcap)
 BuildRequires:	pkgconfig(libcdio)
-BuildRequires:	pkgconfig(libcec) >= 3.0
+BuildRequires:	pkgconfig(libcec)
 BuildRequires:	crystalhd-devel
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(cwiid)
@@ -124,7 +124,7 @@ Requires:	python-pybluez
 Requires:	python-gobject
 Requires:  	avahi-python
 Requires: 	python-dbus
-Requires: 	%{_lib}cec3
+Requires: 	%{_lib}cec2
 Requires:	glibc >= 2.20
 #----------------------------------------
 Obsoletes: xbmc < %version
@@ -199,7 +199,6 @@ export PYTHON_VERSION=2
         --with-pic \
         --enable-mid \
         --enable-libusb \
-        --enable-airplay \
         --enable-vaapi \
         --enable-libbluray \
     --with-lirc-device=/var/run/lirc/lircd
