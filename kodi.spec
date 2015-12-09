@@ -93,6 +93,7 @@ BuildRequires:	ssh-devel
 BuildRequires:	tiff-devel
 BuildRequires:	tinyxml-devel
 BuildRequires:	pkgconfig(udev)
+BuildRequires:	pkgconfig(libusb-1.0)
 BuildRequires:	pkgconfig(libva)
 BuildRequires:	pkgconfig(vdpau)
 BuildRequires:	pkgconfig(vorbis)
