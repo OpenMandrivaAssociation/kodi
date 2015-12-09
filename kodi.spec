@@ -183,6 +183,7 @@ rm -rf system/players/dvdplayer/etc/fonts
 %build
 
 export GIT_REV="tarball"
+export PYTHON_VERSION=2
 
 ./bootstrap
 
