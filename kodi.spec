@@ -186,11 +186,11 @@ rm -rf system/players/dvdplayer/etc/fonts
 export GIT_REV="tarball"
 export PYTHON_VERSION=2
 
-#./bootstrap
+./bootstrap
 
 %define _disable_ld_no_undefined 1
 
-%configure2_5x \
+%configure \
     --disable-hal \
     --disable-debug \
     --disable-non-free \
@@ -200,7 +200,8 @@ export PYTHON_VERSION=2
         --enable-mid \
         --enable-vaapi \
         --enable-libbluray \
-    --with-lirc-device=/var/run/lirc/lircd
+    --with-lirc-device=/var/run/lirc/lircd \
+    --with-ffmpeg=force
 
 
 %make
