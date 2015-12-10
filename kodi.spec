@@ -127,7 +127,6 @@ Requires:	python-pybluez
 Requires:	python-gobject
 Requires:  	avahi-python
 Requires: 	python-dbus
-Requires: 	%{_lib}cec2
 Requires:	glibc >= 2.20
 #----------------------------------------
 Obsoletes: xbmc < %version
@@ -158,7 +157,7 @@ ideal solution for your home theater.
 
 %package	devel
 Summary:	Development files for Kodi
-Group:		Development/Libraries
+Group:		Development/C
 License:	GPLv2+
 Obsoletes: xbmc-eventclients-devel < %version
 Provides: xbmc-eventclients-devel = %version-%release
