@@ -1,6 +1,7 @@
 %define branch_release Isengard
 %define version	15.2
 %define rel	1
+%define ffmpeg_archive_name 2.6.4-Isengard
 
 %define Werror_cflags %nil
 
@@ -9,10 +10,10 @@ Name:		kodi
 Version:	%{version}
 Release:	%mkrel %rel
 Source:		http://mirrors.xbmc.org/releases/source/xbmc-%{version}-%{branch_release}.tar.xz
+Source4:	ffmpeg-%{ffmpeg_archive_name}.tar.gz
 Source10:	kodi.png
 URL:		http://kodi.tv/
 Patch214:       0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
-Patch215:	ffmpeg_autobuild_fix.patch
 License:	GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 Group:		Video
 BuildRoot:	%{_tmppath}/%{name}-root
@@ -171,7 +172,6 @@ This package contains files needed to build addons and eventclients.
 %prep
 %setup -q -n xbmc-%{version}-%{branch_release}
 %patch214 -p1
-%patch215
 
 # otherwise backups end up in binary rpms
 find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
@@ -181,6 +181,13 @@ find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -print -del
 
 # win32 only
 rm -rf system/players/dvdplayer/etc/fonts
+
+#add ffmpeg source
+
+tar xpfz %{SOURCE4} -C tools/depends/target/ffmpeg/
+tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
+rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
+
 
 %build
 
