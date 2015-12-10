@@ -82,7 +82,7 @@ BuildRequires:  pkgconfig(platform)
 BuildRequires:	pkgconfig(libplist)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libpulse)
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python2)
 BuildRequires:	readline-devel
 BuildRequires:	rtmp-devel
 BuildRequires:	pkgconfig(samplerate)
@@ -129,19 +129,24 @@ Requires:  	avahi-python
 Requires: 	python-dbus
 Requires:	glibc >= 2.20
 #----------------------------------------
+
+%rename		xbmc
+
 Obsoletes: xbmc < %version
-Provides: xbmc = %version-%release
+Provides:  xbmc = %{EVRD}
 Obsoletes: xbmc-eventclient-j2me < %version
 Obsoletes: xbmc-eventclient-ps3 < %version
 Obsoletes: xbmc-eventclient-wiiremote < %version
 Obsoletes: xbmc-eventclient-xbmc-send < %version
 Obsoletes: xbmc-eventclients-common < %version
-Provides: xbmc-eventclient-j2me = %version-%release
-Provides: xbmc-eventclient-ps3 = %version-%release
-Provides: xbmc-eventclient-wiiremote = %version-%release
-Provides: xbmc-eventclient-xbmc-send = %version-%release
-Provides: xbmc-eventclients-common = %version-%release
+Conflicts: xbmc-eventclient-j2me < %version
+Conflicts:	 xbmc-eventclient-ps3 < %version
+Conflicts:	 xbmc-eventclient-wiiremote < %version
+Conflicts:	 xbmc-eventclient-xbmc-send < %version
+Conflicts:	 xbmc-eventclients-common < %version
+
 #----------------------------------------
+
 
 %description
 Kodi (formerly known as XBMC) is an award-winning free and open source
