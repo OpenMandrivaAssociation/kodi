@@ -202,6 +202,7 @@ export PYTHON_VERSION=2
     --disable-hal \
     --disable-debug \
     --disable-non-free \
+    --disable-shared \
     --enable-dvdcss \
         --enable-goom \
         --with-pic \
