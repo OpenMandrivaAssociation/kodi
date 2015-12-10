@@ -170,8 +170,8 @@ This package contains files needed to build addons and eventclients.
 
 %prep
 %setup -q -n xbmc-%{version}-%{branch_release}
-
-%apply_patches
+%patch214 -p1
+%patch215
 
 # otherwise backups end up in binary rpms
 find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
