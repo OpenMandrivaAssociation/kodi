@@ -190,6 +190,8 @@ rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
 
 %build
 
+%global optflags %{optflags} -Qunused-arguments
+
 export GIT_REV="tarball"
 export PYTHON_VERSION=2
 
