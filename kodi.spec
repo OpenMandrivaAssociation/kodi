@@ -12,6 +12,7 @@ Source:		http://mirrors.xbmc.org/releases/source/xbmc-%{version}-%{branch_releas
 Source10:	kodi.png
 URL:		http://kodi.tv/
 Patch214:       0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
+Patch215:	ffmpeg_autobuild_fix.patch
 License:	GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 Group:		Video
 BuildRoot:	%{_tmppath}/%{name}-root
