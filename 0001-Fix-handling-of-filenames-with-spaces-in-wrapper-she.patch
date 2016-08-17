@@ -6,12 +6,12 @@ Subject: [PATCH] Fix handling of filenames with spaces in wrapper shell script
 FIXME/TODO
 
 This is currently done by dropping the option handling unneeded in
-, since handling this properly would be a lot of work:
+Mageia, since handling this properly would be a lot of work:
 http://www.seanius.net/blog/2009/03/saving-and-restoring-positional-params-redux/
 diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in
---- xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in	2014-11-16 18:31:29.000000000 +0200
-+++ xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in	2014-11-21 19:55:37.029212008 +0200
-@@ -29,20 +29,6 @@ CRASHLOG_DIR=${CRASHLOG_DIR:-$HOME}
+--- a/tools/Linux/kodi.sh.in	2016-02-20 16:21:19.000000000 +0100
++++ b/tools/Linux/kodi.sh.in	2016-03-14 15:29:34.023151647 +0100
+@@ -29,20 +29,6 @@
  USERDATA_DIR="${HOME}/.${bin_name}"
  
  
@@ -31,8 +31,8 @@ diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' xbmc-14.0b3-Helix/tools/Li
 -
  migrate_home()
  {
-   [ "$(basename $0)" = "xbmc" ] && echo "WARNING: running ${bin_name} as "xbmc" is deprecated and will be removed in later versions, please switch to using the ${bin_name} binary"
-@@ -154,7 +140,7 @@ LOOP=1
+   [ "$(basename $0)" = "xbmc" ] && echo "WARNING: Running ${bin_name} as "xbmc" is deprecated and will be removed in later versions, please switch to using the ${bin_name} binary"
+@@ -153,7 +139,7 @@
  while [ $(( $LOOP )) = "1" ]
  do
    LOOP=0
