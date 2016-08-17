@@ -97,20 +97,20 @@ BuildRequires:	boost-devel
 %if %without internal_ffmpeg
 BuildRequires:	ffmpeg-devel
 %endif
-BuildRequires:	libmpeg2dec-devel
+BuildRequires:	pkgconfig(libmpeg2)
 BuildRequires:	libogg-devel
 BuildRequires:	libwavpack-devel
 BuildRequires:	python-devel
 BuildRequires:	glew-devel
-BuildRequires:	mesagl-devel
-BuildRequires:	mesaglu-devel
-BuildRequires:	mesaglesv2-devel
+BuildRequires:	pkgconfig(gl)
+BuildRequires:	pkgconfig(glu)
+BuildRequires:	pkgconfig(glesv2)
 BuildRequires:	libjpeg-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libvorbis-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	mysql-devel
-BuildRequires:	liblzo2-devel
+BuildRequires:	liblzo-devel
 BuildRequires:	zlib-devel
 BuildRequires:	openssl-devel
 BuildRequires:	fontconfig-devel
@@ -120,8 +120,8 @@ BuildRequires:	libpng-devel
 BuildRequires:	pkgconfig(libpcrecpp)
 BuildRequires:	libcdio-devel
 BuildRequires:	libmms-devel
-BuildRequires:	freetype2-devel
-BuildRequires:	libsmbclient-devel
+BuildRequires:	pkgconfig(freetype2)
+BuildRequires:	pkgconfig(smbclient)
 BuildRequires:	SDL_mixer-devel
 BuildRequires:	libjasper-devel
 BuildRequires:	libtiff-devel
@@ -132,9 +132,9 @@ BuildRequires:	libxt-devel
 BuildRequires:	libxtst-devel
 BuildRequires:	libxmu-devel
 BuildRequires:	libxinerama-devel
-BuildRequires:	libcurl-devel
+BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	dbus-devel
-BuildRequires:	sdl2-devel
+BuildRequires:	pkgconfig(sdl2)
 BuildRequires:	pulseaudio-devel
 BuildRequires:	avahi-common-devel
 BuildRequires:	avahi-client-devel
@@ -151,7 +151,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	expat-devel
 BuildRequires:	libass-devel
 BuildRequires:	rtmp-devel
-BuildRequires:	bluray-devel
+BuildRequires:	pkgconfig(libbluray)
 BuildRequires:	bluez-devel
 BuildRequires:	udev-devel
 BuildRequires:	yajl-devel
@@ -159,7 +159,7 @@ BuildRequires:	nfs-devel
 BuildRequires:	afpclient-devel
 BuildRequires:	libplist-devel
 BuildRequires:	shairplay-devel
-BuildRequires:	cec-devel >= 2.2
+BuildRequires:	pkgconfig(libcec) >= 2.2
 BuildRequires:	tinyxml-devel
 BuildRequires:	pkgconfig(libxslt)
 BuildRequires:	pkgconfig(dcadec)
@@ -177,7 +177,7 @@ BuildRequires:	doxygen
 BuildRequires:	yasm
 # pvr-addons
 BuildRequires:	jsoncpp-devel
-BuildRequires:	cryptopp-devel
+BuildRequires:	pkgconfig(cryptopp)
 %ifarch %ix86
 BuildRequires:	nasm
 %endif
