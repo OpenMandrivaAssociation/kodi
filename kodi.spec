@@ -1,5 +1,7 @@
-%define branch_release	Jarvis
-%define version	16.1
+%define _disable_lto 1
+
+%define branch_release	Krypton
+%define version	17.0
 %define snap	0
 %define prel	0
 %define rel	1
@@ -71,7 +73,7 @@ URL:		http://kodi.tv/
 %if !%nightly
 
 # Use system groovy
-Patch0:		xbmc-system-groovy.patch
+#Patch0:		xbmc-system-groovy.patch
 
 # Disable --enable-static for TexturePacker configure when called as part of
 # main configure as that would require we have static libraries of its dependencies
@@ -105,12 +107,12 @@ BuildRequires:	glew-devel
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(glesv2)
-BuildRequires:	libjpeg-devel
+BuildRequires:	jpeg-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libvorbis-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	mysql-devel
-BuildRequires:	liblzo-devel
+BuildRequires:	lzo-devel
 BuildRequires:	zlib-devel
 BuildRequires:	openssl-devel
 BuildRequires:	fontconfig-devel
@@ -123,7 +125,7 @@ BuildRequires:	libmms-devel
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(smbclient)
 BuildRequires:	SDL_mixer-devel
-BuildRequires:	libjasper-devel
+BuildRequires:	jasper-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	SDL_image-devel
 BuildRequires:	libalsa-devel
@@ -142,7 +144,7 @@ BuildRequires:	libxrandr-devel
 BuildRequires:	vdpau-devel
 BuildRequires:	cwiid-devel
 BuildRequires:	libice-devel
-BuildRequires:	libx11-devel
+BuildRequires:	pkgconfig(x11)
 BuildRequires:	libmicrohttpd-devel
 BuildRequires:	libmodplug-devel
 BuildRequires:	ssh-devel
@@ -158,11 +160,11 @@ BuildRequires:	yajl-devel
 BuildRequires:	nfs-devel
 BuildRequires:	afpclient-devel
 BuildRequires:	libplist-devel
-BuildRequires:	shairplay-devel
+#BuildRequires:	shairplay-devel
 BuildRequires:	pkgconfig(libcec) >= 2.2
 BuildRequires:	tinyxml-devel
 BuildRequires:	pkgconfig(libxslt)
-BuildRequires:	pkgconfig(dcadec)
+#BuildRequires:	pkgconfig(dcadec)
 BuildRequires:	crossguid-devel
 BuildRequires:	taglib-devel >= 1.8
 BuildRequires:	cmake
@@ -200,7 +202,7 @@ Requires:	%dlopenreq afpclient
 Requires:	%dlopenreq plist
 Requires:	%dlopenreq shairplay
 Requires:	%dlopenreq cec
-Requires:	%dlopenreq dcadec
+#Requires:	%dlopenreq dcadec
 # TODO: FEH.py is useless nowadays, drop it here and upstream.
 # for FEH.py, to check current configuration is ok for xbmc:
 Requires:	xdpyinfo
@@ -281,21 +283,6 @@ and entertainment hub for digital media.
 
 This package contains the Wii Remote eventclient.
 
-%package	eventclient-j2me
-Summary:	J2ME eventclient for Kodi
-Group:		Video/Players
-License:	GPLv2+
-Requires:	python-pybluez
-Requires:	%{name}-eventclients-common = %{version}-%{release}
-%rename		xbmc-eventclient-j2me
-
-%description	eventclient-j2me
-Kodi is an award-winning free and open source software media player
-and entertainment hub for digital media.
-
-This package contains the J2ME eventclient, providing a bluetooth
-server that can communicate with a mobile tool supporting J2ME.
-
 %package	eventclient-ps3
 Summary:	PS3 eventclients for Kodi
 Group:		Video/Players
@@ -341,16 +328,18 @@ This package contains the %{name}-send eventclient.
 %endif
 %endif
 %endif
-%autopatch -p1
+%apply_patches
 # otherwise backups end up in binary rpms
 find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
 
 # remove prebuilt libraries
-find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' -o -iname '*.jar' \) -print -delete
+find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -print -delete
 
 # win32 only
 rm -rf system/players/dvdplayer/etc/fonts
 
+# py2 fix
+sed -i 's/shell python/shell python2/' tools/EventClients/Makefile
 %build
 %if %nightly
 export GIT_REV=%nightly_git
@@ -385,6 +374,9 @@ export ac_cv_prog_HAVE_GIT="no"
 # We have that patch but use a different name to signify that it is Kodi specific.
 export CXXFLAGS="%optflags -Dav_read_frame_flush=av_read_frame_flush_mga_kodi_mod"
 %endif
+
+export PYTHON=%__python2
+export PYTHON_VERSION=2
 
 %configure2_5x \
 %if %without internal_ffmpeg
@@ -494,24 +486,24 @@ ok=1
 %dir %{_libdir}/%{name}/addons
 %dir %{_libdir}/%{name}/system
 %dir %{_libdir}/%{name}/system/players
-%dir %{_libdir}/%{name}/system/players/dvdplayer
+%dir %{_libdir}/%{name}/system/players/VideoPlayer
 %{_libdir}/%{name}/%{name}.bin
 %{_libdir}/%{name}/%{name}-xrandr
 %dir %{_libdir}/%{name}/addons/*
 %{_libdir}/%{name}/addons/*/*.so
-%{_libdir}/%{name}/system/ImageLib-*-linux.so
 %{_libdir}/%{name}/system/libcpluff-*-linux.so
 %{_libdir}/%{name}/system/libexif-*-linux.so
 %ifarch %ix86 x86_64
 %{_libdir}/%{name}/system/libsse4-*-linux.so
 %endif
-%{_libdir}/%{name}/system/players/dvdplayer/libdvdnav-*-linux.so
+%{_libdir}/%{name}/system/players/VideoPlayer/libdvd*-*-linux.so
 %if %with internal_ffmpeg
 %{_libdir}/%{name}/system/players/dvdplayer/av*-linux.so
 %{_libdir}/%{name}/system/players/dvdplayer/postproc-*-linux.so
 %{_libdir}/%{name}/system/players/dvdplayer/swscale-*-linux.so
 %endif
 %dir %{_datadir}/%{name}
+%{_datadir}/%{name}/privacy-policy.txt
 %{_datadir}/%{name}/addons
 %{_datadir}/%{name}/media
 %{_datadir}/%{name}/system
@@ -520,16 +512,13 @@ ok=1
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 
 %files eventclients-common
-%python_sitelib/%{name}
+%python2_sitelib/%{name}
 %dir %{_datadir}/pixmaps/%{name}
 %{_datadir}/pixmaps/%{name}/*.png
 
 %files devel
 %{_includedir}/%{name}
 %{_libdir}/%{name}/*.cmake
-
-%files eventclient-j2me
-%{_bindir}/%{name}-j2meremote
 
 %files eventclient-ps3
 %{_bindir}/%{name}-ps3d
