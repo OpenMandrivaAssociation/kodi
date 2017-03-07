@@ -79,6 +79,7 @@ URL:		http://kodi.tv/
 # main configure as that would require we have static libraries of its dependencies
 # installed
 Patch1:		xbmc-texturepacker-no-static.patch
+Patch2:		kodi-17.0-clang4.0.patch
 
 # https://bugs.mageia.org/show_bug.cgi?id=2331
 # TODO: needs changes for upstreaming
