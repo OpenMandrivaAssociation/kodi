@@ -94,7 +94,7 @@ Patch214:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
 # xbmc and therefore e.g. /usr/bin/xbmc is GPLv2+ with LGPLv3+ part
 # as allowed by a license exception
 License:	GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
-Group:		Video/Players
+Group:		Video
 BuildRequires:	boost-devel
 %if %without internal_ffmpeg
 BuildRequires:	ffmpeg-devel
@@ -245,7 +245,7 @@ Support for RAR files is not included due to license issues.
 
 %package	eventclients-common
 Summary:	Common files for Kodi eventclients
-Group:		Video/Players
+Group:		Video
 License:	GPLv2+
 BuildRequires:	python
 %rename		xbmc-eventclients-common
@@ -272,7 +272,7 @@ This package contains files needed to build addons and eventclients.
 
 %package	eventclient-wiiremote
 Summary:	Wii Remote eventclient for Kodi
-Group:		Video/Players
+Group:		Video
 License:	GPLv3+
 Requires:	%{name}-eventclients-common = %{version}-%{release}
 %rename		xbmc-eventclient-wiiremote
@@ -285,7 +285,7 @@ This package contains the Wii Remote eventclient.
 
 %package	eventclient-ps3
 Summary:	PS3 eventclients for Kodi
-Group:		Video/Players
+Group:		Video
 License:	GPLv2+
 Requires:	python-pybluez
 Requires:	%{name}-eventclients-common = %{version}-%{release}
@@ -303,7 +303,7 @@ This package contains the PS3 remote and sixaxis eventclients.
 
 %package	eventclient-%{name}-send
 Summary:	PS3 eventclient for Kodi
-Group:		Video/Players
+Group:		Video
 License:	GPLv2+
 Requires:	%{name}-eventclients-common = %{version}-%{release}
 %rename		xbmc-eventclient-xbmc-send
