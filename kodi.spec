@@ -65,6 +65,10 @@ Source:		http://mirrors.xbmc.org/releases/source/%{version}-%{branch_release}.ta
 %endif
 %endif
 %endif
+Source2:	libdvdcss-master.tar.gz
+Source3:	libdvdnav-master.tar.gz
+Source4:	libdvdread-master.tar.gz
+
 URL:		http://kodi.tv/
 
 %if !%nightly
@@ -328,6 +332,10 @@ This package contains the %{name}-send eventclient.
 %endif
 %endif
 %endif
+%__cp %{SOURCE2}	tools/depends/target/libdvdcss/libdvdcss-master.tar.gz
+%__cp %{SOURCE3}	tools/depends/target/libdvdnav/libdvdnav-master.tar.gz
+%__cp %{SOURCE4}	tools/depends/target/libdvdread/libdvdread-master.tar.gz
+
 %apply_patches
 # otherwise backups end up in binary rpms
 find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
