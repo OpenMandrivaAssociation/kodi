@@ -102,6 +102,8 @@ BuildRequires:	libogg-devel
 BuildRequires:	libwavpack-devel
 BuildRequires:	python2-devel
 BuildRequires:	glew-devel
+BuildRequires:	pkgconfig(dvdnav)
+BuildRequires:	pkgconfig(dvdread)
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(glesv2)
@@ -314,15 +316,15 @@ This package contains the %{name}-send eventclient.
 
 %prep
 %if %nightly
-%setup -q -n %name-%nightly_date-%nightly_git-%nightly_branch -a 1
+%setup -q -n %name-%nightly_date-%nightly_git-%nightly_branch
 %else
 %if %snap
-%setup -q -n %name-%branch_release-%snap -a 1
+%setup -q -n %name-%branch_release-%snap
 %else
 %if %prel
-%setup -q -n xbmc-%{tag} -a 1
+%setup -q -n xbmc-%{tag}
 %else
-%setup -q -n xbmc-%{version}-%{branch_release} -a 1
+%setup -q -n xbmc-%{version}-%{branch_release}
 %endif
 %endif
 %endif
@@ -355,10 +357,6 @@ export GIT_REV="tarball"
 
 JAVA=%{java} CLASSPATH=$(build-classpath commons-lang) ./bootstrap
 
-pushd pvr-addons
-./bootstrap
-popd
-
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
 %define _disable_ld_no_undefined 1
@@ -386,13 +384,6 @@ export PYTHON_VERSION=2
 	--disable-dvdcss \
 	--enable-goom \
 	--with-lirc-device=/var/run/lirc/lircd
-
-# (cg) We cannot enable MythTV support easily via a passthrough configure from above
-#      so re-run configure here and explicitly pass the --enable-addons-with-dependencies option
-pushd pvr-addons
-%configure2_5x \
-	--enable-addons-with-dependencies
-popd
 
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
