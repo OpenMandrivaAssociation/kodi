@@ -65,9 +65,6 @@ Source:		http://mirrors.xbmc.org/releases/source/%{version}-%{branch_release}.ta
 %endif
 %endif
 %endif
-# (cg) From https://github.com/opdenkamp/xbmc-pvr-addons
-# git archive --prefix=pvr-addons/ origin/master | xz
-Source1:	xbmc-pvr-addons-28f0e74864791cb9bb123559acb3d82e995b2b80.tar.xz
 URL:		http://kodi.tv/
 
 %if !%nightly
@@ -103,7 +100,7 @@ BuildRequires:	ffmpeg-devel
 BuildRequires:	pkgconfig(libmpeg2)
 BuildRequires:	libogg-devel
 BuildRequires:	libwavpack-devel
-BuildRequires:	python-devel
+BuildRequires:	python2-devel
 BuildRequires:	glew-devel
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
@@ -210,11 +207,11 @@ Requires:	xdpyinfo
 Requires:	glxinfo
 # for FEH.py to allow it to give an error message (should be available already
 # on most systems):
-Requires:	pygtk2
+Requires:	pygtk2.0
 # for xbmc python scripts:
-Requires:	python-imaging
+Requires:	python2-imaging
 # Packages not shipped in core:
-Recommends:	%{_lib}dvdcss2
+Suggests:	%{_lib}dvdcss2
 
 # Packages have been merged
 Obsoletes:	xbmc-core < 9.11-1.svn29468
@@ -248,7 +245,7 @@ Support for RAR files is not included due to license issues.
 Summary:	Common files for Kodi eventclients
 Group:		Video
 License:	GPLv2+
-BuildRequires:	python
+BuildRequires:	python2
 %rename		xbmc-eventclients-common
 
 %description	eventclients-common
@@ -291,7 +288,7 @@ License:	GPLv2+
 Requires:	python-pybluez
 Requires:	%{name}-eventclients-common = %{version}-%{release}
 # requires via zeroconf.py, only used by xbmc-ps3d:
-Requires:	python-gobject avahi-python python-dbus
+Requires:	python2-gobject python2-dbus
 # TODO merge all these?, and TODO zeroconf.py to a correct package? :)
 Obsoletes:	eventclient-ps3remote < 9.11-1.svn31936
 %rename		xbmc-eventclient-ps3
