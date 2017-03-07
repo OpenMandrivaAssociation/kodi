@@ -339,7 +339,7 @@ find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -print -del
 rm -rf system/players/dvdplayer/etc/fonts
 
 # py2 fix
-sed -i 's/shell python/shell python2/' tools/EventClients/Makefile
+sed -i 's/shell python/shell python2/' tools/EventClients/Makefile.in
 %build
 %if %nightly
 export GIT_REV=%nightly_git
