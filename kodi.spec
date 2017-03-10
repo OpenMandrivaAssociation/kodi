@@ -363,6 +363,11 @@ export GIT_REV="tarball"
 %endif
 %endif
 
+%ifarch %ix86
+export CC=gcc
+export CXX=g++
+%endif
+
 JAVA=%{java} CLASSPATH=$(build-classpath commons-lang) ./bootstrap
 
 # due to xbmc modules that use symbols from xbmc binary
