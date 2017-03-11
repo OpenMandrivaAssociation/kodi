@@ -1,4 +1,6 @@
 sources:
-  14.2-Helix.tar.gz: d985d50ea6b508bf363072e8b291aba25d5b2de6
-  2.4.6-Helix.tar.gz: 47d777fb357209bd9d506220ecc1a73e38725198
-  Helix_rc3.tar.gz: f3af183ec287eab5f1f946333f640f29b48d4ac7
+  17.0-Krypton.tar.gz: f3b734743c137eda48a1d171738817ef1f04fbde
+  kodi.png: d5ae591636df2d2229c32b937ceb9f961a1037a8
+  libdvdcss-master.tar.gz: 341ed61d0b5f4764e38ac92c8c86b5f6796bcdda
+  libdvdnav-master.tar.gz: 100876f8d9f53610b89ce0d2909915e839fa2f18
+  libdvdread-master.tar.gz: 50946afd5bb04a2e795dc0334fef5c30a6a24fed

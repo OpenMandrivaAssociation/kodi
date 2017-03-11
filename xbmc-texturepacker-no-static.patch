@@ -1,0 +1,12 @@
+Index: xbmc-16.1-Jarvis/tools/depends/native/TexturePacker/Makefile
+===================================================================
+--- xbmc-16.1-Jarvis/tools/depends/native/TexturePacker/Makefile
++++ xbmc-16.1-Jarvis/tools/depends/native/TexturePacker/Makefile	2016-06-25 17:50:08.690189787 +0300
+@@ -9,7 +9,6 @@
+ 
+ ifeq ($(NATIVEPLATFORM),)
+   PLATFORM = native
+-  EXTRA_CONFIGURE = --enable-static
+ else
+   PLATFORM = $(NATIVEPLATFORM)
+ endif

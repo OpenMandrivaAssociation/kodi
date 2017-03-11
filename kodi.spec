@@ -1,14 +1,93 @@
-%define _kodi_addons_dir %{_datadir}/kodi/addons
-%define ffmpeg_archive_name 2.4.6-Helix
-%define pvr_addons_archive_name Helix_rc3
-%define build_cec 1
-%define codename Helix
-%define Werror_cflags %{nil}
+%define _disable_lto 1
 
-Summary:	XBMC Media Center - media player and home entertainment system
+%define branch_release	Krypton
+%define version	17.0
+%define snap	0
+%define prel	0
+%define rel	1
+
+%if %snap
+%define branch	%branch_release
+%else
+%define branch	%nil
+%endif
+
+%define branchr	%([ "%branch" ] && echo .%branch | tr - _)
+
+%define tag	%{version}%([ "%prel" = "0" ] || echo "%prel" | sed s,beta,b,)-%{branch_release}
+
+# build with internal ffmpeg, disabled by default (--with internal_ffmpeg)
+%bcond_with	internal_ffmpeg
+
+%if %with	internal_ffmpeg
+# issue with 11.0 internal ffmpeg, haven't bothered with patching as it is
+# not used in the default build anyway
+%define Werror_cflags %nil
+%endif
+
+# Nightly-build mode (no patches, externally specified snapshot)
+# (never enabled by default)
+%if 0 && "%nightly_date" != "" && "%nightly_git" != "" && "%nightly_branch" != "" && "%nightly_rel" != ""
+%define nightly	1
+%define version	%nightly_date
+%define rel	%nightly_rel
+%else
+%define nightly	0
+%endif
+
+Summary:	Kodi - media player and home entertainment system
 Name:		kodi
-Version:	14.2
-Release:	1
+Version:	%{version}
+%if %nightly
+Release:	%mkrel 1.%nightly_git.%nightly_branch.%rel
+Source:		%{name}-%{nightly_date}-%{nightly_git}-%{nightly_branch}.tar.xz
+%else
+%if %snap
+Release:	%mkrel 0.git%snap%branchr.%rel
+Source:		%{name}-%branch_release-%snap.tar.xz
+%else
+%if %prel
+Release:	%mkrel 0.%prel%branchr.%rel
+#Source:		%%{name}-%%{version}-%%{branch_release}_%%{prel}.tar.gz
+#Source:		%%{branch_release}_%%{prel}.tar.gz
+# wget https://github.com/xbmc/xbmc/archive/14.0b3-Helix.tar.gz
+Source:		https://github.com/xbmc/xbmc/archive/%tag.tar.gz
+%else
+%if "%branch" != ""
+Release:	%mkrel 1.%branch.%rel
+%else
+Release:	%mkrel %rel
+%endif
+# Upstream tarballs seem to not be available yet... so:
+# git archive --prefix=xbmc-13.0-Gotham/ 13.0-Gotham | xz > xbmc-13.0.tar.xz
+#Source:		http://mirrors.xbmc.org/releases/source/%%{name}-%%{version}.tar.gz
+Source:		http://mirrors.xbmc.org/releases/source/%{version}-%{branch_release}.tar.gz
+%endif
+%endif
+%endif
+Source2:	libdvdcss-master.tar.gz
+Source3:	libdvdnav-master.tar.gz
+Source4:	libdvdread-master.tar.gz
+
+URL:		http://kodi.tv/
+
+%if !%nightly
+
+# Use system groovy
+#Patch0:		xbmc-system-groovy.patch
+
+# Disable --enable-static for TexturePacker configure when called as part of
+# main configure as that would require we have static libraries of its dependencies
+# installed
+Patch1:		xbmc-texturepacker-no-static.patch
+Patch2:		kodi-17.0-clang4.0.patch
+
+# https://bugs.mageia.org/show_bug.cgi?id=2331
+# TODO: needs changes for upstreaming
+Patch214:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
+
+%endif
+
 # nosefart audio plugin and RSXS-0.9 based screensavers are GPLv2 only
 # several eventclients are GPLv3+ (in subpackages)
 # libhdhomerun is LGPLv3+ with an exception (always ok to link against it)
@@ -18,153 +97,104 @@ Release:	1
 # as allowed by a license exception
 License:	GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 Group:		Video
-Url:		http://kodi.tv/
-Source0:	http://mirrors.xbmc.org/releases/source/%{version}-%{codename}.tar.gz
-Source1:     	https://github.com/opdenkamp/xbmc-pvr-addons/archive/%{pvr_addons_archive_name}.tar.gz
-Source2:     	https://github.com/xbmc/FFmpeg/archive/%{ffmpeg_archive_name}.tar.gz
-Source3:	kodi.rpmlintrc
-
-# PATCH-FIX-OPENSUSE -- enable all pvr addons
-Patch0:      pvr-addons-enable-all.patch
-Patch1:      no-xbmc-symbolic-link.patch
-# https://bugs.mageia.org/show_bug.cgi?id=2331
-# TODO: needs changes for upstreaming
-#Patch2:	0001-Fix-handling-of-filenames-with-spaces-in-wrapper-she.patch
-
-# Use system groovy                                                                                                                   
-#Patch3:         xbmc-system-groovy.patch                                                                                              
-                                                                                                                                      
-# Disable a non-critical documentation part of code generator which does not                                                          
-# seem to work with system groovy                                                                                                     
-#Patch4:         xbmc-system-groovy-hack.patch  
-
-#Clang patch
-Patch5:		kodi_goom_clang.patch
-Patch6:		pvraddons_clang.patch
-
-Patch7:		xbmc-14.2-jsoncpp.patch
-Patch8:		xbmc-14.2-cerr.patch
-Patch9:		kodi-14.0-dvddemux-ffmpeg.patch
-
-#Other
-#Patch5:		xbmc-13.0-external-ffmpeg.patch
-#Patch6:		xbmc-13.0-no-win32.patch
-# Display Music Videos in "Artist - Name" format instead of just "Name"
-#Patch7:		xbmc-13.0-upnp-musicvideos-artist.patch
-# Fix bug with UPnP playback for Playlists
-#Patch8:		xbmc-13.0-upnp-playlists.patch
-
-BuildRequires:	afpclient-devel
-BuildRequires:	avahi-common-devel
 BuildRequires:	boost-devel
-BuildRequires:	bzip2-devel
-%ifarch %{ix86} x86_64
-BuildRequires:	crystalhd-devel
-%endif
-BuildRequires:	cwiid-devel
+%if %without internal_ffmpeg
 BuildRequires:	ffmpeg-devel
-BuildRequires:	ffmpeg-static-devel
-BuildRequires:	gettext-devel
-BuildRequires:	jpeg-devel
-BuildRequires:	lzo-devel
-BuildRequires:	mysql-devel
-BuildRequires:	python-devel
-BuildRequires:	rtmp-devel
-BuildRequires:	ssh-devel
-BuildRequires:	tiff-devel
-BuildRequires:	tinyxml-devel
-BuildRequires:	yajl-devel
-BuildRequires:	pkgconfig(alsa)
-BuildRequires:	pkgconfig(avahi-client)
-BuildRequires:	pkgconfig(bluez)
-BuildRequires:	pkgconfig(dbus-1)
-BuildRequires:	pkgconfig(enca)
-BuildRequires:	pkgconfig(expat)
-BuildRequires:	pkgconfig(flac)
-BuildRequires:	pkgconfig(fontconfig)
-BuildRequires:	pkgconfig(freetype2)
-BuildRequires:	pkgconfig(fribidi)
-BuildRequires:	pkgconfig(gl)
-BuildRequires:	pkgconfig(glew)
-BuildRequires:	pkgconfig(glu)
-BuildRequires:	pkgconfig(ice)
-BuildRequires:	pkgconfig(jasper)
-BuildRequires:	pkgconfig(libass)
-BuildRequires:	pkgconfig(libbluray)
-BuildRequires:	pkgconfig(libcdio)
-%if %{build_cec}
-BuildRequires:	pkgconfig(libcec) >= 2:1:0
-%else
-BuildConflicts:	pkgconfig(libcec)
 %endif
-BuildRequires:	pkgconfig(libcurl)
-BuildRequires:	pkgconfig(libmicrohttpd)
-BuildRequires:	pkgconfig(libmms)
-BuildRequires:	pkgconfig(libmodplug)
 BuildRequires:	pkgconfig(libmpeg2)
-BuildRequires:	pkgconfig(libnfs)
-BuildRequires:	pkgconfig(libpcre)
-BuildRequires:	pkgconfig(libplist)
-BuildRequires:	pkgconfig(libpng)
-BuildRequires:	pkgconfig(libpulse)
-BuildRequires:	pkgconfig(libshairport)
-BuildRequires:	pkgconfig(libva)
-BuildRequires:	pkgconfig(libxslt)
-BuildRequires:	pkgconfig(mad)
-BuildRequires:	pkgconfig(ogg)
-BuildRequires:	pkgconfig(openssl)
-BuildRequires:	pkgconfig(samplerate)
-BuildRequires:	pkgconfig(sdl)
-BuildRequires:	pkgconfig(SDL_mixer)
-BuildRequires:	pkgconfig(SDL_image)
+BuildRequires:	libogg-devel
+BuildRequires:	libwavpack-devel
+BuildRequires:	python-devel
+BuildRequires:	glew-devel
+BuildRequires:	pkgconfig(dvdnav)
+BuildRequires:	pkgconfig(dvdread)
+BuildRequires:	pkgconfig(gl)
+BuildRequires:	pkgconfig(glu)
+BuildRequires:	pkgconfig(glesv2)
+BuildRequires:	jpeg-devel
+BuildRequires:	libsamplerate-devel
+BuildRequires:	libvorbis-devel
+BuildRequires:	bzip2-devel
+BuildRequires:	mysql-devel
+BuildRequires:	lzo-devel
+BuildRequires:	zlib-devel
+BuildRequires:	openssl-devel
+BuildRequires:	fontconfig-devel
+BuildRequires:	fribidi-devel
+BuildRequires:	sqlite3-devel
+BuildRequires:	libpng-devel
+BuildRequires:	pkgconfig(libpcrecpp)
+BuildRequires:	libcdio-devel
+BuildRequires:	libmms-devel
+BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(smbclient)
-BuildRequires:	pkgconfig(sqlite3)
-BuildRequires:	pkgconfig(taglib)
-BuildRequires:	pkgconfig(udev)
-BuildRequires:	pkgconfig(vdpau)
-BuildRequires:	pkgconfig(vorbis)
-BuildRequires:	pkgconfig(wavpack)
+BuildRequires:	SDL_mixer-devel
+BuildRequires:	jasper-devel
+BuildRequires:	libtiff-devel
+BuildRequires:	SDL_image-devel
+BuildRequires:	libalsa-devel
+BuildRequires:	enca-devel
+BuildRequires:	libxt-devel
+BuildRequires:	libxtst-devel
+BuildRequires:	libxmu-devel
+BuildRequires:	libxinerama-devel
+BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	dbus-devel
+BuildRequires:	pkgconfig(sdl2)
+BuildRequires:	pulseaudio-devel
+BuildRequires:	avahi-common-devel
+BuildRequires:	avahi-client-devel
+BuildRequires:	libxrandr-devel
+BuildRequires:	vdpau-devel
+BuildRequires:	cwiid-devel
+BuildRequires:	libice-devel
 BuildRequires:	pkgconfig(x11)
-BuildRequires:	pkgconfig(xinerama)
-BuildRequires:	pkgconfig(xmu)
-BuildRequires:	pkgconfig(xrandr)
-BuildRequires:	pkgconfig(xt)
-BuildRequires:	pkgconfig(xtst)
-BuildRequires:	pkgconfig(zlib)
-BuildRequires:	cap-devel
+BuildRequires:	libmicrohttpd-devel
+BuildRequires:	libmodplug-devel
+BuildRequires:	ssh-devel
+BuildRequires:	libva-devel
+BuildRequires:	gettext-devel
+BuildRequires:	expat-devel
+BuildRequires:	libass-devel
+BuildRequires:	rtmp-devel
+BuildRequires:	pkgconfig(libbluray)
+BuildRequires:	bluez-devel
+BuildRequires:	udev-devel
+BuildRequires:	yajl-devel
+BuildRequires:	nfs-devel
+BuildRequires:	afpclient-devel
+BuildRequires:	libplist-devel
+#BuildRequires:	shairplay-devel
+BuildRequires:	pkgconfig(libcec) >= 2.2
+BuildRequires:	tinyxml-devel
+BuildRequires:	pkgconfig(libxslt)
+#BuildRequires:	pkgconfig(dcadec)
+BuildRequires:	crossguid-devel
+BuildRequires:	taglib-devel >= 1.8
 BuildRequires:	cmake
 BuildRequires:	gperf
 BuildRequires:	zip
-# needed to delete the fixed rpath introduced by smbclient
-BuildRequires:  chrpath
-
+# codegenerator.mk
+# TODO: Something is wrong with java macros in mga2+, %java does not actually use java-rpmbuild
+BuildRequires:	swig
+BuildRequires:	groovy
+BuildRequires:	apache-commons-lang
+BuildRequires:	doxygen
+BuildRequires:	yasm
 # pvr-addons
-%if %mdvver >= 201500
-BuildRequires:  jsoncpp-devel
-%endif
-
-BuildRequires:  pkgconfig(cryptopp)
-%ifarch %{ix86}
+BuildRequires:	jsoncpp-devel
+BuildRequires:	pkgconfig(cryptopp)
+%ifarch %ix86
 BuildRequires:	nasm
 %endif
+# texturepacker
+BuildRequires:	giflib-devel
 Requires:	lsb-release
-# for codegenrator
-BuildRequires:	doxygen
-BuildRequires:	swig
-BuildRequires:  byacc
-BuildRequires:  yasm
-BuildRequires:	gettext
-BuildRequires:	java
-#BuildRequires:  groovy
-
 # dlopened (existence check required by rpm5 as it doesn't use stderr):
-%define dlopenreq() %([ -e %{_libdir}/lib%{1}.so ] && rpm -qf --qf '%%{name}' $(readlink -f %{_libdir}/lib%{1}.so) 2>/dev/null || echo %{name})
+%define dlopenreq() %([ -e %{_libdir}/lib%{1}.so ] && rpm -qf --qf '%%{name}' $(readlink -f %{_libdir}/lib%{1}.so) 2>/dev/null || echo "xbmc-missing-buildrequires-on-%{1}")
 Requires:	%dlopenreq curl
-Requires:	%dlopenreq FLAC
-Requires:	%dlopenreq mad
 Requires:	%dlopenreq ogg
 Requires:	%dlopenreq vorbis
-Requires:	%dlopenreq vorbisenc
 Requires:	%dlopenreq vorbisfile
 Requires:	%dlopenreq modplug
 Requires:	%dlopenreq rtmp
@@ -174,24 +204,29 @@ Requires:	%dlopenreq bluray
 Requires:	%dlopenreq nfs
 Requires:	%dlopenreq afpclient
 Requires:	%dlopenreq plist
-Requires:	%dlopenreq shairport
-%if %{build_cec}
+Requires:	%dlopenreq shairplay
 Requires:	%dlopenreq cec
-%endif
-# not nearly as common as the above, so just suggest instead for now:
-Suggests:	%dlopenreq crystalhd
+#Requires:	%dlopenreq dcadec
 # TODO: FEH.py is useless nowadays, drop it here and upstream.
 # for FEH.py, to check current configuration is ok for xbmc:
 Requires:	xdpyinfo
 Requires:	glxinfo
 # for FEH.py to allow it to give an error message (should be available already
 # on most systems):
-Requires:	pygtk2
+Requires:	pygtk2.0
 # for xbmc python scripts:
 Requires:	python-imaging
 # Packages not shipped in core:
-Suggests:	%{_lib}lame0
 Suggests:	%{_lib}dvdcss2
+
+# Packages have been merged
+Obsoletes:	xbmc-core < 9.11-1.svn29468
+Obsoletes:	xbmc-skin-confluence < 9.11-1.svn29468
+Obsoletes:	xbmc-skin-pm3-hd < 9.11-1.svn29468
+Obsoletes:	xbmc-nosefart < 9.11-1.svn29468
+Obsoletes:	xbmc-screensavers-default < 9.11-1.svn29468
+Obsoletes:	xbmc-script-examples < 9.11-1.svn27796
+Obsoletes:	xbmc-web-pm3 < 9.11-1.svn27796
 
 # Old name
 %rename		xbmc
@@ -207,312 +242,168 @@ and combined with its beautiful interface and powerful skinning
 engine, Kodi feels very natural to use from the couch and is the
 ideal solution for your home theater.
 
-
-%files
-%{_sysconfdir}/X11/wmsession.d/15Kodi
-%{_bindir}/%{name}
-%{_bindir}/%{name}-standalone
-# compat
-%{_bindir}/xbmc
-%{_bindir}/xbmc-standalone
-%dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/addons
-%dir %{_libdir}/%{name}/system
-%dir %{_libdir}/%{name}/system/players
-%dir %{_libdir}/%{name}/system/players/dvdplayer
-%dir %{_libdir}/%{name}/system/players/paplayer
-%{_libdir}/%{name}/%{name}.bin
-%{_libdir}/%{name}/%{name}-xrandr
-%dir %{_libdir}/%{name}/addons/*
-%{_libdir}/%{name}/addons/*/*.so
-%{_libdir}/%{name}/addons/*/*.vis
-%{_libdir}/%{name}/addons/*/*.xbs
-%{_libdir}/%{name}/addons/*/*.pvr
-%{_libdir}/%{name}/system/ImageLib-*-linux.so
-%{_libdir}/%{name}/system/hdhomerun-*-linux.so
-%{_libdir}/%{name}/system/libcmyth-*-linux.so
-%{_libdir}/%{name}/system/libcpluff-*-linux.so
-%{_libdir}/%{name}/system/libexif-*-linux.so
-%ifarch %ix86 x86_64
-%{_libdir}/%{name}/system/libsse4-*-linux.so
+%if !%nightly
+This is the stable version of Kodi from the %branch_release release branch.
+Support for RAR files is not included due to license issues.
 %endif
-%{_libdir}/%{name}/system/players/dvdplayer/libdvdnav-*-linux.so
-%if %with internal_ffmpeg
-%{_libdir}/%{name}/system/players/dvdplayer/av*-linux.so
-%{_libdir}/%{name}/system/players/dvdplayer/postproc-*-linux.so
-%{_libdir}/%{name}/system/players/dvdplayer/swscale-*-linux.so
-%endif
-%{_libdir}/%{name}/system/players/paplayer/libsidplay2-*-linux.so
-%{_libdir}/%{name}/system/players/paplayer/nosefart-*-linux.so
-%{_libdir}/%{name}/system/players/paplayer/stsoundlibrary-*-linux.so
-%{_libdir}/%{name}/system/players/paplayer/timidity-*-linux.so
-%{_libdir}/%{name}/system/players/paplayer/vgmstream-*-linux.so
-%ifarch %ix86
-%{_libdir}/%{name}/system/players/paplayer/SNESAPU-*-linux.so
-%endif
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/addons
-%{_datadir}/%{name}/FEH.py*
-%{_datadir}/%{name}/language
-%{_datadir}/%{name}/media
-%{_datadir}/%{name}/sounds
-%{_datadir}/%{name}/system
-%{_datadir}/%{name}/userdata
-%{_datadir}/applications/%{name}.desktop
-%{_iconsdir}/hicolor/*/apps/%{name}.png
-%{_mandir}/man1/kodi*.1*
-
-#----------------------------------------------------------------------------
-
-%package	devel
-Summary:	Development files for XBMC
-License:	GPLv2+
-Group:		Development/C
-Provides:	xbmc-eventclients-devel = %{EVRD}
-Conflicts:	xbmc-eventclients-devel < 14.0
-Obsoletes:	xbmc-eventclients-devel < 14.0
-%rename		xbmc-devel
-
-%description	devel
-XBMC is an award-winning free and open source software media player
-and entertainment hub for digital media.
-
-This package contains files needed to build addons and eventclients.
-
-%files devel
-%{_includedir}/%{name}
-%{_libdir}/%{name}/*.cmake
-
-#----------------------------------------------------------------------------
 
 %package	eventclients-common
-Summary:	Common files for XBMC eventclients
-License:	GPLv2+
+Summary:	Common files for Kodi eventclients
 Group:		Video
+License:	GPLv2+
+BuildRequires:	python
 %rename		xbmc-eventclients-common
 
 %description	eventclients-common
-XBMC is an award-winning free and open source software media player
+Kodi is an award-winning free and open source software media player
 and entertainment hub for digital media.
 
 This package contains common files for eventclients.
 
-%files eventclients-common
-%python_sitelib/%{name}
-%dir %{_datadir}/pixmaps/%{name}
-%{_datadir}/pixmaps/%{name}/*.png
+%package	devel
+Summary:	Development files for Kodi
+Group:		Development/C
+License:	GPLv2+
+Provides:	xbmc-eventclients-devel = 12.3-10
+Obsoletes:	xbmc-eventclients-devel < 12.3-10
+%rename		xbmc-devel
 
-#----------------------------------------------------------------------------
+%description	devel
+Kodi is an award-winning free and open source software media player
+and entertainment hub for digital media.
+
+This package contains files needed to build addons and eventclients.
 
 %package	eventclient-wiiremote
-Summary:	Wii Remote eventclient for XBMC
-License:	GPLv3+
+Summary:	Wii Remote eventclient for Kodi
 Group:		Video
-Requires:	%{name}-eventclients-common = %{EVRD}
+License:	GPLv3+
+Requires:	%{name}-eventclients-common = %{version}-%{release}
 %rename		xbmc-eventclient-wiiremote
 
 %description	eventclient-wiiremote
-XBMC is an award-winning free and open source software media player
+Kodi is an award-winning free and open source software media player
 and entertainment hub for digital media.
 
 This package contains the Wii Remote eventclient.
 
-%files eventclient-wiiremote
-%{_bindir}/%{name}-wiiremote
-
-#----------------------------------------------------------------------------
-
-%package	eventclient-j2me
-Summary:	J2ME eventclient for XBMC
-License:	GPLv2+
-Group:		Video
-Requires:	python-pybluez
-Requires:	%{name}-eventclients-common = %{EVRD}
-%rename		xbmc-eventclient-j2me
-
-%description	eventclient-j2me
-XBMC is an award-winning free and open source software media player
-and entertainment hub for digital media.
-
-This package contains the J2ME eventclient, providing a bluetooth
-server that can communicate with a mobile tool supporting J2ME.
-
-%files eventclient-j2me
-%{_bindir}/%{name}-j2meremote
-
-#----------------------------------------------------------------------------
-
 %package	eventclient-ps3
-Summary:	PS3 eventclients for XBMC
-License:	GPLv2+
+Summary:	PS3 eventclients for Kodi
 Group:		Video
+License:	GPLv2+
 Requires:	python-pybluez
-Requires:	%{name}-eventclients-common = %{EVRD}
+Requires:	%{name}-eventclients-common = %{version}-%{release}
 # requires via zeroconf.py, only used by xbmc-ps3d:
-Requires:	python-gobject avahi-python python-dbus
+Requires:	python-gobject python-dbus
+# TODO merge all these?, and TODO zeroconf.py to a correct package? :)
+Obsoletes:	eventclient-ps3remote < 9.11-1.svn31936
 %rename		xbmc-eventclient-ps3
 
 %description	eventclient-ps3
-XBMC is an award-winning free and open source software media player
+Kodi is an award-winning free and open source software media player
 and entertainment hub for digital media.
 
 This package contains the PS3 remote and sixaxis eventclients.
 
-%files eventclient-ps3
-%{_bindir}/%{name}-ps3d
-%{_bindir}/%{name}-ps3remote
-
-#----------------------------------------------------------------------------
-
-%package	eventclient-xbmc-send
-Summary:	PS3 eventclient for XBMC
-License:	GPLv2+
+%package	eventclient-%{name}-send
+Summary:	PS3 eventclient for Kodi
 Group:		Video
-Requires:	%{name}-eventclients-common = %{EVRD}
+License:	GPLv2+
+Requires:	%{name}-eventclients-common = %{version}-%{release}
 %rename		xbmc-eventclient-xbmc-send
 
-%description	eventclient-xbmc-send
-XBMC is an award-winning free and open source software media player
+%description	eventclient-%{name}-send
+Kodi is an award-winning free and open source software media player
 and entertainment hub for digital media.
 
-This package contains the xbmc-send eventclient.
-
-%files eventclient-xbmc-send
-%{_bindir}/%{name}-send
-
-#----------------------------------------------------------------------------
+This package contains the %{name}-send eventclient.
 
 %prep
-%setup -q -n xbmc-%{version}-%{codename}
-%patch0
-%patch1
-%patch5 -p1
+%if %nightly
+%setup -q -n %name-%nightly_date-%nightly_git-%nightly_branch
+%else
+%if %snap
+%setup -q -n %name-%branch_release-%snap
+%else
+%if %prel
+%setup -q -n xbmc-%{tag}
+%else
+%setup -q -n xbmc-%{version}-%{branch_release}
+%endif
+%endif
+%endif
+%__cp %{SOURCE2}	tools/depends/target/libdvdcss/libdvdcss-master.tar.gz
+%__cp %{SOURCE3}	tools/depends/target/libdvdnav/libdvdnav-master.tar.gz
+%__cp %{SOURCE4}	tools/depends/target/libdvdread/libdvdread-master.tar.gz
 
-tar -xf %{SOURCE1}
-mv xbmc-pvr-addons-%{pvr_addons_archive_name} pvr-addons
-pushd pvr-addons
-%patch6 -p1
-./bootstrap
-popd
+%apply_patches
+# otherwise backups end up in binary rpms
+find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
 
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
+# remove prebuilt libraries
+find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -print -delete
 
-# Remove build time references so build-compare can do its work
-#FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
-#FAKE_BUILDTIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%H:%%M:%%S')
-#FAKE_BUILDDATETIME=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes)
-
-FAKE_BUILDDATE='Feb  7 2015'
-FAKE_BUILDTIME=18:19:09
-FAKE_BUILDDATETIME='Sat Feb  7 18:19:09 UTC 2015'
-
-# remove it in ffmpeg archive and repackage it
-tar xpfz %{SOURCE2} -C tools/depends/target/ffmpeg/
-for file in tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/ffprobe.c tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}/cmdutils.c; do
-    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
-done
-tar cpfz tools/depends/target/ffmpeg/ffmpeg-%{ffmpeg_archive_name}.tar.gz -C tools/depends/target/ffmpeg/ FFmpeg-%{ffmpeg_archive_name}/
-rm -r tools/depends/target/ffmpeg/FFmpeg-%{ffmpeg_archive_name}
-
-# remove the remaining occurencies in the source tree
-for file in lib/timidity/timidity/speex_a.c xbmc/Application.cpp xbmc/GUIInfoManager.cpp ; do
-    sed -i -e "s/__DATE__/\"$FAKE_BUILDDATE\"/" -e "s/__TIME__/\"$FAKE_BUILDTIME\"/" $file
-done
-for file in xbmc/interfaces/python/PythonSwig.cpp.template ; do
-    sed -i -e "/PyModule_AddStringConstant.*__date__/ s/\${new Date()\.toString()}/$FAKE_BUILDDATETIME/"  $file
-done
-
-chmod +x bootstrap
-./bootstrap
-
-cp -fp configure.ac configure.in
-rm -f configure.ac
+# win32 only
+rm -rf system/players/dvdplayer/etc/fonts
 
 %build
-#export CC=gcc
-#export CXX=g++
-
-# fix clang: error: unknown argument: '-mno-ms-bitfields'
-%if %mdvver >= 201500
-#%global optflags %{optflags} -Qunused-arguments
+%if %nightly
+export GIT_REV=%nightly_git
+%else
+%if %snap
+export GIT_REV=%snap
+%else
+%if %prel
+export GIT_REV=%tag
+%else
+export GIT_REV="tarball"
 %endif
+%endif
+%endif
+
+%ifarch %ix86
+export CC=gcc
+export CXX=g++
+%endif
+
+JAVA=%{java} CLASSPATH=$(build-classpath commons-lang) ./bootstrap
 
 # due to xbmc modules that use symbols from xbmc binary
 # and are not using libtool
 %define _disable_ld_no_undefined 1
 
 # Workaround configure using git to override GIT_REV (TODO: fix it properly)
-#export ac_cv_prog_HAVE_GIT="no"
+export ac_cv_prog_HAVE_GIT="no"
 
-ln -s %{_bindir}/python2 python
-export PATH=`pwd`:$PATH
+%if %without internal_ffmpeg
+# (Anssi 11/2014) Laazyyy.
+# Kodi build assumes FFmpeg patched with ff_read_frame_flush() available as av_read_frame_flush().
+# We have that patch but use a different name to signify that it is Kodi specific.
+export CXXFLAGS="%optflags -Dav_read_frame_flush=av_read_frame_flush_mga_kodi_mod"
+%endif
 
-
-export PYTHON_VERSION=2
-
-%configure \
-	--enable-airplay \
-	--enable-vdpau \
-	--enable-vaapi \
-	--enable-rtmp \
-	--enable-libbluray \
+%configure2_5x \
+%if %without internal_ffmpeg
+	--with-ffmpeg=shared \
+%endif
 	--disable-debug \
+	--disable-ccache \
+	--disable-non-free \
 	--disable-dvdcss \
-	--enable-shared \
-	--enable-optimizations \
-	--disable-static \
-    --with-ffmpeg=shared \
-%if %{build_cec}
-	--enable-libcec \
-%endif
-%ifarch %{arm}
-	--enable-tegra --disable-neon \
-%endif
 	--enable-goom \
-	--enable-pulse \
 	--with-lirc-device=/var/run/lirc/lircd
 
 # non-free = unrar
 # dvdcss is handled via dlopen when disabled
+# hal is disabled as it is just a fallback when the replacmenets are
+# not available
 
 %make
 %make -C tools/EventClients wiimote
 
 %install
-%makeinstall_std
-%makeinstall_std -C tools/EventClients
-
-#remove the doc files from unversioned /usr/share/doc/kodi, they should be in versioned docdir
-rm -r %{buildroot}/%{_datadir}/doc/
-
-# copy manpages
-install -m 644 -D docs/manpages/kodi-standalone.1 %{buildroot}%{_mandir}/man1/kodi-standalone.1
-install -m 644 -D docs/manpages/kodi.bin.1 %{buildroot}%{_mandir}/man1/kodi.1
-
-# remove win32 source files
-rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.addon/dlfcn-win32.cpp
-rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.addon/dlfcn-win32.h
-rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.addon/dlfcn-win32.cpp
-rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.addon/dlfcn-win32.h
-
-# remove duplicate header files
-rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.addon/libXBMC_addon.h
-rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.addon/libXBMC_addon.h
-rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.codec/libXBMC_codec.h
-rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.codec/libXBMC_codec.h
-rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.gui/libXBMC_gui.h
-rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.gui/libXBMC_gui.h
-rm -f %{buildroot}%{_kodi_addons_dir}/library.kodi.pvr/libXBMC_pvr.h
-rm -f %{buildroot}%{_kodi_addons_dir}/library.xbmc.pvr/libXBMC_pvr.h
-
-# delete fixed rpath from smbclient.pc - this fixes
-# http://trac.kodi.tv/ticket/15497 and
-# http://bugzilla.opensuse.org/show_bug.cgi?id=902421
-
-chrpath %{buildroot}%{_libdir}/kodi/kodi.bin >/dev/null 2>&1 && \
-chrpath -d %{buildroot}%{_libdir}/kodi/kodi.bin
+%make_install
+%make_install -C tools/EventClients
 
 # unused
 rm %{buildroot}%{_datadir}/xsessions/{xbmc,kodi}.desktop
@@ -532,9 +423,9 @@ find %{buildroot}%{_datadir}/%{name}/addons/skin.*/media -name '*.png' -delete
 
 # remove compat directory symlinks (RPM cannot handle dir=>symlink transition so
 # more complex handling would be needed for these)
-rm -f %{buildroot}%{_datadir}/xbmc
-rm -f %{buildroot}%{_libdir}/xbmc
-rm -f %{buildroot}%{_includedir}/xbmc
+rm %{buildroot}%{_datadir}/xbmc
+rm %{buildroot}%{_libdir}/xbmc
+rm %{buildroot}%{_includedir}/xbmc
 
 ( # for IFS and +x
 # Check for issues in ELF binaries
@@ -563,8 +454,13 @@ for file in $(find %{buildroot} -type f); do
 			nm -f posix -D --no-demangle --defined-only $depfile | grep -q "^$symbol " && continue 2
 		done
 		# Euphoria references rsxs PNG class, but it is never used at runtime,
-		# so it results in no errors due to RTLD_LAZY being used by xbmc module loader.
-		case $file:$symbol in */Euphoria.xbs:_ZN3PNG*) continue; esac
+		# so it results in no errors due to RTLD_LAZY being used by %{name} module loader.
+		case $file:$symbol in
+			*/Euphoria.xbs:_ZN3PNG*) continue;;
+%if %with internal_ffmpeg
+			*/dvdplayer/*.so:*) continue;;
+%endif
+		esac
 		# the symbol was not found
 		undefined="${undefined}$file: $symbol\n"
 	done
@@ -574,3 +470,60 @@ ok=1
 [ -n "$fhserr" ] && echo -e "$fhserr" && echo "Binaries in datadir!" && ok=
 [ -n "$ok" ]
 )
+
+%files
+%doc %{_docdir}/%{name}
+%{_sysconfdir}/X11/wmsession.d/15Kodi
+%{_bindir}/%{name}
+%{_bindir}/%{name}-standalone
+# compat
+%{_bindir}/xbmc
+%{_bindir}/xbmc-standalone
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/addons
+%dir %{_libdir}/%{name}/system
+%dir %{_libdir}/%{name}/system/players
+%dir %{_libdir}/%{name}/system/players/VideoPlayer
+%{_libdir}/%{name}/%{name}.bin
+%{_libdir}/%{name}/%{name}-xrandr
+%dir %{_libdir}/%{name}/addons/*
+%{_libdir}/%{name}/addons/*/*.so
+%{_libdir}/%{name}/system/libcpluff-*-linux.so
+%{_libdir}/%{name}/system/libexif-*-linux.so
+%ifarch %ix86 x86_64
+%{_libdir}/%{name}/system/libsse4-*-linux.so
+%endif
+%{_libdir}/%{name}/system/players/VideoPlayer/libdvd*-*-linux.so
+%if %with internal_ffmpeg
+%{_libdir}/%{name}/system/players/dvdplayer/av*-linux.so
+%{_libdir}/%{name}/system/players/dvdplayer/postproc-*-linux.so
+%{_libdir}/%{name}/system/players/dvdplayer/swscale-*-linux.so
+%endif
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/privacy-policy.txt
+%{_datadir}/%{name}/addons
+%{_datadir}/%{name}/media
+%{_datadir}/%{name}/system
+%{_datadir}/%{name}/userdata
+%{_datadir}/applications/%{name}.desktop
+%{_iconsdir}/hicolor/*/apps/%{name}.png
+
+%files eventclients-common
+%python_sitelib/%{name}
+%dir %{_datadir}/pixmaps/%{name}
+%{_datadir}/pixmaps/%{name}/*.png
+
+%files devel
+%{_includedir}/%{name}
+%{_libdir}/%{name}/*.cmake
+
+%files eventclient-ps3
+%{_bindir}/%{name}-ps3d
+%{_bindir}/%{name}-ps3remote
+
+%files eventclient-%{name}-send
+%{_bindir}/%{name}-send
+
+%files eventclient-wiiremote
+%{_bindir}/%{name}-wiiremote
+

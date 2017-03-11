@@ -1,0 +1,16 @@
+--- xbmc-17.0-Krypton/xbmc/utils/RssReader.cpp.orig	2017-03-07 11:25:10.629816301 +0000
++++ xbmc-17.0-Krypton/xbmc/utils/RssReader.cpp	2017-03-07 11:25:41.697295264 +0000
+@@ -269,11 +269,11 @@
+   if (m_tagSet.empty())
+     AddTag("title");
+ 
+-  while (itemNode > 0)
++  while (itemNode)
+   {
+     TiXmlNode* childNode = itemNode->FirstChild();
+     mTagElements.clear();
+-    while (childNode > 0)
++    while (childNode)
+     {
+       std::string strName = childNode->ValueStr();
+ 
