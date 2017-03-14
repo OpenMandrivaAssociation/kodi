@@ -100,6 +100,8 @@ Group:		Video
 BuildRequires:	boost-devel
 %if %without internal_ffmpeg
 BuildRequires:	ffmpeg-devel
+%else
+BuildRequires:	curl
 %endif
 BuildRequires:	pkgconfig(libmpeg2)
 BuildRequires:	libogg-devel
