@@ -17,7 +17,7 @@
 %define tag	%{version}%([ "%prel" = "0" ] || echo "%prel" | sed s,beta,b,)-%{branch_release}
 
 # build with internal ffmpeg, disabled by default (--with internal_ffmpeg)
-%bcond_with	internal_ffmpeg
+%bcond_without	internal_ffmpeg
 
 %if %with	internal_ffmpeg
 # issue with 11.0 internal ffmpeg, haven't bothered with patching as it is
