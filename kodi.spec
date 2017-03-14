@@ -108,6 +108,7 @@ BuildRequires:	python-devel
 BuildRequires:	glew-devel
 BuildRequires:	pkgconfig(dvdnav)
 BuildRequires:	pkgconfig(dvdread)
+BuildRequires:	pkgconfig(egl)
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(glesv2)
