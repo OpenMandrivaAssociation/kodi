@@ -497,11 +497,6 @@ ok=1
 %{_libdir}/%{name}/system/libsse4-*-linux.so
 %endif
 %{_libdir}/%{name}/system/players/VideoPlayer/libdvd*-*-linux.so
-%if %with internal_ffmpeg
-%{_libdir}/%{name}/system/players/dvdplayer/av*-linux.so
-%{_libdir}/%{name}/system/players/dvdplayer/postproc-*-linux.so
-%{_libdir}/%{name}/system/players/dvdplayer/swscale-*-linux.so
-%endif
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/privacy-policy.txt
 %{_datadir}/%{name}/addons
