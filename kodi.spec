@@ -207,7 +207,7 @@ Requires:	%dlopenreq bluray
 Requires:	%dlopenreq nfs
 Requires:	%dlopenreq afpclient
 Requires:	%dlopenreq plist
-Requires:	%dlopenreq shairplay
+#Requires:	%dlopenreq shairplay
 Requires:	%dlopenreq cec
 #Requires:	%dlopenreq dcadec
 # TODO: FEH.py is useless nowadays, drop it here and upstream.
