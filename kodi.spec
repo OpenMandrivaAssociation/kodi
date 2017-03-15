@@ -4,7 +4,7 @@
 %define version	17.0
 %define snap	0
 %define prel	0
-%define rel	1
+%define rel	2
 
 %if %snap
 %define branch	%branch_release
