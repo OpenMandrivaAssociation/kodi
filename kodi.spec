@@ -1,7 +1,7 @@
 %define _disable_lto 1
 
 %define branch_release	Krypton
-%define version	17.0
+%define version	17.6
 %define snap	0
 %define prel	0
 %define rel	2
@@ -17,7 +17,7 @@
 %define tag	%{version}%([ "%prel" = "0" ] || echo "%prel" | sed s,beta,b,)-%{branch_release}
 
 # build with internal ffmpeg, disabled by default (--with internal_ffmpeg)
-%bcond_with	internal_ffmpeg
+%bcond_without	internal_ffmpeg
 
 %if %with	internal_ffmpeg
 # issue with 11.0 internal ffmpeg, haven't bothered with patching as it is
@@ -61,13 +61,14 @@ Release:	%mkrel %rel
 # Upstream tarballs seem to not be available yet... so:
 # git archive --prefix=xbmc-13.0-Gotham/ 13.0-Gotham | xz > xbmc-13.0.tar.xz
 #Source:		http://mirrors.xbmc.org/releases/source/%%{name}-%%{version}.tar.gz
-Source:		http://mirrors.xbmc.org/releases/source/%{version}-%{branch_release}.tar.gz
+Source:		https://github.com/xbmc/xbmc/archive/%{version}-%{branch_release}.tar.gz
 %endif
 %endif
 %endif
 Source2:	libdvdcss-master.tar.gz
 Source3:	libdvdnav-master.tar.gz
 Source4:	libdvdread-master.tar.gz
+Source6:	3.1.11-Krypton-17.5.tar.gz
 
 URL:		http://kodi.tv/
 
@@ -336,6 +337,8 @@ This package contains the %{name}-send eventclient.
 %__cp %{SOURCE2}	tools/depends/target/libdvdcss/libdvdcss-master.tar.gz
 %__cp %{SOURCE3}	tools/depends/target/libdvdnav/libdvdnav-master.tar.gz
 %__cp %{SOURCE4}	tools/depends/target/libdvdread/libdvdread-master.tar.gz
+
+%__cp %{SOURCE6} tools/depends/target/ffmpeg/ffmpeg-3.1.11-Krypton-17.5.tar.gz
 
 %apply_patches
 # otherwise backups end up in binary rpms

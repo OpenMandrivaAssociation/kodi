@@ -1,5 +1,6 @@
 sources:
-  17.0-Krypton.tar.gz: f3b734743c137eda48a1d171738817ef1f04fbde
+  17.6-Krypton.tar.gz: c7cd7aaf2bae587d068c3f5ca1f12e7c241f5faf
+  3.1.11-Krypton-17.5.tar.gz: fc0fb693d90944872dd819867ebabedabffdb33d
   kodi.png: d5ae591636df2d2229c32b937ceb9f961a1037a8
   libdvdcss-master.tar.gz: 341ed61d0b5f4764e38ac92c8c86b5f6796bcdda
   libdvdnav-master.tar.gz: 100876f8d9f53610b89ce0d2909915e839fa2f18

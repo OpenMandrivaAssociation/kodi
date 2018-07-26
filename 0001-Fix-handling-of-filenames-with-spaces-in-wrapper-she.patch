@@ -1,18 +1,7 @@
-From 23c6b75f32bbbd845d1a7b41150be71fbe5dff85 Mon Sep 17 00:00:00 2001
-From: Anssi Hannula <anssi@xbmc.org>
-Date: Wed, 11 Sep 2013 21:58:00 +0300
-Subject: [PATCH] Fix handling of filenames with spaces in wrapper shell script
-
-FIXME/TODO
-
-This is currently done by dropping the option handling unneeded in
-Mageia, since handling this properly would be a lot of work:
-http://www.seanius.net/blog/2009/03/saving-and-restoring-positional-params-redux/
-diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in xbmc-14.0b3-Helix/tools/Linux/kodi.sh.in
---- xbmc-17.0-Krypton/tools/Linux/kodi.sh.in.orig	2017-02-10 10:45:29.088707741 +0100
-+++ xbmc-17.0-Krypton/tools/Linux/kodi.sh.in	2017-02-10 10:46:36.760026017 +0100
-@@ -33,20 +33,6 @@
- export __GL_YIELD=USLEEP
+--- xbmc-17.1-Krypton/tools/Linux/kodi.sh.in.orig	2017-03-31 16:19:01.557278927 +0200
++++ xbmc-17.1-Krypton/tools/Linux/kodi.sh.in	2017-03-31 16:20:26.688901651 +0200
+@@ -36,19 +36,6 @@
+ export MALLOC_MMAP_THRESHOLD_=131072
  
  
 -# Check for some options used by this script
@@ -28,11 +17,10 @@ diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' xbmc-14.0b3-Helix/tools/Li
 -            ;;
 -    esac
 -done
--
+ 
  migrate_home()
  {
-   [ "$(basename $0)" = "xbmc" ] && echo "WARNING: Running ${bin_name} as "xbmc" is deprecated and will be removed in later versions, please switch to using the ${bin_name} binary"
-@@ -160,7 +146,7 @@
+@@ -163,7 +150,7 @@
  while [ $(( $LOOP )) = "1" ]
  do
    LOOP=0
@@ -41,4 +29,3 @@ diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' xbmc-14.0b3-Helix/tools/Li
    RET=$?
    if [ $(( $RET == 65 )) = "1" ]
    then # User requested to restart app
-
