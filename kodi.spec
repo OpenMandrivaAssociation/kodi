@@ -340,7 +340,7 @@ This package contains the %{name}-send eventclient.
 
 %__cp %{SOURCE6} tools/depends/target/ffmpeg/ffmpeg-3.1.11-Krypton-17.5.tar.gz
 
-%apply_patches
+%autopatch -p1
 # otherwise backups end up in binary rpms
 find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
 
