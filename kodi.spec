@@ -36,7 +36,7 @@ Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
 %if ! %{master}
-Source0:        https://github.com/xbmc/xbmc/archive/%{version}%{?prel:%{prel}}-%{codename}/%{name}-%{version}%{?prel:%{prel}}-%{codename}.tar.gz
+Source0:        https://github.com/xbmc/xbmc/archive/19.0a2-Matrix/xbmc-19.0a2-Matrix.tar.gz
 %else
 Source0:        https://github.com/xbmc/xbmc/archive/master/%{name}-%{version}%{?prel:-git%{prel}}-%{codename}.tar.gz
 %endif
