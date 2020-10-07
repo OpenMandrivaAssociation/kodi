@@ -33,7 +33,7 @@ BuildRequires:  cmake
 BuildRequires:  ninja
 BuildRequires:  pkgconfig(expat)
 BuildRequires:  ffmpeg-devel
-BuildRequires:  pkgconfig(cwiid)
+#BuildRequires:  pkgconfig(cwiid)
 BuildRequires:  pkgconfig(libass)
 BuildRequires:  pkgconfig(libcdio)
 BuildRequires:  crossguid-devel
@@ -46,12 +46,12 @@ BuildRequires:  pkgconfig(dvdread)
 BuildRequires:  pkgconfig(dvdnav)
 BuildRequires:  pkgconfig(lzo2)
 BuildRequires:  pkgconfig(openssl)
-BuildRequires:  pcre2-devel
+BuildRequires:  pkgconfig(libpcre2-32)
 BuildRequires:  pkgconfig(libpcrecpp)
 BuildRequires:  rapidjson
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(taglib)
-BuildRequires:  pkgconfig(tinyxml)
+BuildRequires:  tinyxml-devel
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(avahi-core)
 BuildRequires:  pkgconfig(bluez)
@@ -71,7 +71,7 @@ BuildRequires:  pkgconfig(libudev)
 BuildRequires:  pkgconfig(libxslt)
 BuildRequires:  graphviz
 BuildRequires:  doxygen
-BuildRequires:  mesaegl-devel
+BuildRequires:  egl-devel
 BuildRequires:  pkgconfig(egl)
 BuildRequires:  pkgconfig(gl)
 BuildRequires:  pkgconfig(glu)
@@ -91,12 +91,12 @@ BuildRequires:  giflib-devel
 BuildRequires:  git-core
 BuildRequires:  glibc-devel
 BuildRequires:  java-openjdk-headless
-BuildRequires:  shairplay-devel
+#BuildRequires:  shairplay-devel
 BuildRequires:  swig
 BuildRequires:  yasm
-BuildRequires:  pkgconfig(fstrcmp)
+#BuildRequires:  pkgconfig(fstrcmp)
 BuildRequires:  pkgconfig(spdlog)
-BuildRequires:  pkgconfig(udfread)
+#BuildRequires:  pkgconfig(udfread)
 BuildRequires:  pkgconfig(wavpack)
 
 %ifarch %ix86
