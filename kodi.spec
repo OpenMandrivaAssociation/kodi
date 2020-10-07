@@ -94,7 +94,7 @@ BuildRequires:  java-openjdk-headless
 #BuildRequires:  shairplay-devel
 BuildRequires:  swig
 BuildRequires:  yasm
-#BuildRequires:  pkgconfig(fstrcmp)
+BuildRequires:  pkgconfig(fstrcmp)
 BuildRequires:  pkgconfig(spdlog)
 BuildRequires:  pkgconfig(udfread)
 BuildRequires:  pkgconfig(wavpack)
