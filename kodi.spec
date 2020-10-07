@@ -1,25 +1,3 @@
-# Set if we use the master from git
-%define         master 1
-
-%define         rel 1
-
-%define         codename Matrix
-%define         prel 20201007
-%define         final 0
-
-%if 0%{prel}
-%define xbmc_dir xbmc-%{version}-%{prel}-%{codename}
-%define xmbc_rel %mkrel -c %{?prel:%{prel}} %{rel}
-%endif
-%if %{master}
-%define xbmc_dir xbmc-master
-%define xmbc_rel %mkrel -c git%{prel} %{rel}
-%endif
-%if %{final}
-%define xbmc_dir xbmc-%{version}-%{codename}
-%define xmbc_rel %mkrel %{rel}
-%endif
-
 %if "%distro_section" == "tainted"
 %define         with_dvdcss 1
 %else
@@ -30,16 +8,12 @@
 
 Name:           kodi
 Version:        19.0
-Release:        %{xmbc_rel}
+Release:        1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
-%if ! %{master}
 Source0:        https://github.com/xbmc/xbmc/archive/19.0a2-Matrix/xbmc-19.0a2-Matrix.tar.gz
-%else
-Source0:        https://github.com/xbmc/xbmc/archive/master/%{name}-%{version}%{?prel:-git%{prel}}-%{codename}.tar.gz
-%endif
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.2-Leia-Beta-5.tar.gz#/libdvdcss-1.4.2-Leia-Beta-5.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.0.0-Leia-Alpha-3.tar.gz#/libdvdnav-6.0.0-Leia-Alpha-3.tar.gz
 Source4:        https://github.com/xbmc/libdvdread/archive/6.0.0-Leia-Alpha-3.tar.gz#/libdvdread-6.0.0-Leia-Alpha-3.tar.gz
@@ -298,7 +272,7 @@ and entertainment hub for digital media.
 This package contains the Texturepacker program for Kodi.
 
 %prep
-%autosetup -p1 -n %{xbmc_dir}
+%autosetup -p1 -n xbmc-19.0a2-Matrix
 
 cp %{S:10} /tmp/
 cp %{S:11} .
@@ -355,10 +329,10 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
        -DPYTHON_INCLUDE_DIR=%{_includedir}/python%{pyver} \
        -DCROSSGUID_INCLUDE_DIR=%{_includedir}/crossguid
 
-%cmake_build
+%make_build
 
 %install
-%cmake_install
+%make_install -C build
 
 rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
 
