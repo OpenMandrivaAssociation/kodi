@@ -33,7 +33,7 @@ BuildRequires:  cmake
 BuildRequires:  ninja
 BuildRequires:  pkgconfig(expat)
 BuildRequires:  ffmpeg-devel
-#BuildRequires:  pkgconfig(cwiid)
+BuildRequires:  pkgconfig(cwiid)
 BuildRequires:  pkgconfig(libass)
 BuildRequires:  pkgconfig(libcdio)
 BuildRequires:  crossguid-devel
@@ -96,7 +96,7 @@ BuildRequires:  swig
 BuildRequires:  yasm
 #BuildRequires:  pkgconfig(fstrcmp)
 BuildRequires:  pkgconfig(spdlog)
-#BuildRequires:  pkgconfig(udfread)
+BuildRequires:  pkgconfig(udfread)
 BuildRequires:  pkgconfig(wavpack)
 
 %ifarch %ix86
