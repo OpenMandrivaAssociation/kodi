@@ -1,0 +1,13 @@
+Index: xbmc-master/xbmc/utils/SystemInfo.cpp
+===================================================================
+--- xbmc-master/xbmc/utils/SystemInfo.cpp
++++ xbmc-master/xbmc/utils/SystemInfo.cpp	2020-06-05 20:39:03.403038909 +0200
+@@ -1186,7 +1186,7 @@
+ std::string CSysInfo::GetVersion()
+ {
+   return GetVersionShort() + " (" + CCompileInfo::GetVersionCode() + ")" +
+-         " Git:" + CCompileInfo::GetSCMID();
++         " " + CCompileInfo::GetSCMID();
+ }
+ 
+ std::string CSysInfo::GetVersionCode()
