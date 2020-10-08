@@ -329,7 +329,7 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
        -DPYTHON_INCLUDE_DIR=%{_includedir}/python%{pyver} \
        -DCROSSGUID_INCLUDE_DIR=%{_includedir}/crossguid
 
-%make_build
+%make_build -C build
 
 %install
 %make_install -C build
