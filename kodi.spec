@@ -329,10 +329,10 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
        -DPYTHON_INCLUDE_DIR=%{_includedir}/python%{pyver} \
        -DCROSSGUID_INCLUDE_DIR=%{_includedir}/crossguid
 
-%make_build -C build
+%ninja_build
 
 %install
-%make_install -C build
+%ninja_install -C build
 
 rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
 
