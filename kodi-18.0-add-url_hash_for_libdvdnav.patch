@@ -1,0 +1,12 @@
+Index: xbmc-18.0b5-Leia/cmake/modules/FindLibDvd.cmake
+===================================================================
+--- xbmc-18.0b5-Leia/cmake/modules/FindLibDvd.cmake
++++ xbmc-18.0b5-Leia/cmake/modules/FindLibDvd.cmake	2018-11-04 17:51:58.161035602 +0100
+@@ -187,6 +187,7 @@
+     ExternalProject_Add(dvdnav URL ${LIBDVDNAV_URL}
+                                 DOWNLOAD_NAME libdvdnav-${libdvdnav_VER}.tar.gz
+                                 DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/${CORE_BUILD_DIR}/download
++				URL_HASH SHA256=071e414e61b795f2ff9015b21a85fc009dde967f27780d23092643916538a57a
+                                 PREFIX ${CORE_BUILD_DIR}/libdvd
+                                 CONFIGURE_COMMAND ac_cv_path_GIT= <SOURCE_DIR>/configure
+                                                   --target=${HOST_ARCH}

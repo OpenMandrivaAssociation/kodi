@@ -1,7 +1,6 @@
 sources:
-  17.6-Krypton.tar.gz: c7cd7aaf2bae587d068c3f5ca1f12e7c241f5faf
-  3.1.11-Krypton-17.5.tar.gz: fc0fb693d90944872dd819867ebabedabffdb33d
+  xbmc-19.0a2-Matrix.tar.gz: 7102cc737864f49c4ce7e73e28e9db4820c3acf5
   kodi.png: d5ae591636df2d2229c32b937ceb9f961a1037a8
-  libdvdcss-master.tar.gz: 341ed61d0b5f4764e38ac92c8c86b5f6796bcdda
-  libdvdnav-master.tar.gz: 100876f8d9f53610b89ce0d2909915e839fa2f18
-  libdvdread-master.tar.gz: 50946afd5bb04a2e795dc0334fef5c30a6a24fed
+  libdvdcss-1.4.2-Leia-Beta-5.tar.gz: 463e74819b204eeaed340fb70318f09f46add6ce
+  libdvdnav-6.0.0-Leia-Alpha-3.tar.gz: d1a12e3a31c017136725ed4af4e08be3bfcfb0f8
+  libdvdread-6.0.0-Leia-Alpha-3.tar.gz: 04815d5c28911c4180ae198c4915e3e86582e5f5
