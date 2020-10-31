@@ -171,7 +171,7 @@ This package contains common files for eventclients.
 Summary:        PS3 eventclients for Kodi
 Group:          Video/Players
 License:        GPLv2+
-Requires:       python3dist(pybluez)
+Recommends:       python3dist(pybluez)
 Requires:       %{name}-eventclients-common = %{version}-%{release}
 # requires via zeroconf.py, only used by xbmc-ps3d:
 Requires:       python3dist(pygobject)
