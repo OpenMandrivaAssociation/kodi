@@ -174,8 +174,8 @@ License:        GPLv2+
 Requires:       python3dist(pybluez)
 Requires:       %{name}-eventclients-common = %{version}-%{release}
 # requires via zeroconf.py, only used by xbmc-ps3d:
-Requires:       python3-gobject
-Requires:       python3dist(dbus-python)
+Requires:       python3dist(pygobject)
+Requires:       python-dbus
 
 %description    eventclient-ps3
 Kodi is an award-winning free and open source software media player
