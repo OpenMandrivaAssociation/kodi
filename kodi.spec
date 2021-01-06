@@ -134,7 +134,7 @@ Summary:        Firewall services for Kodi
 Group:          Video/Players
 License:        GPLv2+
 BuildArch:      noarch
-Requires(pre):  firewalld-filesystem
+Requires(pre):  firewalld
 Requires:       %{name} >= %{version}-%{release}
 
 %description    firewalld-services
@@ -175,7 +175,7 @@ Recommends:       python3dist(pybluez)
 Requires:       %{name}-eventclients-common = %{version}-%{release}
 # requires via zeroconf.py, only used by xbmc-ps3d:
 Requires:       python3dist(pygobject)
-Requires:       python-dbus
+Requires:       python3dist(dbus-python)
 
 %description    eventclient-ps3
 Kodi is an award-winning free and open source software media player
