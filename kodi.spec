@@ -101,6 +101,7 @@ BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-client++)
 BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(wavpack)
+BuildRequires:  pkgconfig(xkbcommon)
 
 %ifarch %ix86
 BuildRequires:  nasm
