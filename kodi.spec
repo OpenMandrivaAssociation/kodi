@@ -7,13 +7,13 @@
 %define         _firewalld %{_prefix}/lib/firewalld
 
 Name:           kodi
-Version:        19.0
+Version:        19.1
 Release:        1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
-Source0:        https://github.com/xbmc/xbmc/archive/19.0a2-Matrix/xbmc-19.0a2-Matrix.tar.gz
+Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}-Matrix.tar.gz
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.2-Leia-Beta-5.tar.gz#/libdvdcss-1.4.2-Leia-Beta-5.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.0.0-Leia-Alpha-3.tar.gz#/libdvdnav-6.0.0-Leia-Alpha-3.tar.gz
 Source4:        https://github.com/xbmc/libdvdread/archive/6.0.0-Leia-Alpha-3.tar.gz#/libdvdread-6.0.0-Leia-Alpha-3.tar.gz
@@ -31,14 +31,17 @@ Patch5:         cheat-sse-build.patch
 BuildRequires:  autoconf
 BuildRequires:  cmake
 BuildRequires:  ninja
-BuildRequires:  pkgconfig(expat)
+BuildRequires:  rapidjson
 BuildRequires:  ffmpeg-devel
+BuildRequires:  flatbuffers-devel
+BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
+BuildRequires:  pkgconfig(dav1d)
+BuildRequires:  pkgconfig(expat)
 BuildRequires:  pkgconfig(libass)
 BuildRequires:  pkgconfig(libcdio)
 BuildRequires:  crossguid-devel
 BuildRequires:  pkgconfig(libcurl)
-BuildRequires:  flatbuffers-devel
 BuildRequires:  cmake(fmt)
 BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(fribidi)
@@ -48,7 +51,7 @@ BuildRequires:  pkgconfig(lzo2)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(libpcre2-32)
 BuildRequires:  pkgconfig(libpcrecpp)
-BuildRequires:  rapidjson
+BuildRequires:  pkgconfig(mariadb)
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(taglib)
 BuildRequires:  tinyxml-devel
@@ -58,6 +61,7 @@ BuildRequires:  pkgconfig(bluez)
 BuildRequires:  pkgconfig(libbluray)
 BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(libcec)
+BuildRequires:  pkgconfig(libinput)
 BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  pkgconfig(lcms2)
 BuildRequires:  pkgconfig(liblircclient0)
@@ -76,7 +80,6 @@ BuildRequires:  pkgconfig(egl)
 BuildRequires:  pkgconfig(gl)
 BuildRequires:  pkgconfig(glu)
 BuildRequires:  pkgconfig(libdrm)
-BuildRequires:  pkgconfig(mariadb)
 BuildRequires:  pkgconfig(libplist-2.0)
 BuildRequires:  pkgconfig(libupnp)
 BuildRequires:  pkgconfig(xrandr)
@@ -97,7 +100,14 @@ BuildRequires:  yasm
 BuildRequires:  pkgconfig(fstrcmp)
 BuildRequires:  pkgconfig(spdlog)
 BuildRequires:  pkgconfig(udfread)
+BuildRequires:  pkgconfig(libva)
+BuildRequires:  pkgconfig(vdpau)
+BuildRequires:  pkgconfig(gbm)
+BuildRequires:  pkgconfig(wayland-client)
+BuildRequires:  pkgconfig(wayland-client++)
+BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(wavpack)
+BuildRequires:  pkgconfig(xkbcommon)
 
 %ifarch %ix86
 BuildRequires:  nasm
@@ -272,7 +282,7 @@ and entertainment hub for digital media.
 This package contains the Texturepacker program for Kodi.
 
 %prep
-%autosetup -p1 -n xbmc-19.0a2-Matrix
+%autosetup -p1 -n xbmc-%{version}-Matrix
 
 cp %{S:10} /tmp/
 cp %{S:11} .
@@ -293,6 +303,7 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
 
 %cmake -GNinja \
        -DX11_RENDER_SYSTEM=gl \
+       -DAPP_RENDER_SYSTEM=gl \
        -DKODI_DEPENDSBUILD=OFF \
        -DENABLE_STATIC_LIBS=OFF \
        -DENABLE_INTERNAL_FFMPEG=OFF \
