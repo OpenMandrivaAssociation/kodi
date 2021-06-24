@@ -34,8 +34,10 @@ BuildRequires:  ninja
 BuildRequires:  rapidjson
 BuildRequires:  ffmpeg-devel
 BuildRequires:  flatbuffers-devel
-BuildRequires:  pkgconfig(expat)
+BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
+BuildRequires:  pkgconfig(dav1d)
+BuildRequires:  pkgconfig(expat)
 BuildRequires:  pkgconfig(libass)
 BuildRequires:  pkgconfig(libcdio)
 BuildRequires:  crossguid-devel
@@ -98,6 +100,8 @@ BuildRequires:  yasm
 BuildRequires:  pkgconfig(fstrcmp)
 BuildRequires:  pkgconfig(spdlog)
 BuildRequires:  pkgconfig(udfread)
+BuildRequires:  pkgconfig(libva)
+BuildRequires:  pkgconfig(vdpau)
 BuildRequires:  pkgconfig(gbm)
 BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-client++)
