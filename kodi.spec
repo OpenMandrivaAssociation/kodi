@@ -97,6 +97,7 @@ BuildRequires:  yasm
 BuildRequires:  pkgconfig(fstrcmp)
 BuildRequires:  pkgconfig(spdlog)
 BuildRequires:  pkgconfig(udfread)
+BuildRequires:  pkgconfig(gbm)
 BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-client++)
 BuildRequires:  pkgconfig(wayland-protocols)
