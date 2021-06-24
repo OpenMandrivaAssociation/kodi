@@ -31,14 +31,15 @@ Patch5:         cheat-sse-build.patch
 BuildRequires:  autoconf
 BuildRequires:  cmake
 BuildRequires:  ninja
-BuildRequires:  pkgconfig(expat)
+BuildRequires:  rapidjson
 BuildRequires:  ffmpeg-devel
+BuildRequires:  flatbuffers-devel
+BuildRequires:  pkgconfig(expat)
 BuildRequires:  pkgconfig(cwiid)
 BuildRequires:  pkgconfig(libass)
 BuildRequires:  pkgconfig(libcdio)
 BuildRequires:  crossguid-devel
 BuildRequires:  pkgconfig(libcurl)
-BuildRequires:  flatbuffers-devel
 BuildRequires:  cmake(fmt)
 BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(fribidi)
@@ -48,7 +49,7 @@ BuildRequires:  pkgconfig(lzo2)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(libpcre2-32)
 BuildRequires:  pkgconfig(libpcrecpp)
-BuildRequires:  rapidjson
+BuildRequires:  pkgconfig(mariadb)
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(taglib)
 BuildRequires:  tinyxml-devel
@@ -299,6 +300,7 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
 
 %cmake -GNinja \
        -DX11_RENDER_SYSTEM=gl \
+       -DAPP_RENDER_SYSTEM=gl \
        -DKODI_DEPENDSBUILD=OFF \
        -DENABLE_STATIC_LIBS=OFF \
        -DENABLE_INTERNAL_FFMPEG=OFF \
