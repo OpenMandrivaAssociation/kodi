@@ -8,7 +8,7 @@
 
 Name:           kodi
 Version:        19.1
-Release:        1
+Release:        2
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -114,6 +114,7 @@ BuildRequires:  nasm
 %endif
 
 Requires:       lsb-release
+Requires:	samba-libs
 
 # TODO: FEH.py is useless nowadays, drop it here and upstream.
 # for FEH.py, to check current configuration is ok for xbmc:
