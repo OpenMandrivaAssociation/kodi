@@ -7,7 +7,7 @@
 %define         _firewalld %{_prefix}/lib/firewalld
 
 Name:           kodi
-Version:        19.2
+Version:        19.3
 Release:        1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
@@ -364,6 +364,7 @@ rm -f /tmp/cpuinfo
 %{_docdir}/%{name}/
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_datadir}/%{name}/
+%{_datadir}/metainfo/org.xbmc.kodi.metainfo.xml
 
 %files firewalld-services
 %{_firewalld}/services/%{name}-eventserver.xml
