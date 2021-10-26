@@ -364,6 +364,7 @@ rm -f /tmp/cpuinfo
 %{_docdir}/%{name}/
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_datadir}/%{name}/
+%{_datadir}/metainfo/org.xbmc.kodi.metainfo.xml
 
 %files firewalld-services
 %{_firewalld}/services/%{name}-eventserver.xml
