@@ -8,7 +8,7 @@
 
 Name:           kodi
 Version:        19.3
-Release:        1
+Release:        2
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
