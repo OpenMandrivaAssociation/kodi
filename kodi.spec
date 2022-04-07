@@ -7,8 +7,8 @@
 %define         _firewalld %{_prefix}/lib/firewalld
 
 Name:           kodi
-Version:        19.3
-Release:        2
+Version:        19.4
+Release:        1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
