@@ -99,7 +99,7 @@ BuildRequires:  swig
 BuildRequires:  yasm
 BuildRequires:  pkgconfig(fstrcmp)
 BuildRequires:  pkgconfig(spdlog)
-BuildRequires:  pkgconfig(udfread)
+BuildRequires:  pkgconfig(libudfread)
 BuildRequires:  pkgconfig(libva)
 BuildRequires:  pkgconfig(vdpau)
 BuildRequires:  pkgconfig(gbm)
