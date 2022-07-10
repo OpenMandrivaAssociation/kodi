@@ -1,5 +1,5 @@
 sources:
   xbmc-20.0a2-Nexus.tar.gz: 8ce9877e75bfd087802cee5c5d030d1832dedfc2
-  libdvdcss-1.4.2-Leia-Beta-5.tar.gz: 463e74819b204eeaed340fb70318f09f46add6ce
-  libdvdnav-6.0.0-Leia-Alpha-3.tar.gz: d1a12e3a31c017136725ed4af4e08be3bfcfb0f8
-  libdvdread-6.0.0-Leia-Alpha-3.tar.gz: 04815d5c28911c4180ae198c4915e3e86582e5f5
+  libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz: 6733441e831780529d04db447c0d412753d8aa99
+  libdvdread-6.1.3-Next-Nexus-Alpha2-2.tar.gz: e842fa214065b58dc604fa8e82dac011c2971200
+  libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz: da50c94c17f38e46e60bbe819627099b80602840
