@@ -32,7 +32,7 @@ BuildRequires:  autoconf
 BuildRequires:  cmake
 BuildRequires:  ninja
 BuildRequires:  rapidjson
-BuildRequires:  ffmpeg4-devel
+BuildRequires:  ffmpeg-devel
 BuildRequires:  flatbuffers-devel
 BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
