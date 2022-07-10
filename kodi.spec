@@ -14,16 +14,16 @@ Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
 Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}a2-Nexus.tar.gz
-Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.2-Leia-Beta-5.tar.gz#/libdvdcss-1.4.2-Leia-Beta-5.tar.gz
-Source3:        https://github.com/xbmc/libdvdnav/archive/6.0.0-Leia-Alpha-3.tar.gz#/libdvdnav-6.0.0-Leia-Alpha-3.tar.gz
-Source4:        https://github.com/xbmc/libdvdread/archive/6.0.0-Leia-Alpha-3.tar.gz#/libdvdread-6.0.0-Leia-Alpha-3.tar.gz
+Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
+Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
+Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdread-6.1.3-Next-Nexus-Alpha2-2.tar.gz
 
 Source10:       cpuinfo
 Source11:       VERSION
 
-Patch0:         kodi-18.0-add-url_hash_for_libdvdcss.patch
-Patch1:         kodi-18.0-add-url_hash_for_libdvdnav.patch
-Patch2:         kodi-18.0-add-url_hash_for_libdvdread.patch
+#Patch0:         kodi-18.0-add-url_hash_for_libdvdcss.patch
+#Patch1:         kodi-18.0-add-url_hash_for_libdvdnav.patch
+#Patch2:         kodi-18.0-add-url_hash_for_libdvdread.patch
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
