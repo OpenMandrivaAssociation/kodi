@@ -27,6 +27,8 @@ Source11:       VERSION
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
+# Fix build with FMT 9.0.0
+Patch6:         https://patch-diff.githubusercontent.com/raw/xbmc/xbmc/pull/21649.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
@@ -309,7 +311,7 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
        -DENABLE_STATIC_LIBS=OFF \
        -DENABLE_INTERNAL_FFMPEG=OFF \
        -DENABLE_INTERNAL_FLATBUFFERS=OFF \
-       -DENABLE_INTERNAL_FMT=ON \
+       -DENABLE_INTERNAL_FMT=OFF \
        -DENABLE_INTERNAL_CROSSGUID=OFF \
        -DENABLE_INTERNAL_FSTRCMP=OFF \
        -DENABLE_INTERNAL_DAV1D=OFF \
