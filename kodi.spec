@@ -34,7 +34,7 @@ BuildRequires:  autoconf
 BuildRequires:  cmake
 BuildRequires:  ninja
 BuildRequires:  rapidjson
-BuildRequires:  ffmpeg4-devel
+#BuildRequires:  ffmpeg-devel
 BuildRequires:  flatbuffers-devel
 BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
@@ -309,7 +309,7 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
        -DAPP_RENDER_SYSTEM=gl \
        -DKODI_DEPENDSBUILD=OFF \
        -DENABLE_STATIC_LIBS=OFF \
-       -DENABLE_INTERNAL_FFMPEG=OFF \
+       -DENABLE_INTERNAL_FFMPEG=ON \
        -DENABLE_INTERNAL_FLATBUFFERS=OFF \
        -DENABLE_INTERNAL_FMT=OFF \
        -DENABLE_INTERNAL_CROSSGUID=OFF \
