@@ -401,13 +401,9 @@ rm -f /tmp/cpuinfo
 %files python
 %{python3_sitelib}/%{name}/defs.*
 %{python3_sitelib}/%{name}/__init__.*
-%{python3_sitelib}/%{name}/__pycache__/__init*
-%{python3_sitelib}/%{name}/__pycache__/defs*
 
 %files python-xbmcclient
 %{python3_sitelib}/%{name}/xbmcclient.*
-%{python3_sitelib}/%{name}/__pycache__/xbmc*
 
 %files python-zeroconf
 %{python3_sitelib}/%{name}/zeroconf.*
-%{python3_sitelib}/%{name}/__pycache__/zero*
