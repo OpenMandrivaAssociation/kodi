@@ -387,7 +387,6 @@ rm -f /tmp/cpuinfo
 %files eventclient-ps3
 %{_bindir}/%{name}-ps3remote
 %{python3_sitelib}/%{name}/ps3/
-%{python3_sitelib}/%{name}/__pycache__/ps3*
 %{python3_sitelib}/%{name}/ps3_remote.*
 
 %files eventclient-%{name}-send
