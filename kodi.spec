@@ -32,6 +32,7 @@ Patch6:         https://patch-diff.githubusercontent.com/raw/xbmc/xbmc/pull/2164
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
+BuildRequires:  nasm
 BuildRequires:  ninja
 BuildRequires:  rapidjson
 BuildRequires:  ffmpeg4-devel
