@@ -356,7 +356,7 @@ rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
 rm -f /tmp/cpuinfo
 
 %files texturepacker
-#{_bindir}/TexturePacker
+%{_bindir}/kodi-TexturePacker
 
 %files
 %{_bindir}/%{name}
