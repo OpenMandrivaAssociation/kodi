@@ -7,41 +7,47 @@
 %define         _firewalld %{_prefix}/lib/firewalld
 
 Name:           kodi
-Version:        19.3
-Release:        2
+Version:        20.0
+Release:        0.alpha2.0
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
-Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}-Matrix.tar.gz
-Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.2-Leia-Beta-5.tar.gz#/libdvdcss-1.4.2-Leia-Beta-5.tar.gz
-Source3:        https://github.com/xbmc/libdvdnav/archive/6.0.0-Leia-Alpha-3.tar.gz#/libdvdnav-6.0.0-Leia-Alpha-3.tar.gz
-Source4:        https://github.com/xbmc/libdvdread/archive/6.0.0-Leia-Alpha-3.tar.gz#/libdvdread-6.0.0-Leia-Alpha-3.tar.gz
+Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}a2-Nexus.tar.gz
+Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
+Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
+Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdread-6.1.3-Next-Nexus-Alpha2-2.tar.gz
 
 Source10:       cpuinfo
 Source11:       VERSION
 
-Patch0:         kodi-18.0-add-url_hash_for_libdvdcss.patch
-Patch1:         kodi-18.0-add-url_hash_for_libdvdnav.patch
-Patch2:         kodi-18.0-add-url_hash_for_libdvdread.patch
+#Patch0:         kodi-18.0-add-url_hash_for_libdvdcss.patch
+#Patch1:         kodi-18.0-add-url_hash_for_libdvdnav.patch
+#Patch2:         kodi-18.0-add-url_hash_for_libdvdread.patch
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
+# Fix build with FMT 9.0.0
+Patch6:         https://patch-diff.githubusercontent.com/raw/xbmc/xbmc/pull/21649.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
+BuildRequires:  nasm
 BuildRequires:  ninja
 BuildRequires:  rapidjson
-BuildRequires:  ffmpeg-devel
+BuildRequires:  atomic-devel
+BuildRequires:  ffmpeg4-devel
 BuildRequires:  flatbuffers-devel
 BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
 BuildRequires:  pkgconfig(dav1d)
 BuildRequires:  pkgconfig(expat)
+BuildRequires:  pkgconfig(gmp)
 BuildRequires:  pkgconfig(libass)
 BuildRequires:  pkgconfig(libcdio)
 BuildRequires:  crossguid-devel
 BuildRequires:  pkgconfig(libcurl)
+BuildRequires:  pkgconfig(libunistring)
 BuildRequires:  cmake(fmt)
 BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(fribidi)
@@ -99,7 +105,7 @@ BuildRequires:  swig
 BuildRequires:  yasm
 BuildRequires:  pkgconfig(fstrcmp)
 BuildRequires:  pkgconfig(spdlog)
-BuildRequires:  pkgconfig(udfread)
+BuildRequires:  pkgconfig(libudfread)
 BuildRequires:  pkgconfig(libva)
 BuildRequires:  pkgconfig(vdpau)
 BuildRequires:  pkgconfig(gbm)
@@ -283,7 +289,7 @@ and entertainment hub for digital media.
 This package contains the Texturepacker program for Kodi.
 
 %prep
-%autosetup -p1 -n xbmc-%{version}-Matrix
+%autosetup -p1 -n xbmc-%{version}a2-Nexus
 
 cp %{S:10} /tmp/
 cp %{S:11} .
@@ -321,8 +327,6 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
        -DENABLE_LIRCCLIENT=ON \
        -DENABLE_CCACHE=OFF \
        -DENABLE_TESTING=OFF \
-       -DWITH_FFMPEG=%{_prefix} \
-       -DFFMPEG_PATH=%{_prefix} \
        -DENABLE_APP_AUTONAME=ON \
        -DFREETYPE_INCLUDE_DIR=%{_includedir}/freetype2 \
        -DGIT_VERSION="by %{_vendor}" \
@@ -352,7 +356,7 @@ rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
 rm -f /tmp/cpuinfo
 
 %files texturepacker
-%{_bindir}/TexturePacker
+%{_bindir}/kodi-TexturePacker
 
 %files
 %{_bindir}/%{name}
@@ -383,7 +387,6 @@ rm -f /tmp/cpuinfo
 %files eventclient-ps3
 %{_bindir}/%{name}-ps3remote
 %{python3_sitelib}/%{name}/ps3/
-%{python3_sitelib}/%{name}/__pycache__/ps3*
 %{python3_sitelib}/%{name}/ps3_remote.*
 
 %files eventclient-%{name}-send
@@ -398,13 +401,9 @@ rm -f /tmp/cpuinfo
 %files python
 %{python3_sitelib}/%{name}/defs.*
 %{python3_sitelib}/%{name}/__init__.*
-%{python3_sitelib}/%{name}/__pycache__/__init*
-%{python3_sitelib}/%{name}/__pycache__/defs*
 
 %files python-xbmcclient
 %{python3_sitelib}/%{name}/xbmcclient.*
-%{python3_sitelib}/%{name}/__pycache__/xbmc*
 
 %files python-zeroconf
 %{python3_sitelib}/%{name}/zeroconf.*
-%{python3_sitelib}/%{name}/__pycache__/zero*
