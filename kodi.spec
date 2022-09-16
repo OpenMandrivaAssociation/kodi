@@ -27,8 +27,6 @@ Source11:       VERSION
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
-# Fix build with FMT 9.0.0
-Patch6:         https://patch-diff.githubusercontent.com/raw/xbmc/xbmc/pull/21649.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
