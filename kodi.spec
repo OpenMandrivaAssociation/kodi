@@ -36,7 +36,7 @@ BuildRequires:  nasm
 BuildRequires:  ninja
 BuildRequires:  rapidjson
 BuildRequires:  atomic-devel
-BuildRequires:  ffmpeg-devel
+BuildRequires:  ffmpeg4-devel
 BuildRequires:  flatbuffers-devel
 BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
