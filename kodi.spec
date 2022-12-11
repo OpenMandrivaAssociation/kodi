@@ -8,12 +8,12 @@
 
 Name:           kodi
 Version:        20.0
-Release:        0.alpha3.0
+Release:        0.rc1.1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
-Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}a3-Nexus.tar.gz
+Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}rc1-Nexus.tar.gz
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
 Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdread-6.1.3-Next-Nexus-Alpha2-2.tar.gz
@@ -287,7 +287,7 @@ and entertainment hub for digital media.
 This package contains the Texturepacker program for Kodi.
 
 %prep
-%autosetup -p1 -n xbmc-%{version}a3-Nexus
+%autosetup -p1 -n xbmc-%{version}rc1-Nexus
 
 cp %{S:10} /tmp/
 cp %{S:11} .
