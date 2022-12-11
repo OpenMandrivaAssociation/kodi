@@ -27,6 +27,8 @@ Source11:       VERSION
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
+# from lireElec to fix compilation with mesa 22.3
+Patch6:         kodi-20.0rc1-fix-build-with-mesa-22.3.0.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
