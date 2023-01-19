@@ -289,7 +289,7 @@ and entertainment hub for digital media.
 This package contains the Texturepacker program for Kodi.
 
 %prep
-%autosetup -p1 -n xbmc-%{version}rc2-Nexus
+%autosetup -p1 -n xbmc-%{version}-Nexus
 
 cp %{S:10} /tmp/
 cp %{S:11} .
