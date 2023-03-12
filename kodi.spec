@@ -7,7 +7,7 @@
 %define         _firewalld %{_prefix}/lib/firewalld
 
 Name:           kodi
-Version:        20.0
+Version:        20.1
 Release:        1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
