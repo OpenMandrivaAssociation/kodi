@@ -302,6 +302,11 @@ pathfix.py -pni "%{__python3} %{py3_shbang_opts}" \
   addons lib tools
 
 %build
+%ifarch %{arm} %{armx}
+export CC=gcc
+export CXX=g++
+%endif
+
 export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 export PKGCONFIGPATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
