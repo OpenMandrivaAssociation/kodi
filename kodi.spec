@@ -74,6 +74,7 @@ BuildRequires:  pkgconfig(libnfs)
 BuildRequires:  pkgconfig(libpulse)
 BuildRequires:  pkgconfig(python3)
 BuildRequires:  pkgconfig(smbclient)
+BuildRequires:	samba-libs
 BuildRequires:  sndio-devel
 BuildRequires:  pkgconfig(libudev)
 BuildRequires:  pkgconfig(libxslt)
