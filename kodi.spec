@@ -8,7 +8,7 @@
 
 Name:           kodi
 Version:        20.2
-Release:        2
+Release:        3
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -27,6 +27,7 @@ Source11:       VERSION
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
+Patch6:		kodi-20.2-fmt-10.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
