@@ -99,7 +99,7 @@ BuildRequires:  pkgconfig(zlib)
 BuildRequires:  giflib-devel
 BuildRequires:  git-core
 BuildRequires:  glibc-devel
-BuildRequires:  java-21-openjdk
+BuildRequires:  java-20-openjdk
 #BuildRequires:  shairplay-devel
 BuildRequires:  swig
 BuildRequires:  yasm
