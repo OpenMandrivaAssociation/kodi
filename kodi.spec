@@ -99,7 +99,7 @@ BuildRequires:  pkgconfig(zlib)
 BuildRequires:  giflib-devel
 BuildRequires:  git-core
 BuildRequires:  glibc-devel
-BuildRequires:  java-openjdk-headless
+BuildRequires:  jre-current
 #BuildRequires:  shairplay-devel
 BuildRequires:  swig
 BuildRequires:  yasm
@@ -304,6 +304,8 @@ pathfix.py -pni "%{__python3} %{py3_shbang_opts}" \
   addons lib tools
 
 %build
+. %{_sysconfdir}/profile.d/90java.sh
+
 %ifarch %{arm} %{armx}
 export CC=gcc
 export CXX=g++
