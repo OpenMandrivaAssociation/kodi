@@ -5,15 +5,20 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
+%define		beta b1
 
 Name:           kodi
-Version:        20.2
-Release:        4
+Version:        21.0
+Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
+%if 0%{?beta:1}
+Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/%{version}%{beta}-Omega.tar.gz
+%else
 Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}-Nexus.tar.gz
+%endif
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
 Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdread-6.1.3-Next-Nexus-Alpha2-2.tar.gz
@@ -27,7 +32,7 @@ Source11:       VERSION
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
-Patch6:		kodi-20.2-fmt-10.patch
+#Patch6:		kodi-20.2-fmt-10.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
@@ -35,7 +40,7 @@ BuildRequires:  nasm
 BuildRequires:  ninja
 BuildRequires:  rapidjson
 BuildRequires:  atomic-devel
-BuildRequires:  ffmpeg4-devel
+BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  flatbuffers-devel
 BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
@@ -59,7 +64,9 @@ BuildRequires:  pkgconfig(libpcrecpp)
 BuildRequires:  pkgconfig(mariadb)
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(taglib)
+BuildRequires:	pkgconfig(libdisplay-info)
 BuildRequires:  tinyxml-devel
+BuildRequires:	cmake(tinyxml2)
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(avahi-core)
 BuildRequires:  pkgconfig(bluez)
@@ -99,7 +106,9 @@ BuildRequires:  pkgconfig(zlib)
 BuildRequires:  giflib-devel
 BuildRequires:  git-core
 BuildRequires:  glibc-devel
-BuildRequires:  jre-current
+# FIXME Newer openjdk versions cause the groovy files in kodi to fail:
+# BUG! exception in phase 'semantic analysis' in source unit '/home/bero/abf/kodi/BUILD/xbmc-21.0b1-Omega/tools/codegenerator/Generator.groovy' Unsupported class file major version 65
+BuildRequires:  java-20-openjdk
 #BuildRequires:  shairplay-devel
 BuildRequires:  swig
 BuildRequires:  yasm
@@ -289,7 +298,7 @@ and entertainment hub for digital media.
 This package contains the Texturepacker program for Kodi.
 
 %prep
-%autosetup -p1 -n xbmc-%{version}-Nexus
+%autosetup -p1 -n xbmc-%{version}%{?beta:%{beta}}-Omega
 
 cp %{S:10} /tmp/
 cp %{S:11} .
@@ -304,12 +313,8 @@ pathfix.py -pni "%{__python3} %{py3_shbang_opts}" \
   addons lib tools
 
 %build
-. %{_sysconfdir}/profile.d/90java.sh
-
-%ifarch %{arm} %{armx}
-export CC=gcc
-export CXX=g++
-%endif
+export JAVA_HOME=%{_prefix}/lib/jvm/java-20-openjdk
+export PATH=$JAVA_HOME/bin:$PATH
 
 export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 export PKGCONFIGPATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
