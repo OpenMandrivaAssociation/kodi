@@ -396,7 +396,6 @@ rm -f /tmp/cpuinfo
 %{_firewalld}/services/%{name}-jsonrpc.xml
 
 %files addon-devel
-%{_bindir}/JsonSchemaBuilder
 %{_includedir}/%{name}
 %{_datadir}/%{name}/cmake/
 
