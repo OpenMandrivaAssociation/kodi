@@ -381,9 +381,11 @@ rm -f /tmp/cpuinfo
 %files
 %{_bindir}/%{name}
 %{_bindir}/%{name}-standalone
+%{_bindir}/TexturePacker
 %{_libdir}/%{name}/
 %exclude %{_datadir}/%{name}/cmake/
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/wayland-sessions/kodi-gbm.desktop
 %{_datadir}/xsessions/%{name}.desktop
 %{_docdir}/%{name}/
 %{_iconsdir}/hicolor/*/apps/%{name}.png
