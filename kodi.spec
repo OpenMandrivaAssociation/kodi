@@ -13,7 +13,7 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-%define		beta b1
+%define		beta b2
 
 Name:           kodi
 Version:        21.0
@@ -23,7 +23,7 @@ Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
 %if 0%{?beta:1}
-Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/%{version}%{beta}-Omega.tar.gz
+Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/xbmc-%{version}%{beta}-Omega.tar.gz
 %else
 Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}-Nexus.tar.gz
 %endif
