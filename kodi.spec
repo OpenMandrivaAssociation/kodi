@@ -13,7 +13,7 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-%define		beta b2
+%define		beta b3
 
 Name:           kodi
 Version:        21.0
