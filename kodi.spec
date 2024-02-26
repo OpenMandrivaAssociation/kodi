@@ -3,7 +3,7 @@
 # and over again more than 100 times -- resulting in clang 17.0.3
 # assuming there's an infinite loop.
 # But we just need to give it more time...
-%global build_ldflags %{build_ldflags} -Wl,-mllvm,-instcombine-infinite-loop-threshold=200
+#global build_ldflags %{build_ldflags} -Wl,-mllvm,-instcombine-infinite-loop-threshold=200
 %endif
 
 %if "%distro_section" == "tainted"
