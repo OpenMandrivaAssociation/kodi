@@ -15,6 +15,10 @@
 %define         _firewalld %{_prefix}/lib/firewalld
 %define		beta b3
 
+%define         groovy_ver 4.0.16
+%define         lang_ver 3.14.0
+%define         text_ver 1.11.0
+
 Name:           kodi
 Version:        21.0
 Release:        %{?beta:0.%{beta}.}1
@@ -30,6 +34,9 @@ Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{ve
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
 Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdread-6.1.3-Next-Nexus-Alpha2-2.tar.gz
+Source5:	apache-groovy-binary-%{groovy_ver}.zip
+Source6:	commons-lang3-%{lang_ver}-bin.tar.gz
+Source7:	commons-text-%{text_ver}-bin.tar.gz
 
 Source10:       cpuinfo
 Source11:       VERSION
@@ -308,6 +315,10 @@ This package contains the Texturepacker program for Kodi.
 %prep
 %autosetup -p1 -n xbmc-%{version}%{?beta:%{beta}}-Omega
 
+tar xvf %{SOURCE5}
+tar xvf %{SOURCE6}
+tar xvf %{SOURCE7}
+
 cp %{S:10} /tmp/
 cp %{S:11} .
 
@@ -327,6 +338,10 @@ export PATH=$JAVA_HOME/bin:$PATH
 export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 export PKGCONFIGPATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
+
+export groovy_dir=$PWD/groovy-%{groovy_ver}
+export lang_dir=$PWD/commons-lang3-%{lang_ver}
+export text_dir=$PWD/commons-text-%{text_ver}
 
 %cmake -GNinja \
        -DX11_RENDER_SYSTEM=gl \
@@ -360,6 +375,9 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
 %endif
        -DLIBDVDNAV_URL=%{SOURCE3} \
        -DLIBDVDREAD_URL=%{SOURCE4} \
+       -Dapache-commons-lang_SOURCE_DIR=$lang_dir \
+       -Dapache-commons-text_SOURCE_DIR=$text_dir \
+       -Dgroovy_SOURCE_DIR=$groovy_dir \
        -DPKGCONFIGPATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig \
        -DPYTHON_EXECUTABLE=%{__python3} \
        -DPYTHON_INCLUDE_DIR=%{_includedir}/python%{pyver} \
