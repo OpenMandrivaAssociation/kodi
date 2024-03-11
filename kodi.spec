@@ -5,7 +5,7 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-%define		beta b3
+%define		beta rc1
 
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
