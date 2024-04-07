@@ -5,7 +5,7 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-%define		beta rc2
+#define		beta rc2
 
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
@@ -13,7 +13,7 @@
 
 Name:           kodi
 Version:        21.0
-Release:        %{?beta:0.%{beta}.}2
+Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -21,7 +21,7 @@ URL:            https://kodi.tv
 %if 0%{?beta:1}
 Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/xbmc-%{version}%{beta}-Omega.tar.gz
 %else
-Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}-Nexus.tar.gz
+Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}-Omage.tar.gz
 %endif
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
