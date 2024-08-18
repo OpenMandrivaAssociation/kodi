@@ -343,6 +343,7 @@ export text_dir=$PWD/commons-text-%{text_ver}
        -DKODI_DEPENDSBUILD=OFF \
        -DENABLE_STATIC_LIBS=OFF \
        -DENABLE_INTERNAL_FFMPEG=ON \
+       -DFFMPEG_URL="%{buildroot}/ffmpeg-6.0.1.tar.gz"
        -DENABLE_INTERNAL_FLATBUFFERS=OFF \
        -DENABLE_INTERNAL_FMT=OFF \
        -DENABLE_INTERNAL_CROSSGUID=OFF \
