@@ -29,6 +29,7 @@ Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alph
 Source5:	apache-groovy-binary-%{groovy_ver}.zip
 Source6:	commons-lang3-%{lang_ver}-bin.tar.gz
 Source7:	commons-text-%{text_ver}-bin.tar.gz
+Source8:  ffmpeg-6.0.1.tar.gz
 
 Source10:       cpuinfo
 Source11:       VERSION
@@ -310,6 +311,7 @@ This package contains the Texturepacker program for Kodi.
 tar xvf %{SOURCE5}
 tar xvf %{SOURCE6}
 tar xvf %{SOURCE7}
+tar xvf %{SOURCE8}
 
 cp %{S:10} /tmp/
 cp %{S:11} .
