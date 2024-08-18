@@ -311,7 +311,7 @@ This package contains the Texturepacker program for Kodi.
 tar xvf %{SOURCE5}
 tar xvf %{SOURCE6}
 tar xvf %{SOURCE7}
-tar xvf %{SOURCE8}
+#tar xvf %{SOURCE8}
 
 cp %{S:10} /tmp/
 cp %{S:11} .
