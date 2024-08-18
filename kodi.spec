@@ -12,7 +12,7 @@
 %define         text_ver 1.11.0
 
 Name:           kodi
-Version:        21.0
+Version:        21.1
 Release:        %{?beta:0.%{beta}.}2
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
