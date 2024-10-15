@@ -29,7 +29,7 @@ Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alph
 Source5:	apache-groovy-binary-%{groovy_ver}.zip
 Source6:	commons-lang3-%{lang_ver}-bin.tar.gz
 Source7:	commons-text-%{text_ver}-bin.tar.gz
-Source8:  ffmpeg-6.0.1.tar.gz
+#Source8:  ffmpeg-6.0.1.tar.gz
 
 Source10:       cpuinfo
 Source11:       VERSION
@@ -41,6 +41,7 @@ Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
 #Patch6:		kodi-20.2-fmt-10.patch
+Patch7:          0004-ffmpeg7.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
