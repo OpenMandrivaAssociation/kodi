@@ -1,3 +1,5 @@
+%global optflags %{optflags} -Wno-missing-field-initializers
+
 %if "%distro_section" == "tainted"
 %define         with_dvdcss 1
 %else
@@ -12,8 +14,8 @@
 %define         text_ver 1.11.0
 
 Name:           kodi
-Version:        21.0
-Release:        %{?beta:0.%{beta}.}3
+Version:        21.1
+Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -21,7 +23,7 @@ URL:            https://kodi.tv
 %if 0%{?beta:1}
 Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/xbmc-%{version}%{beta}-Omega.tar.gz
 %else
-Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Matrix/xbmc-%{version}-Omega.tar.gz
+Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Omega/xbmc-%{version}-Omega.tar.gz
 %endif
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
@@ -40,6 +42,10 @@ Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
 #Patch6:		kodi-20.2-fmt-10.patch
+Patch7:		kodi-21.1-swig.patch
+Patch8:		kodi-21.1-less-Werror.patch
+# ffmpeg 7 support
+Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
@@ -340,7 +346,7 @@ export text_dir=$PWD/commons-text-%{text_ver}
        -DAPP_RENDER_SYSTEM=gl \
        -DKODI_DEPENDSBUILD=OFF \
        -DENABLE_STATIC_LIBS=OFF \
-       -DENABLE_INTERNAL_FFMPEG=ON \
+       -DENABLE_INTERNAL_FFMPEG=OFF \
        -DENABLE_INTERNAL_FLATBUFFERS=OFF \
        -DENABLE_INTERNAL_FMT=OFF \
        -DENABLE_INTERNAL_CROSSGUID=OFF \
@@ -398,7 +404,7 @@ rm -f /tmp/cpuinfo
 %{_datadir}/wayland-sessions/kodi-gbm.desktop
 %{_datadir}/xsessions/%{name}.desktop
 %{_docdir}/%{name}/
-%{_iconsdir}/hicolor/*/apps/%{name}.png
+%{_iconsdir}/hicolor/*/apps/%{name}.*
 %{_datadir}/%{name}/
 %{_datadir}/metainfo/org.xbmc.kodi.metainfo.xml
 

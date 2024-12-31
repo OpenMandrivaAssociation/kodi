@@ -1,0 +1,25 @@
+diff -up xbmc-21.1-Omega/cmake/scripts/common/ArchSetup.cmake.4~ xbmc-21.1-Omega/cmake/scripts/common/ArchSetup.cmake
+--- xbmc-21.1-Omega/cmake/scripts/common/ArchSetup.cmake.4~	2024-08-17 09:06:48.000000000 +0200
++++ xbmc-21.1-Omega/cmake/scripts/common/ArchSetup.cmake	2024-12-31 19:29:16.568816019 +0100
+@@ -161,11 +161,11 @@ if(NOT MSVC)
+   add_options(ALL_LANGUAGES ALL_BUILDS
+     -Wall
+     -Wdouble-promotion
+-    -Wmissing-field-initializers
+     -Wsign-compare
+     -Wextra
+     -Wno-unused-parameter # from -Wextra
+   )
++  # Breaks because of spa-0.2 headers -Wmissing-field-initializers
+ 
+   add_options(CXX ALL_BUILDS
+     -Wnon-virtual-dtor
+@@ -180,7 +180,7 @@ if(NOT MSVC)
+   if(NOT CORE_COMPILE_OPTIONS)
+     set(CORE_COMPILE_OPTIONS
+       -Werror=double-promotion
+-      -Werror=missing-field-initializers
++      -Wno-error=missing-field-initializers
+       -Werror=sign-compare
+     )
+   endif()
