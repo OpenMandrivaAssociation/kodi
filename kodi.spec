@@ -436,8 +436,8 @@ rm -f /tmp/cpuinfo
 #{python3_sitelib}/%{name}/bt/
 
 %files python
-%{python3_sitelib}/%{name}/defs.*
-%{python3_sitelib}/%{name}/__init__.*
+#{python3_sitelib}/%{name}/defs.*
+#{python3_sitelib}/%{name}/__init__.*
 
 %files python-xbmcclient
 %{python3_sitelib}/%{name}/xbmcclient.*
