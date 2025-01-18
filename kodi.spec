@@ -433,7 +433,7 @@ rm -f /tmp/cpuinfo
 %{_bindir}/kodi-wiiremote
 
 %files python-bt
-%{python3_sitelib}/%{name}/bt/
+#{python3_sitelib}/%{name}/bt/
 
 %files python
 %{python3_sitelib}/%{name}/defs.*
