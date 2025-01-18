@@ -42,7 +42,7 @@ Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
 #Patch6:		kodi-20.2-fmt-10.patch
-Patch7:		kodi-21.1-swig.patch
+#Patch7:		kodi-21.1-swig.patch
 Patch8:		kodi-21.1-less-Werror.patch
 # ffmpeg 7 support
 Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
