@@ -443,4 +443,4 @@ rm -f /tmp/cpuinfo
 #{python3_sitelib}/%{name}/xbmcclient.*
 
 %files python-zeroconf
-%{python3_sitelib}/%{name}/zeroconf.*
+#{python3_sitelib}/%{name}/zeroconf.*
