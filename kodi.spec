@@ -14,7 +14,7 @@
 %define         text_ver 1.11.0
 
 Name:           kodi
-Version:        21.1
+Version:        21.2
 Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
@@ -42,7 +42,7 @@ Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
 Patch5:         cheat-sse-build.patch
 #Patch6:		kodi-20.2-fmt-10.patch
-Patch7:		kodi-21.1-swig.patch
+#Patch7:		kodi-21.1-swig.patch
 Patch8:		kodi-21.1-less-Werror.patch
 # ffmpeg 7 support
 Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
@@ -423,8 +423,8 @@ rm -f /tmp/cpuinfo
 
 %files eventclient-ps3
 %{_bindir}/%{name}-ps3remote
-%{python3_sitelib}/%{name}/ps3/
-%{python3_sitelib}/%{name}/ps3_remote.*
+%{python3_sitearch}/kodi/ps3/
+%{python3_sitearch}/kodi/ps3_remote.py
 
 %files eventclient-%{name}-send
 %{_bindir}/%{name}-send
@@ -433,14 +433,14 @@ rm -f /tmp/cpuinfo
 %{_bindir}/kodi-wiiremote
 
 %files python-bt
-%{python3_sitelib}/%{name}/bt/
+%{python3_sitearch}/kodi/bt/
 
 %files python
-%{python3_sitelib}/%{name}/defs.*
-%{python3_sitelib}/%{name}/__init__.*
+%{python3_sitearch}/kodi/__init__.py
+%{python3_sitearch}/kodi/defs.py
 
 %files python-xbmcclient
-%{python3_sitelib}/%{name}/xbmcclient.*
+%{python3_sitearch}/%{name}/xbmcclient.*
 
 %files python-zeroconf
-%{python3_sitelib}/%{name}/zeroconf.*
+%{python3_sitearch}/%{name}/zeroconf.*
