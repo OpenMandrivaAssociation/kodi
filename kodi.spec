@@ -424,6 +424,7 @@ rm -f /tmp/cpuinfo
 %files eventclient-ps3
 %{_bindir}/%{name}-ps3remote
 %{python3_sitearch}/kodi/ps3/
+%{python3_sitearch}/kodi/ps3_remote.py
 
 %files eventclient-%{name}-send
 %{_bindir}/%{name}-send
