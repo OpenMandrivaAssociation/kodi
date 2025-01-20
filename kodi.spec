@@ -423,8 +423,7 @@ rm -f /tmp/cpuinfo
 
 %files eventclient-ps3
 %{_bindir}/%{name}-ps3remote
-#{python3_sitelib}/%{name}/ps3/
-#{python3_sitelib}/%{name}/ps3_remote.*
+%{python3_sitearch}/kodi/ps3/
 
 %files eventclient-%{name}-send
 %{_bindir}/%{name}-send
@@ -433,14 +432,14 @@ rm -f /tmp/cpuinfo
 %{_bindir}/kodi-wiiremote
 
 %files python-bt
-#{python3_sitelib}/%{name}/bt/
+%{python3_sitearch}/kodi/bt/
 
 %files python
-#{python3_sitelib}/%{name}/defs.*
-#{python3_sitelib}/%{name}/__init__.*
+%{python3_sitearch}/kodi/__init__.py
+%{python3_sitearch}/kodi/defs.py
 
 %files python-xbmcclient
-#{python3_sitelib}/%{name}/xbmcclient.*
+%{python3_sitearch}/%{name}/xbmcclient.*
 
 %files python-zeroconf
-#{python3_sitelib}/%{name}/zeroconf.*
+%{python3_sitearch}/%{name}/zeroconf.*
