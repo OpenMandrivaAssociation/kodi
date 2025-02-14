@@ -15,7 +15,7 @@
 
 Name:           kodi
 Version:        21.2
-Release:        %{?beta:0.%{beta}.}1
+Release:        %{?beta:0.%{beta}.}2
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -150,6 +150,10 @@ Requires:       xdpyinfo
 Requires:       glxinfo
 # for xbmc python scripts:
 Requires:       python3dist(pillow)
+
+# this is wrong, it should be a part of glibc but due ducking system split policy is not here.
+# ducking duckers!
+Requires:	locales-extra-charsets
 
 Provides:       xbmc = %{version}-%{release}
 
