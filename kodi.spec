@@ -15,7 +15,7 @@
 
 Name:           kodi
 Version:        21.2
-Release:        %{?beta:0.%{beta}.}2
+Release:        %{?beta:0.%{beta}.}3
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -353,7 +353,7 @@ export text_dir=$PWD/commons-text-%{text_ver}
        -DENABLE_INTERNAL_FFMPEG=OFF \
        -DENABLE_INTERNAL_FLATBUFFERS=OFF \
        -DENABLE_INTERNAL_FMT=OFF \
-       -DENABLE_INTERNAL_CROSSGUID=OFF \
+       -DENABLE_INTERNAL_CROSSGUID=ON \
        -DENABLE_INTERNAL_FSTRCMP=OFF \
        -DENABLE_INTERNAL_DAV1D=OFF \
        -DENABLE_INTERNAL_LIBDVD=OFF \
