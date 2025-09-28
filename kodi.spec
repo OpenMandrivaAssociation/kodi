@@ -23,7 +23,7 @@ URL:            https://kodi.tv
 %if 0%{?beta:1}
 Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/xbmc-%{version}%{beta}-Piers.tar.gz
 %else
-Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Omega/xbmc-%{version}-Piers.tar.gz
+Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Piers/xbmc-%{version}-Piers.tar.gz
 %endif
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
@@ -315,7 +315,7 @@ and entertainment hub for digital media.
 This package contains the Texturepacker program for Kodi.
 
 %prep
-%autosetup -p1 -n xbmc-%{version}%{?beta:%{beta}}-Omega
+%autosetup -p1 -n xbmc-%{version}%{?beta:%{beta}}-Piers
 
 tar xvf %{SOURCE5}
 tar xvf %{SOURCE6}
