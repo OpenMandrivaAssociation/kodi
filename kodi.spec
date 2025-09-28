@@ -40,7 +40,7 @@ Source11:       VERSION
 #Patch2:         kodi-18.0-add-url_hash_for_libdvdread.patch
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
-Patch5:         cheat-sse-build.patch
+#Patch5:         cheat-sse-build.patch
 #Patch6:		kodi-20.2-fmt-10.patch
 #Patch7:		kodi-21.1-swig.patch
 Patch8:		kodi-21.1-less-Werror.patch
