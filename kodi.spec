@@ -7,23 +7,24 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-#define		beta rc2
+%define		beta a1
 
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
 %define         text_ver 1.11.0
+%define         _ffmpeg_version 8.0
 
 Name:           kodi
-Version:        21.2
-Release:        %{?beta:0.%{beta}.}4
+Version:        22.0
+Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
 %if 0%{?beta:1}
-Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/xbmc-%{version}%{beta}-Omega.tar.gz
+Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/xbmc-%{version}%{beta}-Piers.tar.gz
 %else
-Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Omega/xbmc-%{version}-Omega.tar.gz
+Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Piers/xbmc-%{version}-Piers.tar.gz
 %endif
 Source2:        https://github.com/xbmc/libdvdcss/archive/1.4.3-Next-Nexus-Alpha2-2.tar.gz#/libdvdcss-1.4.3-Next-Nexus-Alpha2-2.tar.gz
 Source3:        https://github.com/xbmc/libdvdnav/archive/6.1.1-Next-Nexus-Alpha2-2.tar.gz#/libdvdnav-6.1.1-Next-Nexus-Alpha2-2.tar.gz
@@ -31,7 +32,7 @@ Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alph
 Source5:	apache-groovy-binary-%{groovy_ver}.zip
 Source6:	commons-lang3-%{lang_ver}-bin.tar.gz
 Source7:	commons-text-%{text_ver}-bin.tar.gz
-
+Source9:        https://ffmpeg.org/releases/ffmpeg-%{_ffmpeg_version}.tar.xz
 Source10:       cpuinfo
 Source11:       VERSION
 
@@ -40,12 +41,13 @@ Source11:       VERSION
 #Patch2:         kodi-18.0-add-url_hash_for_libdvdread.patch
 Patch3:         kodi-19.0-remove-git-string.patch
 #Patch4:         kodi-17.3-checkperms.patch
-Patch5:         cheat-sse-build.patch
+#Patch5:         cheat-sse-build.patch
 #Patch6:		kodi-20.2-fmt-10.patch
 #Patch7:		kodi-21.1-swig.patch
 Patch8:		kodi-21.1-less-Werror.patch
 # ffmpeg 7 support
-Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
+#Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
+Patch10:         021_%{name}_ffmpeg8.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
@@ -58,6 +60,7 @@ BuildRequires:  flatbuffers-devel
 BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
 BuildRequires:  pkgconfig(dav1d)
+BuildRequires:  pkgconfig(exiv2)
 BuildRequires:  pkgconfig(expat)
 BuildRequires:  pkgconfig(gmp)
 BuildRequires:  pkgconfig(libass)
@@ -74,6 +77,7 @@ BuildRequires:  pkgconfig(lzo2)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(libpcre2-32)
 BuildRequires:  pkgconfig(libpcrecpp)
+BuildRequires:  pkgconfig(nlohmann_json)
 BuildRequires:  pkgconfig(mariadb)
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(taglib)
@@ -315,7 +319,7 @@ and entertainment hub for digital media.
 This package contains the Texturepacker program for Kodi.
 
 %prep
-%autosetup -p1 -n xbmc-%{version}%{?beta:%{beta}}-Omega
+%autosetup -p1 -n xbmc-%{version}%{?beta:%{beta}}-Piers
 
 tar xvf %{SOURCE5}
 tar xvf %{SOURCE6}
@@ -350,7 +354,8 @@ export text_dir=$PWD/commons-text-%{text_ver}
        -DAPP_RENDER_SYSTEM=gl \
        -DKODI_DEPENDSBUILD=OFF \
        -DENABLE_STATIC_LIBS=OFF \
-       -DENABLE_INTERNAL_FFMPEG=OFF \
+       -DENABLE_INTERNAL_FFMPEG=ON \
+       -DFFMPEG_URL="%{SOURCE9}" \
        -DENABLE_INTERNAL_FLATBUFFERS=OFF \
        -DENABLE_INTERNAL_FMT=OFF \
        -DENABLE_INTERNAL_CROSSGUID=OFF \
@@ -391,6 +396,7 @@ export text_dir=$PWD/commons-text-%{text_ver}
 %ninja_install -C build
 
 rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
+rm -f %{buildroot}/builddir/build/BUILD/kodi-22.0-build/xbmc-22.0a1-Piers/build/build/bin/TexturePacker
 
 %clean
 rm -f /tmp/cpuinfo
@@ -401,7 +407,7 @@ rm -f /tmp/cpuinfo
 %files
 %{_bindir}/%{name}
 %{_bindir}/%{name}-standalone
-%{_bindir}/TexturePacker
+#{_bindir}/TexturePacker
 %{_libdir}/%{name}/
 %exclude %{_datadir}/%{name}/cmake/
 %{_datadir}/applications/%{name}.desktop
