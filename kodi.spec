@@ -58,6 +58,7 @@ BuildRequires:  flatbuffers-devel
 BuildRequires:  pkgconfig(avahi-client)
 BuildRequires:  pkgconfig(cwiid)
 BuildRequires:  pkgconfig(dav1d)
+BuildRequires:  pkgconfig(exiv2)
 BuildRequires:  pkgconfig(expat)
 BuildRequires:  pkgconfig(gmp)
 BuildRequires:  pkgconfig(libass)
