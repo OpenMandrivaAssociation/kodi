@@ -396,12 +396,13 @@ export text_dir=$PWD/commons-text-%{text_ver}
 %ninja_install -C build
 
 rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
+rm -f %{buildroot}/builddir/build/BUILD/kodi-22.0-build/xbmc-22.0a1-Piers/build/build/bin/TexturePacker
 
 %clean
 rm -f /tmp/cpuinfo
 
 %files texturepacker
-#{_bindir}/kodi-TexturePacker
+%{_bindir}/kodi-TexturePacker
 
 %files
 %{_bindir}/%{name}
