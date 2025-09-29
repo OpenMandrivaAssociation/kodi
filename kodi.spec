@@ -12,6 +12,7 @@
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
 %define         text_ver 1.11.0
+%define         _ffmpeg_version 8.0
 
 Name:           kodi
 Version:        22.0
@@ -31,7 +32,7 @@ Source4:        https://github.com/xbmc/libdvdread/archive/6.1.3-Next-Nexus-Alph
 Source5:	apache-groovy-binary-%{groovy_ver}.zip
 Source6:	commons-lang3-%{lang_ver}-bin.tar.gz
 Source7:	commons-text-%{text_ver}-bin.tar.gz
-
+Source9:        https://ffmpeg.org/releases/ffmpeg-%{_ffmpeg_version}.tar.xz
 Source10:       cpuinfo
 Source11:       VERSION
 
@@ -46,6 +47,7 @@ Patch3:         kodi-19.0-remove-git-string.patch
 Patch8:		kodi-21.1-less-Werror.patch
 # ffmpeg 7 support
 #Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
+Patch10:         021_%{name}_ffmpeg8.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
@@ -351,7 +353,8 @@ export text_dir=$PWD/commons-text-%{text_ver}
        -DAPP_RENDER_SYSTEM=gl \
        -DKODI_DEPENDSBUILD=OFF \
        -DENABLE_STATIC_LIBS=OFF \
-       -DENABLE_INTERNAL_FFMPEG=OFF \
+       -DENABLE_INTERNAL_FFMPEG=ON \
+       -DFFMPEG_URL="%{SOURCE9}" \
        -DENABLE_INTERNAL_FLATBUFFERS=OFF \
        -DENABLE_INTERNAL_FMT=OFF \
        -DENABLE_INTERNAL_CROSSGUID=OFF \
