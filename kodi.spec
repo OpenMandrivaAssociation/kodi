@@ -7,7 +7,7 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-%define		beta a1
+%define		beta a2
 
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
@@ -16,7 +16,7 @@
 
 Name:           kodi
 Version:        22.0
-Release:        %{?beta:0.%{beta}.}2
+Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -47,7 +47,7 @@ Patch3:         kodi-19.0-remove-git-string.patch
 Patch8:		kodi-21.1-less-Werror.patch
 # ffmpeg 7 support
 #Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
-Patch10:         021_%{name}_ffmpeg8.patch
+#Patch10:         021_%{name}_ffmpeg8.patch
 
 BuildRequires:  autoconf
 BuildRequires:  cmake
@@ -396,7 +396,7 @@ export text_dir=$PWD/commons-text-%{text_ver}
 %ninja_install -C build
 
 rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
-rm -f %{buildroot}/builddir/build/BUILD/kodi-22.0-build/xbmc-22.0a1-Piers/build/build/bin/TexturePacker
+rm -f %{buildroot}/builddir/build/BUILD/kodi-22.0-build/xbmc-22.0a2-Piers/build/build/bin/TexturePacker
 
 %clean
 rm -f /tmp/cpuinfo
