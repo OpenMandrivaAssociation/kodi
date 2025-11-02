@@ -7,7 +7,7 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-%define		beta a1
+%define		beta a2
 
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
@@ -16,7 +16,7 @@
 
 Name:           kodi
 Version:        22.0
-Release:        %{?beta:0.%{beta}.}2
+Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
