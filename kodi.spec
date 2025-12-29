@@ -53,6 +53,7 @@ BuildRequires:  autoconf
 BuildRequires:  cmake
 BuildRequires:  nasm
 BuildRequires:  ninja
+BuildRequires:  make
 BuildRequires:  rapidjson
 BuildRequires:  atomic-devel
 BuildRequires:  pkgconfig(libavcodec)
