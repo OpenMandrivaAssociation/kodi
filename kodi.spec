@@ -335,8 +335,8 @@ find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
 # remove prebuilt libraries
 find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -print -delete
 
-pathfix.py -pni "%{__python3} %{py3_shbang_opts}" \
-  addons lib tools
+#pathfix.py -pni "%{__python3} %{py3_shbang_opts}" \
+#  addons lib tools
 
 %build
 export JAVA_HOME=%{_prefix}/lib/jvm/java-20-openjdk
