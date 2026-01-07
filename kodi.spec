@@ -49,6 +49,7 @@ Patch8:		kodi-21.1-less-Werror.patch
 #Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
 #Patch10:         021_%{name}_ffmpeg8.patch
 
+BuildRequires:  automake
 BuildRequires:  autoconf
 BuildRequires:  cmake
 BuildRequires:  nasm
