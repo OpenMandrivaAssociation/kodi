@@ -52,6 +52,8 @@ Patch8:		kodi-21.1-less-Werror.patch
 BuildRequires:  automake
 BuildRequires:  autoconf
 BuildRequires:  libtool
+BuildRequires:  slibtool
+BuildRequires:  gettext
 BuildRequires:  m4
 BuildRequires:  cmake
 BuildRequires:  nasm
