@@ -16,7 +16,7 @@
 
 Name:           kodi
 Version:        22.0
-Release:        %{?beta:0.%{beta}.}3
+Release:        %{?beta:0.%{beta}.}4
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
