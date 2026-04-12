@@ -12,7 +12,7 @@
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
 %define         text_ver 1.11.0
-%define         _ffmpeg_version 8.1
+%define         _ffmpeg_version 8.0.1
 
 Name:           kodi
 Version:        22.0
