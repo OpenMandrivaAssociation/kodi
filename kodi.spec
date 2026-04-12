@@ -87,9 +87,9 @@ BuildRequires:  pkgconfig(nlohmann_json)
 BuildRequires:  pkgconfig(mariadb)
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(taglib)
-BuildRequires:	pkgconfig(libdisplay-info)
+BuildRequires:  pkgconfig(libdisplay-info)
 BuildRequires:  tinyxml-devel
-BuildRequires:	cmake(tinyxml2)
+BuildRequires:  cmake(tinyxml2)
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(avahi-core)
 BuildRequires:  pkgconfig(bluez)
@@ -105,7 +105,7 @@ BuildRequires:  pkgconfig(libnfs)
 BuildRequires:  pkgconfig(libpulse)
 BuildRequires:  pkgconfig(python3)
 BuildRequires:  pkgconfig(smbclient)
-BuildRequires:	samba-libs
+BuildRequires:  samba-libs
 BuildRequires:  sndio-devel
 BuildRequires:  pkgconfig(libudev)
 BuildRequires:  pkgconfig(libxslt)
@@ -388,6 +388,7 @@ export text_dir=$PWD/commons-text-%{text_ver}
 %endif
        -DLIBDVDNAV_URL=%{SOURCE3} \
        -DLIBDVDREAD_URL=%{SOURCE4} \
+       -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
        -Dapache-commons-lang_SOURCE_DIR=$lang_dir \
        -Dapache-commons-text_SOURCE_DIR=$text_dir \
        -Dgroovy_SOURCE_DIR=$groovy_dir \
