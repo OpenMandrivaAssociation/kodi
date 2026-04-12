@@ -7,16 +7,16 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-%define		beta a2
+%define		beta a3
 
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
 %define         text_ver 1.11.0
-%define         _ffmpeg_version 8.0
+%define         _ffmpeg_version 8.0.1
 
 Name:           kodi
 Version:        22.0
-Release:        %{?beta:0.%{beta}.}5
+Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -49,7 +49,12 @@ Patch8:		kodi-21.1-less-Werror.patch
 #Patch9:		https://github.com/xbmc/xbmc/commit/72fe098c8436c96763f677b4c65d32988b931b5b.patch
 #Patch10:         021_%{name}_ffmpeg8.patch
 
+BuildRequires:  automake
 BuildRequires:  autoconf
+BuildRequires:  libtool
+BuildRequires:  slibtool
+BuildRequires:  gettext
+BuildRequires:  m4
 BuildRequires:  cmake
 BuildRequires:  nasm
 BuildRequires:  ninja
@@ -82,9 +87,9 @@ BuildRequires:  pkgconfig(nlohmann_json)
 BuildRequires:  pkgconfig(mariadb)
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(taglib)
-BuildRequires:	pkgconfig(libdisplay-info)
+BuildRequires:  pkgconfig(libdisplay-info)
 BuildRequires:  tinyxml-devel
-BuildRequires:	cmake(tinyxml2)
+BuildRequires:  cmake(tinyxml2)
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(avahi-core)
 BuildRequires:  pkgconfig(bluez)
@@ -100,7 +105,7 @@ BuildRequires:  pkgconfig(libnfs)
 BuildRequires:  pkgconfig(libpulse)
 BuildRequires:  pkgconfig(python3)
 BuildRequires:  pkgconfig(smbclient)
-BuildRequires:	samba-libs
+BuildRequires:  samba-libs
 BuildRequires:  sndio-devel
 BuildRequires:  pkgconfig(libudev)
 BuildRequires:  pkgconfig(libxslt)
@@ -335,8 +340,8 @@ find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
 # remove prebuilt libraries
 find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -print -delete
 
-pathfix.py -pni "%{__python3} %{py3_shbang_opts}" \
-  addons lib tools
+#pathfix.py -pni "%{__python3} %{py3_shbang_opts}" \
+#  addons lib tools
 
 %build
 export JAVA_HOME=%{_prefix}/lib/jvm/java-20-openjdk
@@ -349,6 +354,9 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig:%{_prefix}/lib
 export groovy_dir=$PWD/groovy-%{groovy_ver}
 export lang_dir=$PWD/commons-lang3-%{lang_ver}
 export text_dir=$PWD/commons-text-%{text_ver}
+
+export CFLAGS="$CFLAGS -fPIC"
+export CXXFLAGS="$CXXFLAGS -fPIC"
 
 %cmake -GNinja \
        -DX11_RENDER_SYSTEM=gl \
@@ -383,6 +391,7 @@ export text_dir=$PWD/commons-text-%{text_ver}
 %endif
        -DLIBDVDNAV_URL=%{SOURCE3} \
        -DLIBDVDREAD_URL=%{SOURCE4} \
+       -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
        -Dapache-commons-lang_SOURCE_DIR=$lang_dir \
        -Dapache-commons-text_SOURCE_DIR=$text_dir \
        -Dgroovy_SOURCE_DIR=$groovy_dir \
