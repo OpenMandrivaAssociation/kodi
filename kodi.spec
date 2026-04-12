@@ -355,6 +355,9 @@ export groovy_dir=$PWD/groovy-%{groovy_ver}
 export lang_dir=$PWD/commons-lang3-%{lang_ver}
 export text_dir=$PWD/commons-text-%{text_ver}
 
+export CFLAGS="$CFLAGS -fPIC"
+export CXXFLAGS="$CXXFLAGS -fPIC"
+
 %cmake -GNinja \
        -DX11_RENDER_SYSTEM=gl \
        -DAPP_RENDER_SYSTEM=gl \
