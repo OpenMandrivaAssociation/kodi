@@ -8,22 +8,22 @@
 %endif
 
 %define         _firewalld %{_prefix}/lib/firewalld
-%define		beta a3
+%define		beta b1
 
 %define         groovy_ver 4.0.16
 %define         lang_ver 3.14.0
 %define         text_ver 1.11.0
-%define         _ffmpeg_version 8.0.1
+%define         _ffmpeg_version 8.1.2
 
 Name:           kodi
 Version:        22.0
-Release:        %{?beta:0.%{beta}.}3
+Release:        %{?beta:0.%{beta}.}1
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
 URL:            https://kodi.tv
 %if 0%{?beta:1}
-Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/xbmc-%{version}%{beta}-Piers.tar.gz
+Source0:	https://github.com/xbmc/xbmc/archive/refs/tags/%{version}%{beta}-Piers.tar.gz#/xbmc-%{version}%{beta}-Piers.tar.gz
 %else
 Source0:        https://github.com/xbmc/xbmc/archive/%{version}-Piers/xbmc-%{version}-Piers.tar.gz
 %endif
@@ -407,7 +407,7 @@ export CXXFLAGS="$CXXFLAGS -fPIC"
 %ninja_install -C build
 
 rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
-rm -f %{buildroot}/builddir/build/BUILD/kodi-22.0-build/xbmc-22.0a2-Piers/build/build/bin/TexturePacker
+rm -f %{buildroot}/builddir/build/BUILD/kodi-22.0-build/xbmc-22.0b1-Piers/build/build/bin/TexturePacker
 
 %clean
 rm -f /tmp/cpuinfo
