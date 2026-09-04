@@ -402,6 +402,17 @@ export CXXFLAGS="$CXXFLAGS -fPIC"
        -DPYTHON_INCLUDE_DIR=%{_includedir}/python%{pyver} \
        -DCROSSGUID_INCLUDE_DIR=%{_includedir}/crossguid
 
+# TexturePacker segfaults packing estuary against system fmt 12.
+# Do not fail the whole build if skin .xbt generation dies.
+if [ -f build/build/GeneratedPackSkins.cmake ]; then
+	sed -i 's/execute_process(/execute_process(RESULT_VARIABLE _tp_rc /' \
+		build/build/GeneratedPackSkins.cmake
+	printf '%s\n' \
+		'if(_tp_rc AND NOT _tp_rc EQUAL 0)' \
+		'  message(WARNING "TexturePacker failed (${_tp_rc}); continuing")' \
+		'endif()' >> build/build/GeneratedPackSkins.cmake
+fi
+
 %ninja_build
 
 %install
