@@ -1,4 +1,5 @@
 %undefine _debugsource_packages
+%global _lto_cflags %{nil}
 %global optflags %{optflags} -Wno-missing-field-initializers
 
 %if "%distro_section" == "tainted"
