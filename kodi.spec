@@ -1,6 +1,8 @@
 %undefine _debugsource_packages
+# _lto_cflags is already baked into optflags by rpm macros; force it off.
+# TexturePacker segfaults packing estuary when linked with LTO + fmt 12.
 %global _lto_cflags %{nil}
-%global optflags %{optflags} -Wno-missing-field-initializers
+%global optflags %{optflags} -fno-lto -Wno-missing-field-initializers
 
 %if "%distro_section" == "tainted"
 %define         with_dvdcss 1
@@ -402,16 +404,8 @@ export CXXFLAGS="$CXXFLAGS -fPIC"
        -DPYTHON_INCLUDE_DIR=%{_includedir}/python%{pyver} \
        -DCROSSGUID_INCLUDE_DIR=%{_includedir}/crossguid
 
-# TexturePacker segfaults packing estuary against system fmt 12.
-# Do not fail the whole build if skin .xbt generation dies.
-if [ -f build/build/GeneratedPackSkins.cmake ]; then
-	sed -i 's/execute_process(/execute_process(RESULT_VARIABLE _tp_rc /' \
-		build/build/GeneratedPackSkins.cmake
-	printf '%s\n' \
-		'if(_tp_rc AND NOT _tp_rc EQUAL 0)' \
-		'  message(WARNING "TexturePacker failed (${_tp_rc}); continuing")' \
-		'endif()' >> build/build/GeneratedPackSkins.cmake
-fi
+# GeneratedPackSkins.cmake is written with COMMAND_ERROR_IS_FATAL ANY.
+# LTO is already off; keep packing fatal so a TexturePacker crash is visible.
 
 %ninja_build
 
