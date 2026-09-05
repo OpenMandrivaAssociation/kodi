@@ -436,7 +436,31 @@ export LDFLAGS="$(printf '%s' "$LDFLAGS" | sed 's/-flto//g') -fno-lto"
 %ninja_build
 
 %install
+# TexturePacker still segfaults; cmake_install requires the generated .xbt files.
+if [ -f build/cmake_install.cmake ]; then
+	python - <<'PY'
+from pathlib import Path
+p = Path("build/cmake_install.cmake")
+t = p.read_text()
+out = []
+for line in t.splitlines(True):
+    if ".xbt" in line and "INSTALL" in line:
+        out.append("# " + line)
+    else:
+        out.append(line)
+p.write_text("".join(out))
+PY
+fi
 %ninja_install -C build
+# Ship unpacked estuary media if the packer did not produce .xbt
+estuary=%{buildroot}%{_datadir}/kodi/addons/skin.estuary
+if [ ! -f "$estuary/media/Textures.xbt" ]; then
+	mkdir -p "$estuary/media"
+	cp -a addons/skin.estuary/media/. "$estuary/media/"
+	if [ -d addons/skin.estuary/themes ]; then
+		cp -a addons/skin.estuary/themes/. "$estuary/media/" || :
+	fi
+fi
 
 rm -rf %{buildroot}%{_datadir}/kodi/system/certs/
 rm -f %{buildroot}/builddir/build/BUILD/kodi-22.0-build/xbmc-22.0b1-Piers/build/build/bin/TexturePacker
