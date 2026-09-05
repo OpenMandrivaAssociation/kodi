@@ -1,6 +1,5 @@
 %undefine _debugsource_packages
 # _lto_cflags is already baked into optflags by rpm macros; force it off.
-# TexturePacker segfaults packing estuary when linked with LTO + fmt 12.
 %global _lto_cflags %{nil}
 %global optflags %{optflags} -fno-lto -Wno-missing-field-initializers
 
@@ -428,7 +427,11 @@ export LDFLAGS="$(printf '%s' "$LDFLAGS" | sed 's/-flto//g') -fno-lto"
        -DPKGCONFIGPATH=${PKG_CONFIG_PATH}:%{_libdir}/pkgconfig \
        -DPYTHON_EXECUTABLE=%{__python3} \
        -DPYTHON_INCLUDE_DIR=%{_includedir}/python%{pyver} \
-       -DCROSSGUID_INCLUDE_DIR=%{_includedir}/crossguid
+       -DCROSSGUID_INCLUDE_DIR=%{_includedir}/crossguid \
+       -DENABLE_GOLD=OFF \
+       -DENABLE_LLD=ON
+# clang 23 + GNU gold produces a TexturePacker that segfaults on startup.
+# ENABLE_LLD also keeps the main kodi binary off that linker.
 
 # GeneratedPackSkins.cmake is written with COMMAND_ERROR_IS_FATAL ANY.
 # LTO is already off; keep packing fatal so a TexturePacker crash is visible.
