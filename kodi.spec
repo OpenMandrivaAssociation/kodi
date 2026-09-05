@@ -344,6 +344,27 @@ find -type f \( -name '*.00??' -o -name '*.00??~' \) -print -delete
 # remove prebuilt libraries
 find -type f \( -iname '*.so' -o -iname '*.dll' -o -iname '*.exe' \) -print -delete
 
+# TexturePacker still segfaults packing estuary with LZO + -dupecheck
+# when the link line ends in -flto. Disable LZO; drop dupecheck; do not
+# treat a packer crash as fatal so the rest of Kodi can still build.
+sed -i 's/texturePacker.SetFlags(FLAGS_USE_LZO);/texturePacker.SetFlags(0);/' \
+	tools/depends/native/TexturePacker/src/TexturePacker.cpp
+python - <<'PY'
+from pathlib import Path
+p = Path("cmake/scripts/common/ProjectMacros.cmake")
+t = p.read_text()
+old = "-dupecheck ${verbose_flag} COMMAND_ERROR_IS_FATAL ANY)"
+new = (
+    "${verbose_flag} RESULT_VARIABLE _tp_rc)\n"
+    "if(_tp_rc)\n"
+    '  message(WARNING \\"TexturePacker failed for ${file} (\\${_tp_rc})\\")\n'
+    "endif()"
+)
+if old not in t:
+    raise SystemExit("pack_xbt execute_process line not found")
+p.write_text(t.replace(old, new, 1))
+PY
+
 #pathfix.py -pni "%{__python3} %{py3_shbang_opts}" \
 #  addons lib tools
 
@@ -361,6 +382,11 @@ export text_dir=$PWD/commons-text-%{text_ver}
 
 export CFLAGS="$CFLAGS -fPIC"
 export CXXFLAGS="$CXXFLAGS -fPIC"
+# rpm still appends -flto to LDFLAGS after -fno-lto; TexturePacker inherits that.
+export LDFLAGS="$(printf '%s' "$LDFLAGS" | sed 's/-flto//g') -fno-lto"
+
+# GeneratedPackSkins.cmake is rewritten in %prep so a TexturePacker
+# crash no longer aborts the whole ninja build.
 
 %cmake -GNinja \
        -DX11_RENDER_SYSTEM=gl \
