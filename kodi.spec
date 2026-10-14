@@ -19,7 +19,7 @@
 
 Name:           kodi
 Version:        22.0
-Release:        %{?beta:0.%{beta}.}3
+Release:        %{?beta:0.%{beta}.}4
 Summary:        Kodi - media player and home entertainment system
 Group:          Video/Players
 License:        GPLv2+ and GPLv2 and (LGPLv3+ with exceptions)
@@ -162,7 +162,7 @@ Requires:	samba-libs
 Requires:       xdpyinfo
 Requires:       glxinfo
 # for xbmc python scripts:
-Requires:       python3dist(pillow)
+Requires:       python%{pyver}dist(pillow)
 
 # this is wrong, it should be a part of glibc but due ducking system split policy is not here.
 # ducking duckers!
@@ -230,8 +230,8 @@ License:        GPLv2+
 Recommends:       python3dist(pybluez)
 Requires:       %{name}-eventclients-common = %{version}-%{release}
 # requires via zeroconf.py, only used by xbmc-ps3d:
-Requires:       python3dist(pygobject)
-Requires:       python3dist(dbus-python)
+Requires:       python%{pyver}dist(pygobject)
+Requires:       python%{pyver}dist(dbus-python)
 
 %description    eventclient-ps3
 Kodi is an award-winning free and open source software media player
